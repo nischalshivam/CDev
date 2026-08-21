@@ -138,7 +138,8 @@ System requirements:
 
 ## Documentation
 
-- `PROCESS.md` — Complete system manual
+- `SYSTEM_OVERVIEW.md` — **Read this first.** Complete system explained for any developer/AI.
+- `PROCESS.md` — Detailed system manual (philosophy, architecture, decisions)
 - `PROMPTS/CLUE_SCRIPT_PROMPT.md` — Universal Clue Script prompt (copy-paste ready)
 - `CHANGELOG.md` — Every decision, why, and when
 - `TODO.md` — Task tracking
