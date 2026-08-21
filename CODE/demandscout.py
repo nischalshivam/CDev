@@ -595,6 +595,7 @@ def main():
     parser.add_argument("--clue", help="Path to clue script (optional, auto-generated)")
     parser.add_argument("--niche", help="Path to niche pack YAML")
     parser.add_argument("--title", help="Video title")
+    parser.add_argument("--lang", help="Language code (en/fr/de/es/hi/ar/ja/ko/pt/ru/it/zh) or 'auto'")
     parser.add_argument("--queue", help="Path to queue JSON file")
     parser.add_argument("--overnight", action="store_true", help="Run overnight mode")
     parser.add_argument("--add", action="store_true", help="Add to queue instead of processing")
@@ -664,25 +665,50 @@ def main():
         qm = QueueManager(args.queue)
         qm.run_queue()
 
-    elif args.script and args.audio and args.niche:
+    elif args.script and args.niche:
         # Single video mode
         job = Job(
             id="J001",
             script=args.script,
-            audio=args.audio,
+            audio=args.audio or "",
             clue=args.clue,
             niche=args.niche,
             title=args.title or Path(args.script).stem
         )
         print(f"Processing: {job.title}")
-        try:
-            from CODE.demandscout_core import process_job
-            result = process_job(job)
-            print(f"✓ Done: {result}")
-        except ImportError:
-            print("Core module not yet implemented. Coming soon.")
-        except Exception as e:
-            print(f"✗ Error: {e}")
+
+        # Check if multilingual mode
+        lang = getattr(args, 'lang', None)
+        if lang:
+            print(f"Language: {lang}")
+            try:
+                from CODE.multilingual import process_job_multilingual
+                script_text = _load_script(args.script)
+                niche_config = _load_yaml(args.niche)
+                result = process_job_multilingual(
+                    script_text=script_text,
+                    audio_path=args.audio,
+                    niche_config=niche_config,
+                    title=job.title,
+                    language_override=lang if lang != "auto" else None
+                )
+                print(f"✓ Done: {result}")
+            except ImportError:
+                print("Multilingual module not available. Using default.")
+                from CODE.demandscout_core import process_job
+                result = process_job(job)
+                print(f"✓ Done: {result}")
+            except Exception as e:
+                print(f"✗ Error: {e}")
+        else:
+            try:
+                from CODE.demandscout_core import process_job
+                result = process_job(job)
+                print(f"✓ Done: {result}")
+            except ImportError:
+                print("Core module not yet implemented. Coming soon.")
+            except Exception as e:
+                print(f"✗ Error: {e}")
 
     else:
         parser.print_help()
