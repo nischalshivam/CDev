@@ -1,0 +1,157 @@
+name: defence
+display_name: "Defence & Military"
+version: "1.0"
+
+default_style: "clean_doc"
+
+description: >
+  Military vehicles, aircraft, naval vessels, weapons, exercises, and operations.
+  Focus: factual accuracy, exact variants, proper context.
+
+# === ENTITIES ===
+
+vehicles:
+  armored:
+    - Boxer CRV
+    - ASLAV
+    - Patria AMV35
+    - M113
+    - M1 Abrams
+    - M2 Bradley
+    - T-90
+    - T-72
+    - BMP-2
+  trucks:
+    - HMMWV (Humvee)
+    - MRAP
+    - Oshkosh
+    - Unimog
+
+aircraft:
+  fighters:
+    - F-35A, F-35B, F-35C
+    - F-22 Raptor
+    - F-16 Fighting Falcon
+    - Su-57 Felon
+    - Rafale
+    - Eurofighter Typhoon
+  helicopters:
+    - AH-64 Apache
+    - CH-47 Chinook
+    - MH-60R Seahawk
+    - UH-60 Black Hawk
+  transport:
+    - C-130 Hercules
+    - C-17 Globemaster
+    - A400M Atlas
+
+naval:
+  - Aircraft carrier
+  - Destroyer
+  - Frigate
+  - Submarine
+  - Amphibious assault ship (LHD/LHA)
+  - Littoral combat ship
+
+weapons:
+  - FGM-148 Javelin
+  - FIM-92 Stinger
+  - HIMARS
+  - MIM-104 Patriot
+  - Iron Dome
+  - ATACMS
+  - AGM-114 Hellfire
+
+organizations:
+  - NATO
+  - Australian Army
+  - US Army
+  - US Marine Corps
+  - British Army
+  - Ukrainian Armed Forces
+  - Rheinmetall
+  - Lockheed Martin
+  - Boeing
+  - BAE Systems
+
+# === ACTIONS ===
+
+actions:
+  - military exercise
+  - joint exercise
+  - live fire
+  - amphibious assault
+  - parachute jump
+  - heliborne operation
+  - weapons demonstration
+  - capability demonstration
+  - refueling
+  - formation flying
+  - naval exercise
+
+# === EVENTS ===
+
+events:
+  - Exercise Talisman Sabre
+  - Exercise RIMPAC
+  - Exercise Trident Juncture
+  - Exercise Cobra Gold
+  - NATO Summit
+  - Defence expo
+
+# === ENVIRONMENTS ===
+
+environments:
+  - woodland
+  - desert
+  - urban
+  - arctic
+  - maritime
+  - airfield
+  - jungle
+
+# === SEARCH QUERIES ===
+
+search_queries:
+  - "{entity} official video"
+  - "{entity} demonstration"
+  - "{entity} exercise {year}"
+  - "{organization} {action}"
+  - "{event} {year}"
+  - "{country} military {year}"
+  - "{weapon} firing test"
+  - "{aircraft} flight demonstration"
+  - "{naval} {action}"
+
+# === STRICTNESS RULES ===
+
+strictness_rules:
+  vehicles: "exact make + model + variant"
+  aircraft: "exact model + variant + country"
+  weapons: "exact model name"
+  naval: "exact class + country"
+  events: "exact event + year"
+  organizations: "exact name"
+
+# === CHANNEL WHITELIST ===
+
+trusted_channels:
+  - "Defence Australia"
+  - "British Army"
+  - "US Army"
+  - "NATO"
+  - "Pentagon"
+  - "Military Factory"
+  - "The War Zone"
+  - "Janes"
+  - "Lockheed Martin"
+  - "Boeing"
+  - "Rheinmetall"
+
+# === MAPS NEEDED ===
+
+maps_needed:
+  - All country mentions
+  - All operational areas
+  - Route/advancement paths
+  - Naval operating areas

@@ -1,0 +1,55 @@
+{
+  "queue_id": "batch_001",
+  "created_at": "2026-08-22",
+  "niche": "PACKS/niche/defence.yaml",
+  "format": "standard",
+  "style": "clean_doc",
+  "audio_folder": "audio",
+  "jobs": [
+    {
+      "id": "JOB_001",
+      "title": "The Boxer CRV — Australia's Armored Future",
+      "script": "scripts/boxer_crv.txt",
+      "audio": "audio/boxer_crv.mp3",
+      "niche": "PACKS/defence.yaml",
+      "status": "queued",
+      "progress": 0.0
+    },
+    {
+      "id": "JOB_002",
+      "title": "The AH-64 Apache — Australia's Attack Helicopter",
+      "script": "scripts/apache_ah64.txt",
+      "audio": "audio/apache_ah64.mp3",
+      "niche": "PACKS/defence.yaml",
+      "status": "queued",
+      "progress": 0.0
+    },
+    {
+      "id": "JOB_003",
+      "title": "The MH-60R Seahawk — Maritime Dominance",
+      "script": "scripts/mh60r_seahawk.txt",
+      "audio": "audio/mh60r_seahawk.mp3",
+      "niche": "PACKS/defence.yaml",
+      "status": "queued",
+      "progress": 0.0
+    },
+    {
+      "id": "JOB_004",
+      "title": "LAND 400 — Australia's Armored Vehicle Program",
+      "script": "scripts/land400.txt",
+      "audio": "audio/land400.mp3",
+      "niche": "PACKS/defence.yaml",
+      "status": "queued",
+      "progress": 0.0
+    },
+    {
+      "id": "JOB_005",
+      "title": "The ASLAV — Australia's Previous Reconnaissance Vehicle",
+      "script": "scripts/aslav.txt",
+      "audio": "audio/aslav.mp3",
+      "niche": "PACKS/defence.yaml",
+      "status": "queued",
+      "progress": 0.0
+    }
+  ]
+}

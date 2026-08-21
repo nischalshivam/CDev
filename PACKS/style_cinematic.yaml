@@ -1,0 +1,36 @@
+name: cinematic
+display_name: "Cinematic"
+version: "1.0"
+
+description: "Dramatic cinematic style. High contrast, epic feel, slow zooms."
+
+color_grade:
+  type: "cinematic"
+  saturation: 1.1
+  contrast: 1.08
+  brightness: 0.95
+
+typography:
+  title_font: "Bebas Neue"
+  body_font: "Inter"
+  title_size: 56
+  body_size: 28
+  color: "#FFFFFF"
+  shadow: true
+  shadow_color: "#000000"
+  shadow_blur: 6
+
+transitions:
+  default: "fade"
+  duration: 0.8
+
+motion:
+  default: "slow_push_in"
+  duration: 10.0
+  intensity: "dramatic"
+
+audio:
+  music_style: "epic_cinematic"
+  music_volume: -18
+  sfx_enabled: true
+  sfx_volume: -12

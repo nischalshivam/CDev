@@ -1,0 +1,8 @@
+CODE/__pycache__/
+*.pyc
+__pycache__/
+DOWNLOADS/
+output/
+logs/*.log
+*.mp4
+*.mp3
