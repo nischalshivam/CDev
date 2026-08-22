@@ -597,6 +597,7 @@ def hard_identity_gate(clip: ClipEntry, beat: Beat) -> bool:
 | Wikimedia Commons | $0 | Free |
 | TTS (edge-tts) | $0 | Free |
 | FFmpeg rendering | $0 | Runs locally |
+| Multilingual support | $0 | Same cost as English |
 
 ### Cost by Phase
 
@@ -766,6 +767,99 @@ message = client.messages.create(
     ...
 )
 ```
+
+---
+
+## 10. Multilingual System (12 Languages)
+
+### Core Principle: Visual Content Is Language-Neutral
+
+The system supports 12 languages, but with a critical design rule:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    LANGUAGE ARCHITECTURE                         │
+├──────────────────────┬──────────────────────────────────────────┤
+│   FRONTEND (varies)  │   BACKEND (always English)               │
+├──────────────────────┼──────────────────────────────────────────┤
+│  Script              │  Library metadata (English)              │
+│  Audio/TTS           │  Scraping queries (English)              │
+│  Text overlays       │  Cataloging (English)                    │
+│  Clue Script narration│ Entity names (universal)                 │
+└──────────────────────┴──────────────────────────────────────────┘
+```
+
+### Why This Design?
+
+**The Problem:**
+```
+French script → Scrape "Boxer CRV en français"
+             → YouTube returns 0 results
+             → Wikimedia returns 0 results
+             → Library stays empty
+             → German script also fails
+             → SYSTEM BROKEN
+```
+
+**The Solution:**
+```
+French script → Extract entities: ["Boxer CRV", "Australian Army"]
+             → Search library with ENGLISH query: "Boxer CRV driving"
+             → Found! (English metadata, same visual asset) ✓
+             → If miss → Scrape with ENGLISH: "Boxer CRV military footage"
+             → Asset cataloged in ENGLISH
+             → Render: French audio + French text + same asset
+```
+
+### The Universal Bridge: Entity Names
+
+Entity names NEVER change across languages:
+- "Boxer CRV" in French script = "Boxer CRV" in English library
+- "F-35" in Spanish script = "F-35" in English library
+- "AH-64 Apache" in German script = "AH-64 Apache" in English library
+
+This is why ONE library serves ALL languages.
+
+### Supported Languages
+
+| Code | Language | TTS Voice | Font | RTL |
+|------|----------|-----------|------|-----|
+| en | English | Guy Neural | Inter | No |
+| fr | French | Henri Neural | Inter | No |
+| de | German | Conrad Neural | Inter | No |
+| es | Spanish | Alvaro Neural | Inter | No |
+| hi | Hindi | Swara Neural | Noto Sans Devanagari | No |
+| ar | Arabic | Zayed Neural | Noto Sans Arabic | Yes |
+| ja | Japanese | Keita Neural | Noto Sans JP | No |
+| ko | Korean | InJoon Neural | Noto Sans KR | No |
+| pt | Portuguese | Fabio Neural | Inter | No |
+| ru | Russian | Dmitry Neural | Noto Sans | No |
+| it | Italian | Diego Neural | Inter | No |
+| zh | Chinese | Yunxi Neural | Noto Sans SC | No |
+
+### Usage
+
+```bash
+# Explicit language
+python CODE/demandscout.py \
+  --script scripts/boxer_crv_fr.txt \
+  --lang fr \
+  --niche PACKS/defence.yaml
+
+# Auto-detect from script content
+python CODE/demandscout.py \
+  --script scripts/mi_video.txt \
+  --lang auto \
+  --niche PACKS/defence.yaml
+```
+
+### Cost Impact
+
+Multilingual mode adds **$0** to cost:
+- Same library (English, already built)
+- Same scraping (English queries)
+- Same Claude API call (Clue Script generation)
+- Only difference: TTS voice changes per language
 
 ---
 
