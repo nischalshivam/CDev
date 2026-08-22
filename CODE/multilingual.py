@@ -1,22 +1,24 @@
 #!/usr/bin/env python3
 """
 multilingual.py — Multi-language support for ProClip Engine
+v2.0 — Language-neutral architecture
 
-This module makes the ENTIRE system language-agnostic.
-One library serves ALL languages.
+CORE PRINCIPLE: Visual content is language-neutral. Only the user-facing
+parts (script, audio, text overlays) are in the target language.
+The library, scraping, and metadata are ALL in English (canonical).
 
-Supported languages:
-  - English (en), French (fr), German (de), Spanish (es)
-  - Hindi (hi), Arabic (ar), Japanese (ja), Korean (ko)
-  - Portuguese (pt), Russian (ru), Italian (it), Chinese (zh)
-
-How it works:
-  1. Detect script language automatically
-  2. Configure TTS voice for that language
-  3. Generate Clue Script in that language
-  4. Match assets using entities (entity names are universal)
-  5. Render text overlays in that language
-  6. Output video in that language
+FLOW:
+  French Script (narration in French)
+       ↓
+  Clue Script (French narration + universal entity names)
+       ↓
+  Asset Search (entities are universal → search English library)
+       ↓
+  If miss → SCRAPE IN ENGLISH (because YouTube/Wikimedia = mostly English)
+       ↓
+  Asset cataloged in ENGLISH (canonical)
+       ↓
+  Render: French audio + French text overlays + English-matched assets
 """
 
 import re
@@ -24,7 +26,7 @@ import logging
 import json
 import os
 from pathlib import Path
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Tuple
 from datetime import datetime
 from enum import Enum
 
@@ -49,17 +51,17 @@ class Language(Enum):
     CHINESE = "zh"
     AUTO = "auto"
 
-# Complete language configuration
+# Only the FRONTEND settings vary by language.
+# Backend (scraping, library) is ALWAYS English.
 LANG_CONFIG: Dict[str, Dict] = {
     "en": {
         "name": "English",
         "tts_voice": "en-US-GuyNeural",
         "tts_female": "en-US-JennyNeural",
-        "rtl": False,  # Right-to-left?
+        "rtl": False,
         "font": "Inter",
-        "scraping_sources": ["youtube", "pexels", "wikimedia"],
-        "common_words": ["the", "is", "and", "of", "to", "in", "a", "for", "with",
-                         "this", "that", "are", "was", "has", "have", "from"],
+        "font_noto": "Inter-Regular.ttf",
+        "display_name": "English",
     },
     "fr": {
         "name": "French",
@@ -67,10 +69,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "fr-FR-DeniseNeural",
         "rtl": False,
         "font": "Inter",
-        "scraping_sources": ["youtube", "pexels", "wikimedia"],
-        "common_words": ["le", "la", "les", "de", "du", "des", "et", "est", "un",
-                         "une", "pour", "dans", "avec", "ce", "que", "pas", "au",
-                         "aux", "en", "par", "sur", "ne", "se", "son", "sa"],
+        "font_noto": "Inter-Regular.ttf",
+        "display_name": "Français",
     },
     "de": {
         "name": "German",
@@ -78,10 +78,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "de-DE-KatjaNeural",
         "rtl": False,
         "font": "Inter",
-        "scraping_sources": ["youtube", "pexels", "wikimedia"],
-        "common_words": ["der", "die", "das", "und", "ist", "ein", "eine", "von",
-                         "mit", "auf", "für", "als", "auch", "sich", "nach", "aus",
-                         "wird", "hat", "werden", "oder", "wie", "dass", "nicht"],
+        "font_noto": "Inter-Regular.ttf",
+        "display_name": "Deutsch",
     },
     "es": {
         "name": "Spanish",
@@ -89,10 +87,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "es-ES-ElviraNeural",
         "rtl": False,
         "font": "Inter",
-        "scraping_sources": ["youtube", "pexels", "wikimedia"],
-        "common_words": ["el", "la", "los", "las", "de", "del", "en", "es", "un",
-                         "una", "por", "con", "para", "al", "que", "y", "no", "se",
-                         "lo", "su", "más", "pero", "como", "este", "ya"],
+        "font_noto": "Inter-Regular.ttf",
+        "display_name": "Español",
     },
     "hi": {
         "name": "Hindi",
@@ -100,9 +96,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "hi-IN-SwaraNeural",
         "rtl": False,
         "font": "Noto Sans Devanagari",
-        "scraping_sources": ["youtube", "wikimedia"],
-        "common_words": ["के", "की", "का", "में", "है", "और", "से", "को", "ने",
-                         "पर", "कि", "या", "था", "भी", "जो", "वह", "यह", "कर"],
+        "font_noto": "NotoSansDevanagari-Regular.ttf",
+        "display_name": "हिन्दी",
     },
     "ar": {
         "name": "Arabic",
@@ -110,9 +105,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "ar-SA-ZariyahNeural",
         "rtl": True,
         "font": "Noto Sans Arabic",
-        "scraping_sources": ["youtube", "wikimedia"],
-        "common_words": ["في", "من", "إلى", "على", "عن", "مع", "هذا", "التي",
-                         "الذي", "كان", "قد", "لا", "إن", "ما", "أو", "كل"],
+        "font_noto": "NotoSansArabic-Regular.ttf",
+        "display_name": "العربية",
     },
     "ja": {
         "name": "Japanese",
@@ -120,9 +114,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "ja-JP-NanamiNeural",
         "rtl": False,
         "font": "Noto Sans JP",
-        "scraping_sources": ["youtube", "wikimedia"],
-        "common_words": ["の", "に", "は", "を", "た", "が", "で", "て", "と",
-                         "し", "れ", "さ", "ある", "いる", "も", "する", "から"],
+        "font_noto": "NotoSansJP-Regular.ttf",
+        "display_name": "日本語",
     },
     "ko": {
         "name": "Korean",
@@ -130,9 +123,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "ko-KR-SunHiNeural",
         "rtl": False,
         "font": "Noto Sans KR",
-        "scraping_sources": ["youtube", "wikimedia"],
-        "common_words": ["이", "그", "저", "것", "들", "나", "우리", "수", "있",
-                         "하", "되", "들", "같", "없", "말", "년", "만", "그것"],
+        "font_noto": "NotoSansKR-Regular.ttf",
+        "display_name": "한국어",
     },
     "pt": {
         "name": "Portuguese",
@@ -140,9 +132,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "pt-BR-ElzaNeural",
         "rtl": False,
         "font": "Inter",
-        "scraping_sources": ["youtube", "pexels", "wikimedia"],
-        "common_words": ["o", "a", "os", "as", "de", "do", "da", "em", "um", "uma",
-                         "para", "com", "por", "que", "se", "no", "na", "ou"],
+        "font_noto": "Inter-Regular.ttf",
+        "display_name": "Português",
     },
     "ru": {
         "name": "Russian",
@@ -150,9 +141,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "ru-RU-SvetlanaNeural",
         "rtl": False,
         "font": "Noto Sans",
-        "scraping_sources": ["youtube", "wikimedia"],
-        "common_words": ["в", "и", "на", "не", "что", "он", "с", "как", "это",
-                         "его", "но", "они", "мы", "вы", "за", "из", "у", "о"],
+        "font_noto": "NotoSans-Regular.ttf",
+        "display_name": "Русский",
     },
     "it": {
         "name": "Italian",
@@ -160,9 +150,8 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "it-IT-ElsaNeural",
         "rtl": False,
         "font": "Inter",
-        "scraping_sources": ["youtube", "pexels", "wikimedia"],
-        "common_words": ["il", "la", "di", "che", "è", "un", "per", "con", "da",
-                         "a", "in", "si", "lo", "gli", "le", "non", "una", "ma"],
+        "font_noto": "Inter-Regular.ttf",
+        "display_name": "Italiano",
     },
     "zh": {
         "name": "Chinese",
@@ -170,36 +159,29 @@ LANG_CONFIG: Dict[str, Dict] = {
         "tts_female": "zh-CN-XiaoyiNeural",
         "rtl": False,
         "font": "Noto Sans SC",
-        "scraping_sources": ["youtube", "wikimedia"],
-        "common_words": ["的", "了", "是", "在", "和", "有", "不", "这", "他",
-                         "们", "来", "到", "时", "大", "地", "为", "子", "中"],
+        "font_noto": "NotoSansSC-Regular.ttf",
+        "display_name": "中文",
     },
 }
 
 # ============================================================
-# LANGUAGE DETECTION
+# LANGUAGE DETECTION (same as before)
 # ============================================================
 
-# Script ranges for each language
 SCRIPT_RANGES = {
-    "ja": [(0x3040, 0x309F), (0x30A0, 0x30FF)],  # Hiragana + Katakana
-    "ko": [(0xAC00, 0xD7AF), (0x1100, 0x11FF)],  # Hangul
-    "ar": [(0x0600, 0x06FF), (0x0750, 0x077F)],  # Arabic
-    "hi": [(0x0900, 0x097F)],                      # Devanagari
-    "ru": [(0x0400, 0x04FF)],                      # Cyrillic
-    "zh": [(0x4E00, 0x9FFF)],                      # CJK Unified
+    "ja": [(0x3040, 0x309F), (0x30A0, 0x30FF)],
+    "ko": [(0xAC00, 0xD7AF), (0x1100, 0x11FF)],
+    "ar": [(0x0600, 0x06FF), (0x0750, 0x077F)],
+    "hi": [(0x0900, 0x097F)],
+    "ru": [(0x0400, 0x04FF)],
+    "zh": [(0x4E00, 0x9FFF)],
 }
 
 def detect_language(text: str) -> str:
-    """
-    Auto-detect the language of a text string.
-
-    Returns: ISO 639-1 language code (e.g., "fr", "de", "en")
-    """
+    """Auto-detect the language of a text string."""
     if not text or len(text.strip()) < 10:
         return "en"
 
-    # Count characters in each script range
     script_counts = {}
     for lang, ranges in SCRIPT_RANGES.items():
         count = 0
@@ -211,33 +193,30 @@ def detect_language(text: str) -> str:
                     break
         script_counts[lang] = count
 
-    # If any non-Latin script has significant presence, use it
     total_chars = len([c for c in text if c.isalpha()])
     if total_chars > 0:
         for lang, count in script_counts.items():
-            if count > total_chars * 0.1:  # 10% threshold
+            if count > total_chars * 0.1:
                 return lang
 
-    # For Latin-script languages, use word frequency analysis
     return _detect_latin_language(text)
 
 
 def _detect_latin_language(text: str) -> str:
     """Detect language among Latin-script options."""
-
     words = re.findall(r'\b[a-zA-ZÀ-ÿ]+\b', text.lower())
     if not words:
         return "en"
 
-    # Language-specific word markers
     markers = {
         "fr": ["le", "la", "les", "des", "est", "une", "pour", "dans", "avec",
-               "pas", "aux", "cette", "sont", "plus", "tout", "fait", "droit"],
+               "pas", "aux", "cette", "sont", "plus", "tout", "fait", "droit",
+               "chars", "blindé", "militaire", "armée"],
         "de": ["der", "die", "das", "und", "ist", "ein", "eine", "von", "mit",
                "auf", "für", "als", "auch", "sich", "nach", "aus", "wird"],
         "es": ["el", "la", "los", "las", "del", "por", "para", "con", "que",
                "una", "está", "todo", "esta", "pero", "como", "muy"],
-        "pt": ["o", "os", "das", "dos", "uma", "umas", "umas", "não", "mas",
+        "pt": ["o", "os", "das", "dos", "uma", "umas", "não", "mas",
                "seu", "sua", "como", "mais", "tem", "bem", "até", "isso"],
         "it": ["il", "la", "di", "che", "perché", "questo", "quello",
                "sono", "stato", "anche", "come", "più", "ma", "nel"],
@@ -249,69 +228,45 @@ def _detect_latin_language(text: str) -> str:
         scores[lang] = score / max(len(words), 1)
 
     best_lang = max(scores, key=scores.get)
-    if scores[best_lang] > 0.02:  # At least 2% markers
+    if scores[best_lang] > 0.02:
         return best_lang
-
     return "en"
 
 
 # ============================================================
-# LANGUAGE CONTEXT (holds detected language + config)
+# LANGUAGE CONTEXT
 # ============================================================
 
 class LanguageContext:
     """
-    Holds all language-specific settings for a job.
-    Created once per job after language detection.
+    Holds frontend-only language settings.
+    Backend (library, scraping) always uses English internally.
     """
 
-    def __init__(self, language_code: str = "en", force: bool = False):
+    def __init__(self, language_code: str = "en"):
         self.code = language_code
         self.config = LANG_CONFIG.get(language_code, LANG_CONFIG["en"])
         self.name = self.config["name"]
+        self.display_name = self.config["display_name"]
         self.tts_voice = self.config["tts_voice"]
         self.tts_female = self.config["tts_female"]
         self.is_rtl = self.config["rtl"]
         self.font = self.config["font"]
-        self.scraping_sources = self.config["scraping_sources"]
+        self.font_file = self.config["font_noto"]
 
     @classmethod
     def from_text(cls, text: str) -> "LanguageContext":
-        """Auto-detect language from text."""
         code = detect_language(text)
         return cls(code)
 
     @classmethod
     def from_code(cls, code: str) -> "LanguageContext":
-        """Create from explicit language code."""
         return cls(code)
 
-    @classmethod
-    def from_script_path(cls, path: str) -> "LanguageContext":
-        """Detect from script file content."""
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                text = f.read  # First 2000 chars enough for detection
-            return cls.from_text(text)
-        except Exception:
-            return cls("en")
-
-    def get_tts_config(self, gender: str = "male") -> Dict:
-        """Get TTS configuration for this language."""
-        return {
-            "voice": self.tts_voice if gender == "male" else self.tts_female,
-            "language": self.code,
-        }
-
-    def get_scraping_query(self, base_query: str) -> str:
-        """
-        Adapt search query for the target language.
-        Entity names stay as-is (universal), rest translates.
-        """
-        return base_query  # Entities are universal
+    def get_tts_voice(self, gender: str = "male") -> str:
+        return self.tts_voice if gender == "male" else self.tts_female
 
     def get_text_direction(self) -> str:
-        """Get CSS/text direction: 'ltr' or 'rtl'"""
         return "rtl" if self.is_rtl else "ltr"
 
     def __repr__(self):
@@ -319,227 +274,133 @@ class LanguageContext:
 
 
 # ============================================================
-# MULTILINGUAL LIBRARY
+# ENTITY EXTRACTION — THE BRIDGE BETWEEN LANGUAGES
 # ============================================================
 
-class MultilingualLibrary:
+def extract_entities_from_beat(beat: Dict) -> List[str]:
     """
-    Library that stores assets with multi-language metadata.
+    Extract entities from a beat. These are UNIVERSAL names.
+    'Boxer CRV' is the same in every language.
+    'F-35' is the same in every language.
+    'AH-64 Apache' is the same in every language.
 
-    KEY DESIGN: Assets are stored ONCE but searchable in ANY language.
+    This is the KEY to cross-language library matching.
     """
+    entities = beat.get("entities", [])
+    if entities:
+        return entities
 
-    def __init__(self, library_db: "LibraryDB"):
-        self.db = library_db
+    # Fallback: extract from narration text
+    narration = beat.get("narration_verbatim", "")
 
-    def search_multilingual(
-        self,
-        query: str,
-        query_language: str,
-        entity_list: List[str],
-        type_filter: str = None,
-        top_k: int = 10
-    ) -> List[Dict]:
-        """
-        Search library in any language.
+    # Known entity patterns (proper nouns, model numbers, etc.)
+    # These are extracted regardless of script language
+    entity_patterns = [
+        # Military vehicles (model + variant pattern)
+        r'\b(?:Boxer|Bradley|M1\s*Abrams|T-90|T-72|ASLAV|Patria\s*AMV|BMP[-\s]?\d|Stryker)\s*(?:CRV|APC|IFV| variants?)?\b',
+        # Aircraft
+        r'\b(?:F-35[A-C]?|F-22|F-16|F/A-18|Su-[0-9]+|Rafale|Eurofighter|Typhoon)\b',
+        # Helicopters
+        r'\b(?:AH-64\s*Apache|CH-47\s*Chinook|MH-60[RST]?|UH-60|Ka-52|Mi-24|Mi-8)\b',
+        # Ships
+        r'\b(?:Aircraft\s*Carrier|Destroyer|Frigate|Submarine|LHD|LST)\b',
+        # Weapons
+        r'\b(?:Javelin|Stinger|HIMARS|Patriot|Iron\s*Dome|ATACMS|Tomahawk)\b',
+        # Organizations
+        r'\b(?:NATO|US Army|Australian Army|British Army|Ukrainian Armed Forces|Rheinmetall|Lockheed Martin|Boeing|BAE)\b',
+        # Events
+        r'\b(?:Exercise\s+\w+|RIMPAC|Talisman\s*Sabre|Trident\s*Juncture)\b',
+        # Generic proper nouns (capitalized words in sequence)
+        r'\b[A-Z][a-z]+\s+[A-Z][a-z]+\b',  # "Boxer CRV", "Rheinmetall Defence"
+    ]
 
-        Strategy:
-        1. Entity matching (universal — works in any language)
-        2. Translation-based text matching (translate query to asset's language)
-        3. Cross-language semantic matching
-        """
-        results = []
+    found = []
+    for pattern in entity_patterns:
+        matches = re.findall(pattern, narration, re.IGNORECASE)
+        found.extend(matches)
 
-        # ENTITY MATCHING (works across ALL languages)
-        # "Boxer CRV" in French script matches "Boxer CRV" in English library entry
-        entity_matches = self._match_entities(entity_list, query_language)
-
-        # TEXT MATCHING
-        text_matches = self._match_text(query, query_language)
-
-        # COMBINE
-        all_ids = set(entity_matches.keys()) | set(text_matches.keys())
-        for entry_id in all_ids:
-            entry = self.db.data["entries"].get(entry_id, {})
-            if not entry:
-                continue
-
-            # Type filter
-            if type_filter and entry.get("type") != type_filter:
-                continue
-
-            score = 0
-            if entry_id in entity_matches:
-                score += entity_matches[entry_id] * 2  # Entity match is strong
-            if entry_id in text_matches:
-                score += text_matches[entry_id]
-
-            results.append({**entry, "score": score})
-
-        results.sort(key=lambda x: x["score"], reverse=True)
-        return results[:top_k]
-
-    def _match_entities(self, entities: List[str], lang: str) -> Dict[str, float]:
-        """
-        Match entities across languages.
-        Entity names are universal (Boxer CRV, F-35, etc.)
-        """
-        matches = {}
-
-        for entry_id, entry in self.db.data["entries"].items():
-            entry_entities = [e.lower() for e in entry.get("entities", [])]
-            score = 0
-
-            for entity in entities:
-                entity_lower = entity.lower()
-                # Direct match
-                if entity_lower in entry_entities:
-                    score += 3.0
-                # Partial match
-                else:
-                    for ee in entry_entities:
-                        if entity_lower in ee or ee in entity_lower:
-                            score += 1.5
-                            break
-
-            if score > 0:
-                matches[entry_id] = score
-
-        return matches
-
-    def _match_text(self, query: str, lang: str) -> Dict[str, float]:
-        """Text matching using description overlap."""
-        matches = {}
-        query_words = set(query.lower().split())
-
-        for entry_id, entry in self.db.data["entries"].items():
-            # Use description in the matching language
-            desc_key = f"description_{lang}"
-            description = entry.get(desc_key, entry.get("description", ""))
-
-            desc_words = set(description.lower().split())
-            overlap = len(query_words & desc_words)
-
-            if overlap > 0:
-                matches[entry_id] = overlap * 0.5
-
-        return matches
-
-    def add_multilingual_entry(
-        self,
-        entry_id: str,
-        entry_type: str,
-        file_path: str,
-        source_language: str,
-        descriptions: Dict[str, str],
-        entities: List[str],
-        actions: List[str],
-        **kwargs
-    ):
-        """
-        Add entry with descriptions in multiple languages.
-
-        Args:
-            descriptions: {"en": "English desc", "fr": "French desc", ...}
-        """
-        entry = {
-            "id": entry_id,
-            "type": entry_type,
-            "file": file_path,
-            "source_language": source_language,
-            "entities": entities,
-            "actions": actions,
-            **kwargs
-        }
-
-        # Store descriptions per language
-        for lang, desc in descriptions.items():
-            entry[f"description_{lang}"] = desc
-
-        # Default description = first available
-        entry["description"] = descriptions.get("en", list(descriptions.values())[0])
-
-        self.db.data["entries"][entry_id] = entry
-        self.db._update_indexes_from_entry(entry)
-        self.db.save()
+    return list(set(found))
 
 
 # ============================================================
-# MULTILINGUAL CLUE SCRIPT GENERATION
+# CLUE SCRIPT — Multilingual but entities are universal
 # ============================================================
 
-MULTILINGUAL_CLUE_PROMPT = """You are a documentary video production AI. The user will give you a narration script in ANY language. Your job is to break it into a structured "Clue Script" — a production blueprint.
+MULTILINGUAL_CLUE_PROMPT = """You are a documentary video production AI. Break a narration script into a structured "Clue Script" — a production blueprint.
 
-IMPORTANT RULES:
-1. The script is in {language_name}. Keep the narration_verbatim in {language_name}.
-2. Entity names (vehicle names, aircraft names, etc.) stay as-is — they are universal.
-3. search_terms should help find visual content. Use entity names + action words.
-4. For non-English scripts, entities are typically still in English or original form.
-5. text_overlay_* fields must be in {language_name} for on-screen text.
-
-Break the script into narration beats. Each beat:
+CRITICAL RULES:
+1. Keep narration_verbatim EXACTLY as in the script (in its original language).
+2. Entity names (vehicle names, aircraft names, locations, organizations) MUST stay as-is.
+   These are UNIVERSAL — "Boxer CRV" is "Boxer CRV" in every language.
+   "F-35" is "F-35" in every language.
+   DO NOT translate entity names.
+3. search_terms should be in ENGLISH (because YouTube/Wikimedia content is mostly in English).
+   Use entity names + English action words.
+   Example: search_terms = "Boxer CRV driving military exercise"
+4. text_overlay_title and text_overlay_subtitle should be in the SCRIPT LANGUAGE.
+5. visual_role: literal|context|evidence|atmospheric|map|text_only
 
 BEAT STRUCTURE:
 {{
   "beat_id": "B001",
-  "narration_verbatim": "Exact text as spoken (in {language_name})",
+  "narration_verbatim": "Exact text from script (original language)",
   "start_time": 0.0,
   "end_time": 5.0,
   "duration": 5.0,
-  "entities": ["Entity1", "Entity2"],
-  "actions": ["action1", "action2"],
-  "visual_role": "literal|context|evidence|atmospheric|map|text_only",
-  "asset_type": "video|image|text_card|lower_third",
-  "search_terms": "keywords to find this visual",
+  "entities": ["Boxer CRV", "Australian Army"],
+  "actions": ["driving"],
+  "visual_role": "literal",
+  "asset_type": "video|image|text_card",
+  "search_terms": "Boxer CRV driving military exercise",
   "mood": "neutral|curious|tension|dark|hopeful|triumphant|action|epic",
-  "text_overlay_title": "Main title text for this beat ({language_name})",
-  "text_overlay_subtitle": "Subtitle if needed ({language_name})",
+  "text_overlay_title": "Le Boxer CRV — L'Avenir Blindé de l'Australie",
+  "text_overlay_subtitle": "Développé par Rheinmetall",
   "strictness": "exact|high|general"
 }}
 
-VISUAL ROLE GUIDE:
-- "literal" = Show the actual thing (Boxer CRV driving)
-- "context" = Related B-roll (military base, soldiers)
-- "evidence" = Map, diagram, document
-- "atmospheric" = Mood shot (sunset over base, flags)
-- "map" = Geographic map
-- "text_only" = No visual needed, just text card
+STRICTNESS GUIDE:
+- "exact": Must match exact variant (Boxer CRV ≠ generic Boxer)
+- "high": Must match type (any armored vehicle if none exact)
+- "general": Any related content works
 
-STRICTNESS:
-- "exact" = Must match exact variant (Boxer CRV ≠ Boxer generic)
-- "high" = Must match type (any armored vehicle acceptable)
-- "general" = Any related content works
+Script language: {language_name}
+Video title: {title}
+
+Narration Script:
+{script_text}
 
 Respond with ONLY valid JSON:
 {{
   "beats": [...],
-  "title": "...",
+  "title": "{title}",
   "total_duration": number
 }}"""
 
 
 def generate_multilingual_clue_script(
     script_text: str,
-    language_context: LanguageContext,
+    lang_context: LanguageContext,
     niche_config: Dict,
     title: str
 ) -> Dict:
     """
-    Generate Clue Script in the target language.
+    Generate Clue Script.
+    Key: narration is in script's language, but search_terms are ALWAYS in English.
     """
 
     prompt = MULTILINGUAL_CLUE_PROMPT.format(
-        language_name=language_context.name
+        language_name=lang_context.display_name,
+        title=title
     )
 
     input_text = f"""Niche: {niche_config.get('display_name', 'unknown')}
 Video Title: {title}
-Language: {language_context.name} ({language_context.code})
+Language: {lang_context.name} ({lang_context.code})
 
-Narration Script:
+Narration Script (keep narration_verbatim exactly as-is, in {lang_context.name}):
 {script_text}
 
-Generate the Clue Script JSON."""
+Generate the Clue Script JSON. Remember: search_terms MUST be in ENGLISH."""
 
     try:
         import anthropic
@@ -556,8 +417,8 @@ Generate the Clue Script JSON."""
         clue_script = _extract_json(response_text)
 
         clue_script["script_id"] = f"S{abs(hash(script_text)) % 1000:03d}"
-        clue_script["language"] = language_context.code
-        clue_script["language_name"] = language_context.name
+        clue_script["language"] = lang_context.code
+        clue_script["language_name"] = lang_context.name
         clue_script["niche"] = niche_config.get('name', 'unknown')
         clue_script["title"] = title
         clue_script["estimated_duration"] = len(script_text.split()) * 0.15
@@ -567,19 +428,14 @@ Generate the Clue Script JSON."""
 
     except ImportError:
         log.warning("anthropic not installed — using placeholder")
-        return _placeholder_multilingual_clue(script_text, language_context, title)
+        return _placeholder_clue(script_text, lang_context, title)
     except Exception as e:
         log.error(f"Clue Script generation failed: {e}")
-        return _placeholder_multilingual_clue(script_text, language_context, title)
+        return _placeholder_clue(script_text, lang_context, title)
 
 
-def _placeholder_multilingual_clue(
-    script_text: str,
-    lang_ctx: LanguageContext,
-    title: str
-) -> Dict:
+def _placeholder_clue(script_text: str, lang_ctx: LanguageContext, title: str) -> Dict:
     """Generate basic Clue Script without API."""
-
     sentences = re.split(r'(?<=[.!?])\s+', script_text.strip())
     beats = []
     current_time = 0.0
@@ -587,9 +443,9 @@ def _placeholder_multilingual_clue(
     for i, sentence in enumerate(sentences):
         if not sentence or len(sentence) < 5:
             continue
-
         words = len(sentence.split())
         duration = words * 0.15 + 1.5
+        entities = extract_entities_from_beat({"narration_verbatim": sentence})
 
         beats.append({
             "beat_id": f"B{i + 1:03d}",
@@ -597,11 +453,11 @@ def _placeholder_multilingual_clue(
             "start_time": round(current_time, 2),
             "end_time": round(current_time + duration, 2),
             "duration": round(duration, 2),
-            "entities": _extract_entities(sentence),
+            "entities": entities,
             "actions": [],
             "visual_role": "literal",
             "asset_type": "text_card",
-            "search_terms": sentence.strip()[:80],
+            "search_terms": " ".join(entities) if entities else sentence.strip()[:80],
             "mood": "neutral",
             "text_overlay_title": sentence.strip()[:100],
             "text_overlay_subtitle": "",
@@ -609,7 +465,6 @@ def _placeholder_multilingual_clue(
             "matched_assets": None,
             "media_type": "text_card"
         })
-
         current_time += duration + 0.3
 
     return {
@@ -627,161 +482,283 @@ def _placeholder_multilingual_clue(
 
 
 # ============================================================
-# MULTILINGUAL TEXT OVERLAY SYSTEM
+# LIBRARY SEARCH — Language-neutral
+# ============================================================
+
+def search_library_for_beat(library_db, beat: Dict) -> List[Dict]:
+    """
+    Search library for a beat's assets.
+
+    IMPORTANT: The library is ALWAYS searched with English queries.
+    Because:
+    - All library metadata is in English (canonical)
+    - Entity names are universal (Boxer CRV = same in all languages)
+    - search_terms in Clue Script are always in English
+
+    This means a French script, a German script, and a Spanish script
+    ALL search the SAME English library and find the SAME assets.
+    """
+
+    entities = beat.get("entities", [])
+    # search_terms are ALREADY in English (Clue Script ensures this)
+    search_terms = beat.get("search_terms", "")
+    asset_type = beat.get("asset_type", "video_clip")
+    strictness = beat.get("strictness", "general")
+
+    results = []
+
+    # Search the library
+    for entry_id, entry in library_db.data.get("entries", {}).items():
+        score = 0
+
+        # ENTITY MATCHING (universal — language independent)
+        entry_entities = [e.lower() for e in entry.get("entities", [])]
+        for entity in entities:
+            entity_lower = entity.lower()
+            if entity_lower in entry_entities:
+                score += 5.0  # Strong match
+            else:
+                for ee in entry_entities:
+                    if entity_lower in ee or ee in entity_lower:
+                        score += 2.0
+                        break
+
+        # ACTION MATCHING
+        entry_actions = [a.lower() for a in entry.get("actions", [])]
+        beat_actions = [a.lower() for a in beat.get("actions", [])]
+        for action in beat_actions:
+            if action in entry_actions:
+                score += 1.5
+
+        # TEXT MATCHING (English to English)
+        if search_terms:
+            desc = entry.get("description", "").lower()
+            search_words = search_terms.lower().split()
+            desc_words = set(desc.split())
+            overlap = sum(1 for w in search_words if w in desc_words)
+            score += overlap * 0.5
+
+        # TYPE FILTER
+        entry_type = entry.get("type", "")
+        if asset_type == "video" and entry_type != "video_clip":
+            continue
+        if asset_type == "image" and entry_type not in ("image", "video_clip"):
+            continue
+
+        if score > 0:
+            results.append({**entry, "score": score})
+
+    results.sort(key=lambda x: x["score"], reverse=True)
+    return results[:5]
+
+
+# ============================================================
+# SCRAPING — ALWAYS IN ENGLISH
+# ============================================================
+
+def build_scraping_queries(beat: Dict, niche_config: Dict) -> List[str]:
+    """
+    Build search queries for scraping.
+    ALL queries are in ENGLISH because:
+    - YouTube content is 80%+ English titles
+    - Wikimedia Commons descriptions are in English
+    - Pexels API works best with English queries
+
+    The script language does NOT affect scraping.
+    """
+
+    entities = beat.get("entities", [])
+    actions = beat.get("actions", [])
+    search_terms = beat.get("search_terms", "")
+
+    # search_terms from Clue Script are ALREADY in English
+    # Use them directly
+    queries = []
+
+    if search_terms:
+        queries.append(search_terms)
+
+    # Add entity-specific queries (always English)
+    for entity in entities[:2]:
+        for action in actions[:2]:
+            queries.append(f"{entity} {action}")
+        if not actions:
+            queries.append(f"{entity} footage")
+
+    # If nothing specific, use the narration first 50 chars as query
+    if not queries:
+        narration = beat.get("narration_verbatim", "")
+        queries.append(narration[:80])
+
+    # Deduplicate and limit
+    queries = list(dict.fromkeys(queries))  # preserve order, deduplicate
+    return queries[:5]
+
+
+# ============================================================
+# CATALOGING — Always in ENGLISH
+# ============================================================
+
+def catalog_asset_as_english(
+    file_path: str,
+    source_type: str,
+    source_url: str,
+    gemini_model
+) -> Dict:
+    """
+    Catalog a new asset with ENGLISH metadata.
+
+    This ensures that no matter what language the script was in,
+    the library entry is always in English — so it can be found
+    by ANY future script in ANY language.
+    """
+
+    try:
+        import google.generativeai as genai
+        video_file = genai.upload_file(file_path)
+
+        import time
+        while video_file.state.name == "PROCESSING":
+            time.sleep(2)
+            video_file = genai.get_file(video_file.name)
+
+        prompt = """Describe this video clip for a documentary footage library.
+Be specific and detailed. RESPOND IN ENGLISH.
+
+DESCRIPTION: [What is shown - vehicles, people, equipment, terrain, actions]
+ENTITIES: [List of identifiable objects/vehicles/people/places]
+ACTIONS: [What is happening]
+ENVIRONMENT: [Indoor/outdoor, terrain, weather]
+QUALITY: [high/medium/low]
+SHOT_TYPE: [wide/medium/close-up/aerial/static/tracking]
+"""
+
+        response = gemini_model.generate_content(
+            [video_file, prompt],
+            generation_config={"max_tokens": 1000}
+        )
+
+        genai.delete_file(video_file.name)
+
+        # Parse response
+        def extract(label):
+            for line in response.text.split('\n'):
+                if line.startswith(label + ':'):
+                    return line.split(':', 1)[1].strip()
+            return ""
+
+        import hashlib
+        id_hash = hashlib.md5(file_path.encode()).hexdigest()[:6]
+        source_prefix = {"pexels": "PEX", "wikimedia": "WIK", "youtube": "YT", "local": "LOC"}
+        prefix = source_prefix.get(source_type, "UNK")
+
+        return {
+            "id": f"{prefix}_{id_hash}",
+            "type": "video_clip",
+            "file": file_path,
+            "source_type": source_type,
+            "source_url": source_url,
+            "description": extract("DESCRIPTION"),
+            "entities": [e.strip() for e in extract("ENTITIES").split(',') if e.strip()],
+            "actions": [a.strip() for a in extract("ACTIONS").split(',') if a.strip()],
+            "environment": [e.strip() for e in extract("ENVIRONMENT").split(',') if e.strip()],
+            "quality": extract("QUALITY") or "medium",
+            "shot_type": extract("SHOT_TYPE") or "medium",
+            "cataloged_by": "gemini-2.0-flash",
+            "catalog_language": "en",  # ALWAYS English
+        }
+
+    except Exception as e:
+        log.error(f"Cataloging failed: {e}")
+        return None
+
+
+# ============================================================
+# TEXT OVERLAYS — in target language
 # ============================================================
 
 class TextOverlaySystem:
     """
-    Generates text overlays in the target language.
-    Handles:
-    - RTL languages (Arabic, Hebrew)
-    - Font selection per language
-    - Text sizing
+    Generates text overlays in the TARGET language.
+    This is the ONLY place where target language is used for rendering.
     """
 
     def __init__(self, lang_context: LanguageContext):
         self.lang = lang_context
 
     def get_title_style(self, beat: Dict) -> Dict:
-        """Get text style configuration for a beat's title."""
+        """Get text style for a beat. Text is in the target language."""
 
-        text = beat.get("text_overlay_title", beat.get("narration_verbatim", ""))
-        subtitle = beat.get("text_overlay_subtitle", "")
+        title = beat.get("text_overlay_title", beat.get("narration_verbatim", ""))[:120]
+        subtitle = beat.get("text_overlay_subtitle", "")[:80]
 
         return {
-            "title": text,
+            "title": title,
             "subtitle": subtitle,
             "font": self.lang.font,
+            "font_file": self.lang.font_file,
             "direction": self.lang.get_text_direction(),
-            "title_size": "48px",
-            "subtitle_size": "28px",
+            "title_size": "52px",
+            "subtitle_size": "30px",
             "color": "#FFFFFF",
             "bg_color": "#000000@0.7",
-            "position": "bottom",
             "rtl": self.lang.is_rtl,
         }
 
-    def get_ffmpeg_text_filter(self, style: Dict, x: int = 960, y: int = 980) -> str:
-        """
-        Generate FFmpeg drawtext filter for this language.
-        Handles RTL, special fonts, etc.
-        """
+    def get_ffmpeg_text_filter(self, style: Dict, duration: float,
+                               y_pos: int = 980) -> str:
+        """Generate FFmpeg drawtext filter."""
 
-        font = style.get("font", "Inter")
         title = style.get("title", "")
         subtitle = style.get("subtitle", "")
+        font_file = style.get("font_file", "Inter-Regular.ttf")
         rtl = style.get("rtl", False)
 
         # Escape for FFmpeg
-        title_escaped = title.replace("'", "\\'").replace(":", "\\:")
-        subtitle_escaped = subtitle.replace("'", "\\'").replace(":", "\\:")
-
-        # Font file path (need to handle non-Latin fonts)
-        font_path = self._get_font_path(font)
+        title_escaped = title.replace("'", "\\'").replace(":", "\\:").replace("%", "\\%")
+        subtitle_escaped = subtitle.replace("'", "\\'").replace(":", "\\:").replace("%", "\\%")
 
         filters = []
 
         if rtl:
-            # RTL text: render subtitle right-aligned
+            # RTL: right-aligned
             filters.append(
                 f"drawtext=text='{subtitle_escaped}':"
-                f"fontfile='{font_path}':"
-                f"fontsize=28:fontcolor=white:"
+                f"fontfile='{font_file}':fontsize=30:fontcolor=white:"
                 f"box=1:boxcolor=black@0.7:boxborderw=10:"
                 f"x=w-text_w-50:y=h-100:"
-                f"enable='between(t,0,100)'"
+                f"enable='between(t,0,{duration})'"
+            )
+            filters.append(
+                f"drawtext=text='{title_escaped}':"
+                f"fontfile='{font_file}':fontsize=52:fontcolor=white:"
+                f"box=1:boxcolor=black@0.7:boxborderw=10:"
+                f"x=w-text_w-50:y=h-160:"
+                f"enable='between(t,0,{duration})'"
             )
         else:
-            # LTR text: normal
+            # LTR: center-aligned
+            if subtitle:
+                filters.append(
+                    f"drawtext=text='{subtitle_escaped}':"
+                    f"fontfile='{font_file}':fontsize=30:fontcolor=white:"
+                    f"box=1:boxcolor=black@0.7:boxborderw=10:"
+                    f"x=(w-text_w)/2:y=h-80:"
+                    f"enable='between(t,0,{duration})'"
+                )
             filters.append(
-                f"drawtext=text='{subtitle_escaped}':"
-                f"fontfile='{font_path}':"
-                f"fontsize=28:fontcolor=white:"
+                f"drawtext=text='{title_escaped}':"
+                f"fontfile='{font_file}':fontsize=52:fontcolor=white:"
                 f"box=1:boxcolor=black@0.7:boxborderw=10:"
-                f"x=(w-text_w)/2:y=h-80:"
-                f"enable='between(t,0,100)'"
+                f"x=(w-text_w)/2:y=h-140:"
+                f"enable='between(t,0,{duration})'"
             )
 
         return ",".join(filters)
 
-    def _get_font_path(self, font_name: str) -> str:
-        """Get system font path. Returns fallback if specific font not found."""
-        import platform
-
-        if platform.system() == "Windows":
-            fonts_dir = r"C:\Windows\Fonts"
-            font_map = {
-                "Inter": "Inter-Regular.ttf",
-                "Bebas Neue": "BebasNeue-Regular.ttf",
-                "Noto Sans Devanagari": "NotoSansDevanagari-Regular.ttf",
-                "Noto Sans Arabic": "NotoSansArabic-Regular.ttf",
-                "Noto Sans JP": "NotoSansJP-Regular.ttf",
-                "Noto Sans KR": "NotoSansKR-Regular.ttf",
-                "Noto Sans SC": "NotoSansSC-Regular.ttf",
-            }
-            font_file = font_map.get(font_name, "arial.ttf")
-            return f"{fonts_dir}/{font_file}"
-        else:
-            return font_name  # Let FFmpeg find by name on Linux/Mac
-
 
 # ============================================================
-# MULTILINGUAL SCRAPING
-# ============================================================
-
-class MultilingualScraper:
-    """
-    Scrapes content in the target language.
-    """
-
-    # Language-specific YouTube channels and search terms
-    LANG_SOURCES = {
-        "fr": {
-            "channels": ["TV5MONDE", "France 24", "Arte", "RT France"],
-            "search_suffixes": ["français", "vidéo", "documentaire"],
-        },
-        "de": {
-            "channels": ["ZDF", "ARD", "DW Documentary", "WELT"],
-            "search_suffixes": ["Deutsch", "Video", "Dokumentation"],
-        },
-        "es": {
-            "channels": ["DW Español", "Antena 3", "LaSexta"],
-            "search_suffixes": ["español", "video", "documental"],
-        },
-        "hi": {
-            "channels": ["Defence Review India", "Indian Defence"],
-            "search_suffixes": ["हिंदी", "वीडियो"],
-        },
-    }
-
-    def __init__(self, lang_context: LanguageContext):
-        self.lang = lang_context
-
-    def build_search_query(self, base_query: str, entities: List[str]) -> str:
-        """
-        Build a search query optimized for the target language.
-
-        Strategy:
-        - Entity names stay as-is (universal)
-        - Add language-specific terms if needed
-        """
-
-        # Entity names are universal — use them directly
-        entity_part = " ".join(entities[:3])
-
-        # For non-English, add language suffix to help find localized content
-        suffixes = self.LANG_SOURCES.get(self.lang.code, {}).get("search_suffixes", [])
-        if suffixes:
-            return f"{entity_part} {' '.join(suffixes[:2])}"
-        return entity_part
-
-    def get_preferred_sources(self) -> List[str]:
-        """Get preferred scraping sources for this language."""
-        return self.lang.scraping_sources
-
-
-# ============================================================
-# MULTILINGUAL PIPELINE INTEGRATION
+# MAIN MULTILINGUAL PIPELINE
 # ============================================================
 
 def process_job_multilingual(
@@ -789,115 +766,130 @@ def process_job_multilingual(
     audio_path: str = None,
     niche_config: Dict = None,
     title: str = None,
-    language_override: str = None
-) -> str:
+    language_override: str = None,
+    library_db=None,
+) -> Dict:
     """
     Process a job with full multilingual support.
 
-    Args:
-        script_text: Narration script (any language)
-        audio_path: Optional audio file (any language)
-        niche_config: Niche pack config
-        title: Video title
-        language_override: Force specific language code (or auto-detect)
-
-    Returns: Path to output video
+    KEY ARCHITECTURE:
+    - Script/audio/overlays: in target language
+    - Library/scraping/cataloging: ALWAYS in English
+    - Entities: universal bridge between all languages
     """
 
     # ==========================================
-    # STEP 0: DETECT LANGUAGE
+    # STEP 0: DETECT TARGET LANGUAGE
     # ==========================================
-    if language_override:
+    if language_override and language_override != "auto":
         lang_ctx = LanguageContext.from_code(language_override)
     else:
         lang_ctx = LanguageContext.from_text(script_text)
 
-    log.info(f"Detected language: {lang_ctx.name} ({lang_ctx.code})")
+    log.info(f"[ML] Target language: {lang_ctx.name} ({lang_ctx.code})")
+    log.info(f"[ML] Backend: ALWAYS English (canonical)")
 
     # ==========================================
-    # STEP 1: AUDIO (same, just different voice)
+    # STEP 1: GENERATE CLUE SCRIPT
     # ==========================================
-    if not audio_path or not Path(audio_path).exists():
-        log.info(f"Generating TTS in {lang_ctx.name}...")
-        tts = _get_tts_engine()
-        if tts:
-            audio_path = tts.generate_from_script(
-                script_text,
-                voice=lang_ctx.tts_voice
-            )
+    # - narration_verbatim: in target language (from script)
+    # - entities: universal (never translated)
+    # - search_terms: ALWAYS in English
+    # - text_overlay_*: in target language
+    log.info(f"[ML] Generating Clue Script ({lang_ctx.name} frontend, English backend)...")
 
-    # ==========================================
-    # STEP 2: CLUE SCRIPT (in target language)
-    # ==========================================
-    log.info(f"Generating Clue Script in {lang_ctx.name}...")
     clue_script = generate_multilingual_clue_script(
         script_text, lang_ctx, niche_config or {}, title or "Untitled"
     )
 
-    # ==========================================
-    # STEP 3: ASSET RETRIEVAL (language-agnostic)
-    # ==========================================
-    log.info("Retrieving assets...")
-    library = LibraryDB()
-    ml_library = MultilingualLibrary(library)
-    scraper = MultilingualScraper(lang_ctx)
-
     beats = clue_script.get("beats", [])
 
+    # Verify: search_terms should be in English
     for beat in beats:
-        entities = beat.get("entities", [])
         search_terms = beat.get("search_terms", "")
-        asset_type = beat.get("asset_type", "text_card")
+        if search_terms:
+            log.debug(f"  Beat {beat.get('beat_id')}: search_terms = \"{search_terms}\"")
 
-        if asset_type == "text_card":
+    # ==========================================
+    # STEP 2: ASSET RETRIEVAL (English backend)
+    # ==========================================
+    from CODE.demandscout_core import LibraryDB, search_library_for_beat, build_scraping_queries
+
+    db = library_db or LibraryDB()
+    overlay_sys = TextOverlaySystem(lang_ctx)
+
+    for beat in beats:
+        asset_type = beat.get("asset_type", "video_clip")
+        if asset_type == "text_only":
+            beat["matched_assets"] = None
+            beat["media_type"] = "text_card"
             continue
 
-        # Search library (works in ANY language)
-        results = ml_library.search_multilingual(
-            query=search_terms,
-            query_language=lang_ctx.code,
-            entity_list=entities,
-            top_k=3
-        )
+        # Search library using ENGLISH entities + ENGLISH search_terms
+        entities = beat.get("entities", [])
+        search_terms = beat.get("search_terms", "")
+
+        log.info(f"[ML] Searching library for: entities={entities}, query=\"{search_terms}\"")
+
+        results = search_library_for_beat(db, beat)
 
         if results:
-            beat["matched_assets"] = results[0]
-            beat["media_type"] = results[0].get("type", "video_clip")
+            best = results[0]
+            beat["matched_assets"] = best
+            beat["media_type"] = best.get("type", "video_clip")
+            log.info(f"[ML]   → Library HIT: {best.get('id')} (score: {best.get('score', 0):.1f})")
         else:
-            # Scrape in target language
-            query = scraper.build_search_query(search_terms, entities)
-            log.info(f"  Scraping [{lang_ctx.name}]: {query}")
-            # ... scrape and add to library
+            # MISS — need to scrape
+            # Scraping queries are ALREADY in English
+            queries = build_scraping_queries(beat, niche_config or {})
+            beat["scrape_queries"] = queries  # Store for later
+            beat["matched_assets"] = None
+            beat["media_type"] = "text_card"  # Fallback until scraped
+            log.info(f"[ML]   → Library MISS. Will scrape: {queries}")
+
+        # Add overlay style (in target language)
+        beat["overlay_style"] = overlay_sys.get_title_style(beat)
 
     # ==========================================
-    # STEP 4: TEXT OVERLAYS (in target language)
+    # STEP 3: BUILD TIMELINE
     # ==========================================
-    overlay_system = TextOverlaySystem(lang_ctx)
+    from CODE.demandscout_core import build_timeline_from_beats
 
-    for beat in beats:
-        style = overlay_system.get_title_style(beat)
-        beat["overlay_style"] = style
-        beat["ffmpeg_text_filter"] = overlay_system.get_ffmpeg_text_filter(style)
+    job_info = {
+        "id": "ML_JOB",
+        "title": title or "Untitled",
+        "niche": niche_config or {},
+        "style": niche_config.get("style", "clean_doc") if niche_config else "clean_doc",
+    }
+
+    timeline = build_timeline_from_beats(beats, job_info, niche_config or {})
 
     # ==========================================
-    # STEP 5: RENDER
+    # RETURN everything for rendering
     # ==========================================
-    timeline = build_timeline(beats, job, niche_config or {})
-
-    output_path = f"output/{lang_ctx.code}_{title or 'video'}.mp4"
-    final_path = render_video(timeline, job, output_path)
-
-    log.info(f"✓ Done: {final_path} [{lang_ctx.name}]")
-    return final_path
+    return {
+        "clue_script": clue_script,
+        "beats": beats,
+        "timeline": timeline,
+        "language": lang_ctx.code,
+        "language_name": lang_ctx.name,
+        "tts_voice": lang_ctx.tts_voice,
+        "overlay_system": overlay_sys,
+        "scrape_needed": [b for b in beats if not b.get("matched_assets")],
+        "scrape_queries": {
+            b["beat_id"]: b.get("scrape_queries", [])
+            for b in beats if not b.get("matched_assets")
+        },
+    }
 
 
 # ============================================================
-# HELPER — re-export from main module
+# HELPER FUNCTIONS
 # ============================================================
 
 def _extract_json(text: str) -> Dict:
     """Extract JSON from response text."""
-    import json, re
+    import json
     try:
         return json.loads(text)
     except json.JSONDecodeError:
@@ -916,3 +908,17 @@ def _extract_json(text: str) -> Dict:
         except json.JSONDecodeError:
             pass
     raise ValueError(f"Could not extract JSON: {text[:200]}")
+
+
+def get_language_info(code: str) -> Dict:
+    """Get language configuration by code."""
+    return LANG_CONFIG.get(code, LANG_CONFIG["en"])
+
+
+def list_supported_languages() -> List[Dict]:
+    """List all supported languages."""
+    return [
+        {"code": code, "name": cfg["name"], "display_name": cfg["display_name"],
+         "tts": cfg["tts_voice"], "rtl": cfg["rtl"]}
+        for code, cfg in LANG_CONFIG.items()
+    ]
