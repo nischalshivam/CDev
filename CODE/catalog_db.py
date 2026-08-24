@@ -33,7 +33,7 @@ from typing import Optional
 
 import config
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 VALID_LAYERS = {"COMMON", "DOMAIN", "ENTITY", "PROJECT", "GENERATED"}
 
 
@@ -138,6 +138,13 @@ CREATE TABLE IF NOT EXISTS usage_events (
 CREATE INDEX IF NOT EXISTS ix_usage_asset ON usage_events(asset_id);
 
 CREATE VIRTUAL TABLE IF NOT EXISTS assets_fts USING fts5(asset_id UNINDEXED, body);
+
+-- Gemini result cache: same source+model+prompt+schema => never re-charged.
+CREATE TABLE IF NOT EXISTS catalog_cache (
+  cache_key   TEXT PRIMARY KEY,
+  result_json TEXT,
+  created_at  REAL
+);
 """
 
 
@@ -425,6 +432,17 @@ class Catalog:
 
         out.sort(key=lambda x: x["score"], reverse=True)
         return out[:top_k]
+
+    # ------------------------------------------------------------------ gemini result cache
+    def get_cache(self, cache_key: str):
+        r = self.cx.execute("SELECT result_json FROM catalog_cache WHERE cache_key=?",
+                            (cache_key,)).fetchone()
+        return json.loads(r["result_json"]) if r else None
+
+    def put_cache(self, cache_key: str, result):
+        with self.cx:
+            self.cx.execute("INSERT OR REPLACE INTO catalog_cache(cache_key,result_json,created_at) "
+                            "VALUES(?,?,?)", (cache_key, json.dumps(result), time.time()))
 
     # ------------------------------------------------------------------ backup / export / stats
     def backup(self, dest: str | os.PathLike):
