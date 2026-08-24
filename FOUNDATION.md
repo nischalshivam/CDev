@@ -330,6 +330,17 @@ slice passes.
 The old `LibraryDB` (flat JSON) in `demandscout.py` is now legacy — `demandscout_core` will be
 rewired onto `Catalog` next.
 
+## 10b. STATUS (2026-08-25) — P0a–P0d DONE, 53 pytest green, pushed to `foundation`
+
+- **P0a-hardening** ✅ `catalog_db` (SQLite object store, FTS5, fail-closed gates, aliases, backup).
+- **P0b** ✅ `intake` (narration lock), `schemas` (Beat/ShotRequirement/VisualPlan/DemandTicket/
+  ProjectManifest), `format_packs`, `coverage` (diversity-aware planner + batch ticket merge),
+  `project` (Catalog-based orchestrator, scope isolation).
+- **P0c** ✅ `renderer_core` (valid xfade concat -> single [vout], synthetic-fixture tested).
+- **P0d** ✅ `vision` (pluggable Fake/Gemini) + `cataloger` (2-pass, cache, ≤7s cap, materialize+
+  delogo) + `catalog_cache`.
+- **NEXT: P1** — the dummy 3–4 min vertical slice (below).
+
 ## 10. ROADMAP — what remains, in order, toward the 3–4 min dummy render test
 
 Each step is small, testable, no paid API until the very end. Do them one at a time.
