@@ -303,7 +303,20 @@ pack → beats → coverage → acquire ~5–10 real shots → catalog → retri
 Where it breaks is the real gap list. Only scale to 10-script batches / multi-niche after the
 slice passes.
 
-## 9. Phase 0a — SQLite catalog foundation (DONE, tested)
+## 9x. Phase 0a-HARDENING — DONE, 19 pytest green (2026-08-25)
+
+`CODE/config.py` + `CODE/catalog_db.py` (v2) + `CODE/test_catalog.py` (19 tests). Now enforced:
+- **Real content-hash object store** — `ingest_file()` SHA-256s each file, stores it ONCE under
+  `objects/<hh>/<hash>.<ext>`, unique hash, dedup verified.
+- **Relative paths only** (drive-letter safe) — DB holds `objects/ab/hash.mp4`, resolved against
+  `config.library_root()`; SSD letter change = edit config, never the DB.
+- **FTS5 relevance search** (`query_text`) — the "right clip", not just filters.
+- **Fail-closed retrieval** — approved AND clean/fixable AND object-file-EXISTS AND era-known-if-
+  required. (Rights is metadata, not a gate — operator posture is the ≤7s clip cap.)
+- **Normalized aliases + ambiguity** — CJK/Cyrillic-safe; ambiguous alias returns None + candidates.
+- **Schema CHECK constraints**, transactional multi-table writes, auto-approve guard, SQLite backup.
+
+## 9. Phase 0a — initial catalog skeleton (superseded by 9x)
 
 `CODE/catalog_db.py` + `CODE/test_catalog.py` (13 pytest cases, all green). Enforces, with tests:
 - default-deny retrieval (approved + rights in {owned,licensed,public_domain,approved_fair_use});
@@ -317,15 +330,40 @@ slice passes.
 The old `LibraryDB` (flat JSON) in `demandscout.py` is now legacy — `demandscout_core` will be
 rewired onto `Catalog` next.
 
-## 10. Still to do before the motorhomes slice (Phase 0b)
-- Rewire `demandscout_core.retrieve_assets_for_beat()` onto `Catalog` (media-type + explicit
-  fallback chain: video → image+kenburns → graphic → text).
-- Stage 0 raw→cleaned→approved narration + SHA-256 lock (per language).
-- Beat vs ShotRequirement split (1 beat → 1–3 shots).
-- Diversity-aware DemandTicket (variants / seconds / distinct sources / cooldown).
-- Synthetic-fixture renderer test (testsrc/color/sine) — concat/xfade/duration/audio-map.
-- Project manifest (`workspace/channel/niche/batch/project/script/run` IDs).
-- Corrected + source-verified motorhomes Topic Pack.
-- (Deferred by user until after the slice: factual claim register.)
+## 10. ROADMAP — what remains, in order, toward the 3–4 min dummy render test
 
-*Phase 0a completed + tested: 2026-08-24. Next: Phase 0b, then the motorhomes vertical slice.*
+Each step is small, testable, no paid API until the very end. Do them one at a time.
+
+**P0b — the plan/coverage layer (code + tests, still no scraping)**
+1. **Stage 0 script intake** — raw → cleaned → approved narration + SHA-256 lock (per language).
+   Downstream artifacts carry the hash; mismatch stops the pipeline.
+2. **Beat + ShotRequirement schema** — one beat → 1..N shots; roles (literal/evidence/context/
+   atmospheric/graphic) + composites (comparison/price-card/document/map).
+3. **Format Pack** — HISTORY_ARCHIVAL / COMPARISON / PROCUREMENT_TIMELINE / PRODUCT_LISTICLE
+   (niche = WHAT, format = HOW, style = LOOK).
+4. **Coverage planner + DemandTickets** — query `Catalog` per requirement; label EXACT_REUSE /
+   ACCEPTABLE / COMPOSITE / GENERATE / ACQUIRE; merge duplicate tickets across a 10-script batch;
+   diversity-aware (variants / seconds / distinct sources / cooldown).
+5. **Rewire `demandscout_core`** onto `Catalog` (drop the legacy flat-JSON `LibraryDB`); media-type
+   + explicit fallback chain (video → image+kenburns → graphic → text).
+6. **Project manifest** — `workspace/channel/niche/batch/project/script/run` IDs; chat is not state.
+
+**P0c — renderer correctness (SYNTHETIC fixtures, no real footage)**
+7. Renderer test with ffmpeg `testsrc`/color/sine: concat + xfade + Ken Burns + audio-map +
+   final-duration + playable-MP4. Fix the `[v0][v1]` no-concat + `from CODE.renderer` bugs here.
+
+**P0d — Gemini cataloger, wired + cached (first paid calls, but tiny)**
+8. `source_hunter` 2-pass cataloger (source pass → candidate windows → segment verify), writing
+   real `SegmentAsset`s into `Catalog`; corner-logo detect → ffmpeg blur/crop; cache on
+   `input_hash+model+prompt+schema`; ≤7s clip cap on materialize.
+
+**P1 — the dummy vertical slice (the test you asked for)**
+9. One dummy script + dummy audio → full pipeline → **3–4 min rendered MP4, ready-to-publish shape**.
+   A handful of real clips only; prove the whole chain end-to-end. This is the go/no-go gate before
+   any batch/bulk work.
+
+**Deferred until after the slice proves out:** embeddings/vector search, perceptual near-dup,
+factual claim register, 5-niche benchmark harness, PostgreSQL adapter, cloud sync.
+
+*P0a-hardening completed + tested: 2026-08-25 (19 pytest green, pushed to `foundation`).
+Next: P0b step 1 (Stage-0 script intake).*
