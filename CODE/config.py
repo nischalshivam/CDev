@@ -17,6 +17,21 @@ from pathlib import Path
 REPO_DIR = Path(__file__).resolve().parent.parent
 
 
+def _load_keys_env():
+    """Load gitignored keys.env (KEY=VALUE lines) into os.environ once. Never hard-code secrets."""
+    p = REPO_DIR / "keys.env"
+    if not p.exists():
+        return
+    for ln in p.read_text(encoding="utf-8").splitlines():
+        ln = ln.strip()
+        if ln and not ln.startswith("#") and "=" in ln:
+            k, v = ln.split("=", 1)
+            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
+_load_keys_env()
+
+
 def _read_toml_root() -> str | None:
     cfg = REPO_DIR / "config" / "library.toml"
     if not cfg.exists():
@@ -60,3 +75,9 @@ MAX_CLIP_SECONDS = float(os.getenv("CDEV_MAX_CLIP_SECONDS", "7.0"))
 GEMINI_MODEL = os.getenv("CDEV_GEMINI_MODEL", "gemini-3.6-flash")
 CATALOG_PROMPT_VERSION = "cat-v1"
 CATALOG_SCHEMA_VERSION = "seg-v2"
+
+# Third-party Gemini relay (OpenAI-compatible) + YouTube cookies — values live in keys.env.
+GEMINI_RELAY_BASE = os.getenv("GEMINI_RELAY_BASE", "")
+GEMINI_RELAY_KEY = os.getenv("GEMINI_RELAY_KEY", "")
+GEMINI_RELAY_MODEL = os.getenv("GEMINI_RELAY_MODEL", "gemini-2.5-flash")
+YT_COOKIES = os.getenv("YT_COOKIES", "")

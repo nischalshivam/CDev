@@ -93,13 +93,19 @@ class Cataloger:
         if r["clean_status"] == "fixable" and box:
             x, y, w, h = box
             vf.append(f"delogo=x={x}:y={y}:w={w}:h={h}")
-        cmd = ["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{start:.2f}", "-i", str(src),
-               "-t", f"{dur:.2f}"]
-        if vf:
-            cmd += ["-vf", ",".join(vf)]
-        cmd += ["-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", str(out_path)]
-        rr = subprocess.run(cmd, capture_output=True, text=True)
+        def run(with_vf):
+            cmd = ["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{start:.2f}", "-i", str(src),
+                   "-t", f"{dur:.2f}"]
+            if with_vf and vf:
+                cmd += ["-vf", ",".join(vf)]
+            cmd += ["-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", str(out_path)]
+            return subprocess.run(cmd, capture_output=True, text=True)
+
+        rr = run(True)
+        used_delogo = bool(vf)
+        if rr.returncode != 0 and vf:            # a bad logo_box breaks delogo -> retry clean
+            rr = run(False); used_delogo = False
         if rr.returncode != 0:
             raise RuntimeError(f"materialize failed: {rr.stderr[-400:]}")
         return {"asset_id": asset_id, "out": str(out_path), "seconds": round(dur, 2),
-                "delogo": bool(vf)}
+                "delogo": used_delogo}
