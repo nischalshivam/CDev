@@ -271,13 +271,19 @@ def retrieve_assets_for_beat(beat: Dict, library: LibraryDB) -> Dict:
     entities = beat.get("entities", [])
     search_terms = beat.get("search_terms", "")
     asset_type = beat.get("asset_type", "text_card")
+    strictness = beat.get("strictness", "general")
 
     # Skip text cards — no assets needed
     if asset_type == "text_card":
         return {"media_type": "text_card", "needs_scraping": False}
 
-    # Search library
-    results = library.search(search_terms, entities=entities, top_k=3)
+    # Search library (BUG-FIX: param is entity_filter, not entities; top_k now supported)
+    results = library.search(
+        search_terms,
+        entity_filter=entities or None,
+        strictness=strictness,
+        top_k=3,
+    )
 
     if results:
         best = results[0]

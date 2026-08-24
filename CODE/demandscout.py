@@ -183,7 +183,8 @@ class LibraryDB:
                min_quality: str = "medium",
                context_filter: List[str] = None,
                action_filter: List[str] = None,
-               strictness: str = "general") -> List[Dict]:
+               strictness: str = "general",
+               top_k: int = 20) -> List[Dict]:
         """
         Search library with hard identity gates.
 
@@ -195,33 +196,46 @@ class LibraryDB:
         """
         quality_rank = {"low": 0, "medium": 1, "high": 2}
         min_q = quality_rank.get(min_quality, 0)
+        # verdict -> numeric score (BUG-FIX: gates returned strings, then `float += str`)
+        verdict_score = {"exact": 3.0, "downgrade": 1.0}
 
         passed_gates = []
 
         for entry in self.data["entries"].values():
+            # --- GATE 0: review/quarantine ---
+            # Unverified or rejected assets must NEVER surface for a render (fail-closed).
+            if entry.get("needs_review") or entry.get("review_status") in ("rejected", "quarantined"):
+                continue
+
+            entity_score = action_score = context_score = 0.0
+
             # --- GATE 1: Entity ---
             if entity_filter:
                 entity_match = self._entity_match(entry, entity_filter, strictness)
                 if entity_match == "reject":
                     continue  # Wrong entity entirely
-                entity_score = entity_match  # "exact"=3, "downgrade"=1
+                entity_score = verdict_score.get(entity_match, 0.0)
 
             # --- GATE 2: Action ---
             if action_filter:
                 action_match = self._action_match(entry, action_filter)
                 if action_match == "reject":
                     continue
-                action_score = action_match
+                action_score = verdict_score.get(action_match, 0.0)
 
             # --- GATE 3: Context ---
             if context_filter:
                 context_match = self._context_match(entry, context_filter)
                 if context_match == "reject":
                     continue
-                context_score = context_match
+                context_score = verdict_score.get(context_match, 0.0)
 
             # --- GATE 4: Quality ---
             if quality_rank.get(entry.get("quality", "medium"), 0) < min_q:
+                continue
+
+            # --- GATE 5: type ---
+            if type_filter and entry.get("type") != type_filter:
                 continue
 
             # --- RANKING (after all gates pass) ---
@@ -242,7 +256,7 @@ class LibraryDB:
             passed_gates.append({**entry, "score": total_score})
 
         passed_gates.sort(key=lambda x: x["score"], reverse=True)
-        return passed_gates[:20]
+        return passed_gates[:top_k]
 
     def _entity_match(self, entry: Dict, requested: List[str], strictness: str) -> str:
         """
