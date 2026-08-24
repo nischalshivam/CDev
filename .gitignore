@@ -6,3 +6,7 @@ output/
 logs/*.log
 *.mp4
 *.mp3
+
+# P1 test artifacts (local only)
+_p1_r107/
+_r107_script_full.txt

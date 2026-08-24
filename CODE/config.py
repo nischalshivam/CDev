@@ -57,6 +57,6 @@ AUTO_APPROVE_CONF = float(os.getenv("CDEV_AUTO_APPROVE_CONF", "0.70"))
 MAX_CLIP_SECONDS = float(os.getenv("CDEV_MAX_CLIP_SECONDS", "7.0"))
 
 # Gemini catalog model + prompt/schema versions (for the result cache key).
-GEMINI_MODEL = os.getenv("CDEV_GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.getenv("CDEV_GEMINI_MODEL", "gemini-3.6-flash")
 CATALOG_PROMPT_VERSION = "cat-v1"
 CATALOG_SCHEMA_VERSION = "seg-v2"
