@@ -365,13 +365,19 @@ class Catalog:
 
         fts_rank = {}
         if query_text:
-            try:
-                for r in self.cx.execute(
-                        "SELECT asset_id, bm25(assets_fts) AS r FROM assets_fts "
-                        "WHERE assets_fts MATCH ? ORDER BY r", (query_text,)):
-                    fts_rank[r["asset_id"]] = r["r"]         # lower bm25 = better
-            except sqlite3.OperationalError:
-                fts_rank = {}
+            # FTS5 MATCH defaults to AND across terms, which returns nothing for a natural-language
+            # query ("Tyson punching aggressive"). Relevance search needs OR + bm25 ranking, so more
+            # matched terms simply rank higher. Terms are sanitised (FTS5 syntax chars would throw).
+            terms = [t for t in re.findall(r"\w+", (query_text or "").lower()) if len(t) > 2]
+            if terms:
+                expr = " OR ".join(f'"{t}"' for t in terms)
+                try:
+                    for r in self.cx.execute(
+                            "SELECT asset_id, bm25(assets_fts) AS r FROM assets_fts "
+                            "WHERE assets_fts MATCH ? ORDER BY r", (expr,)):
+                        fts_rank[r["asset_id"]] = r["r"]     # lower bm25 = better
+                except sqlite3.OperationalError:
+                    fts_rank = {}
             if not fts_rank:
                 return []                                     # query given but nothing matched
 
