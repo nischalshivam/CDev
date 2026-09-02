@@ -81,3 +81,7 @@ GEMINI_RELAY_BASE = os.getenv("GEMINI_RELAY_BASE", "")
 GEMINI_RELAY_KEY = os.getenv("GEMINI_RELAY_KEY", "")
 GEMINI_RELAY_MODEL = os.getenv("GEMINI_RELAY_MODEL", "gemini-2.5-flash")
 YT_COOKIES = os.getenv("YT_COOKIES", "")
+
+# Free stock providers (generic ambience) — keys in keys.env.
+PEXELS_KEY = os.getenv("PEXELS_KEY", "")
+PIXABAY_KEY = os.getenv("PIXABAY_KEY", "")
