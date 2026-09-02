@@ -437,7 +437,10 @@ class Catalog:
             score += len(ents & set(required_all + required_any)) * 2.0
             score += (r["match_conf"] or 0)
             if r["asset_id"] in fts_rank:
-                score += max(0.0, 5.0 + fts_rank[r["asset_id"]])   # bm25 is negative; better -> higher
+                # SQLite bm25() returns a NEGATIVE score where MORE negative = BETTER match, so
+                # relevance is -bm25. (The old `5.0 + bm25` inverted this: the best matches clamped
+                # to 0 and the weakest scored highest — every query returned near-misses.)
+                score += min(8.0, -fts_rank[r["asset_id"]])
             score -= min((r["times_used"] or 0) * 0.2, 1.5)
             out.append({**dict(r), "entities": sorted(ents), "score": round(score, 3)})
 
