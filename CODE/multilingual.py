@@ -280,38 +280,28 @@ class LanguageContext:
 def extract_entities_from_beat(beat: Dict) -> List[str]:
     """
     Extract entities from a beat. These are UNIVERSAL names.
-    'Boxer CRV' is the same in every language.
-    'F-35' is the same in every language.
-    'AH-64 Apache' is the same in every language.
-
-    This is the KEY to cross-language library matching.
+    Uses niche-specific entity patterns to avoid false positives.
     """
     entities = beat.get("entities", [])
     if entities:
         return entities
 
-    # Fallback: extract from narration text
     narration = beat.get("narration_verbatim", "")
 
-    # Known entity patterns (proper nouns, model numbers, etc.)
-    # These are extracted regardless of script language
+    # Universal entity patterns — only actual entity names
     entity_patterns = [
-        # Military vehicles (model + variant pattern)
-        r'\b(?:Boxer|Bradley|M1\s*Abrams|T-90|T-72|ASLAV|Patria\s*AMV|BMP[-\s]?\d|Stryker)\s*(?:CRV|APC|IFV| variants?)?\b',
-        # Aircraft
-        r'\b(?:F-35[A-C]?|F-22|F-16|F/A-18|Su-[0-9]+|Rafale|Eurofighter|Typhoon)\b',
-        # Helicopters
-        r'\b(?:AH-64\s*Apache|CH-47\s*Chinook|MH-60[RST]?|UH-60|Ka-52|Mi-24|Mi-8)\b',
-        # Ships
-        r'\b(?:Aircraft\s*Carrier|Destroyer|Frigate|Submarine|LHD|LST)\b',
-        # Weapons
-        r'\b(?:Javelin|Stinger|HIMARS|Patriot|Iron\s*Dome|ATACMS|Tomahawk)\b',
-        # Organizations
-        r'\b(?:NATO|US Army|Australian Army|British Army|Ukrainian Armed Forces|Rheinmetall|Lockheed Martin|Boeing|BAE)\b',
+        # Vehicle brands (capitalized, often multi-word)
+        r'\b(?:Wildax|Swift|Bailey|Elddis|Auto[- ]?Roller|Pilot|Globe[- ]?Traveler|Benimar|Grand Frontier|Hymer|Trigano)\b',
+        # Model names
+        r'\b(?:Autograph|Accordo|Carrera|Mileo|Evo\s*77)\b',
+        # Currency + amounts (price mentions)
+        r'(?:£|GBP)\s*[\d,]+',
+        # Military/tech model numbers
+        r'\b(?:F-35[A-C]?|F-22|F-16|AH-64\s*Apache|MH-60[RST]?|Boxer\s*CRV?|Bradley|Abrams|T-90)\b',
+        # Organizations (all caps or proper)
+        r'\b(?:NATO|BAE|Rheinmetall|Lockheed\s*Martin)\b',
         # Events
-        r'\b(?:Exercise\s+\w+|RIMPAC|Talisman\s*Sabre|Trident\s*Juncture)\b',
-        # Generic proper nouns (capitalized words in sequence)
-        r'\b[A-Z][a-z]+\s+[A-Z][a-z]+\b',  # "Boxer CRV", "Rheinmetall Defence"
+        r'\b(?:Exercise\s+\w+|RIMPAC|Talisman\s*Sabre)\b',
     ]
 
     found = []

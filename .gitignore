@@ -10,3 +10,16 @@ logs/*.log
 # P1 test artifacts (local only)
 _p1_r107/
 _r107_script_full.txt
+keys.env
+
+# --- library media + DB live on the SSD, never in git (see CODE/sync.py) ---
+library/objects/
+library/*.sqlite
+library/*.sqlite-wal
+library/*.sqlite-shm
+*.sqlite
+raw/
+clips/
+shots/
+_ali/
+_tyson/

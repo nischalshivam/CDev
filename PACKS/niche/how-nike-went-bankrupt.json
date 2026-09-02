@@ -1,0 +1,41 @@
+{
+  "name": "how-nike-went-bankrupt",
+  "display_name": "How Nike Went Bankrupt",
+  "title": "How Nike Went Bankrupt",
+  "summary": "How Nike Went Bankrupt",
+  "entities": {
+    "people": [],
+    "products": [],
+    "orgs": [],
+    "places": [],
+    "misc": [
+      {
+        "name": "How Nike Went Bankrupt",
+        "strictness": "specific"
+      }
+    ]
+  },
+  "eras": [
+    "modern"
+  ],
+  "search_queries": [
+    "How Nike Went Bankrupt documentary footage"
+  ],
+  "archive_terms": [
+    "How Nike Went Bankrupt"
+  ],
+  "wikimedia_articles": [
+    "How Nike Went Bankrupt"
+  ],
+  "common_broll": [
+    "city skyline",
+    "money counting",
+    "stock market ticker",
+    "factory production line",
+    "crowd walking"
+  ],
+  "avoid": [],
+  "mood_arc": "neutral",
+  "generated_by": "heuristic",
+  "generated_at": "2026-08-24T17:10:59.319466"
+}
