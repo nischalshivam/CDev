@@ -68,6 +68,10 @@ class Cataloger:
                 match_conf=float(s.get("match_conf", 0.0)), review_status="needs_review",
                 entities=ents, collections=collections or [],
                 catalog={"actions": s.get("actions", []), "environment": s.get("environment", []),
+                         "serves": s.get("serves", []), "keywords": s.get("keywords", []),
+                         "objects": s.get("objects", []), "places": s.get("places", []),
+                         "people": s.get("people", []), "shot": s.get("shot", ""),
+                         "camera": s.get("camera", ""), "motion": s.get("motion"),
                          "raw_entities": unresolved, "logo_box": s.get("logo_box"),
                          "model": getattr(self.vision, "name", "?")})
             if ok:

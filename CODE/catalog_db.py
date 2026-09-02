@@ -291,9 +291,14 @@ class Catalog:
         """Insert an image (object_sha) or a virtual video segment (source_id + ms range).
         Idempotent on (source_id,start_ms,end_ms). Writes the FTS body + entity/collection links
         in ONE transaction so a partial failure commits nothing."""
+        _cat = catalog or {}
         body = " ".join(filter(None, [description, " ".join(entities or []),
-                                       " ".join((catalog or {}).get("actions", [])),
-                                       " ".join((catalog or {}).get("environment", []))]))
+                                       " ".join(_cat.get("actions", [])),
+                                       " ".join(_cat.get("environment", [])),
+                                       " ".join(_cat.get("serves", [])),      # narrator-intent search
+                                       " ".join(_cat.get("keywords", [])),     # the real search engine
+                                       " ".join(_cat.get("objects", [])),
+                                       " ".join(_cat.get("places", []))]))
         # idempotency PRE-CHECK (so a plain INSERT can still raise on CHECK violations —
         # INSERT OR IGNORE would silently swallow bad data like start_ms > end_ms).
         dup = self.cx.execute("SELECT 1 FROM assets WHERE asset_id=?", (asset_id,)).fetchone()

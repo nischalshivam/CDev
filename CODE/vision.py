@@ -58,35 +58,40 @@ class RelayVision:
         self.name = f"relay:{self.model}"
         self.ok = bool(self.base and self.key)
 
-    _PROMPT = ("Describe this single documentary video frame. Return ONLY JSON: "
-               '{"description":"1 line, literal; name any car make/model or subject",'
-               '"entities":[named things],"actions":[what happens],"environment":[setting],'
-               '"quality":"low|medium|high","clean_status":"clean|fixable|unusable",'
-               '"logo_box":[x,y,w,h] or null,"match_conf":0.0_to_1.0}. '
-               "clean_status='fixable' + logo_box for a corner logo/subscribe/watermark; "
-               "'unusable' if a caption covers the subject; else 'clean'.")
+    # richer prompt (FOOTAGE-WORKFLOW lessons): serves + 6-shape keywords + talking_head + NAMES.
+    _PROMPT = (
+        "You are cataloging documentary footage. Look at these frames of ONE shot and return ONLY "
+        "JSON: {"
+        '"description":"1 line, literal; name any make/model or subject",'
+        '"keywords":["8-15 words covering subject, shot-type, camera, light/mood, colour, use"],'
+        '"shot":"wide|medium|close-up|extreme close-up",'
+        '"camera":"static|pan|tilt|push|pull|handheld|aerial",'
+        '"objects":[things],"places":[settings],'
+        '"people":["ONLY names/roles of people ACTUALLY VISIBLE in frame — [] if none"],'
+        '"serves":["what a narrator could say over this — e.g. a fresh start, passage of time"],'
+        '"entities":[named things],"actions":[what happens],"environment":[setting/era],'
+        '"talking_head":true_if_someone_speaks_straight_to_camera_studio_or_piece_to_camera,'
+        '"quality":"low|medium|high","clean_status":"clean|fixable|unusable",'
+        '"logo_box":[x,y,w,h]_or_null,"match_conf":0.0_to_1.0}. '
+        "Rules: people must list only who is VISIBLE (a title is not proof). clean_status='fixable' "
+        "+ logo_box for a corner logo/subscribe/watermark; 'unusable' if a caption covers the "
+        "subject; else 'clean'. Judge across BOTH frames and report the WORST case.")
 
-    def _describe(self, jpg_bytes) -> dict:
+    def _describe(self, frames: list[bytes]) -> dict:
         import base64, urllib.request
-        b64 = base64.b64encode(jpg_bytes).decode()
-        body = {"model": self.model, "max_tokens": 300, "messages": [{"role": "user", "content": [
-            {"type": "text", "text": self._PROMPT},
-            {"type": "image_url", "image_url": {"url": "data:image/jpeg;base64," + b64}}]}]}
+        content = [{"type": "text", "text": self._PROMPT}]
+        for f in frames:
+            content.append({"type": "image_url", "image_url": {
+                "url": "data:image/jpeg;base64," + base64.b64encode(f).decode()}})
+        body = {"model": self.model, "max_tokens": 500, "messages": [{"role": "user", "content": content}]}
         req = urllib.request.Request(self.base + "/chat/completions",
               data=json.dumps(body).encode(),
               headers={"Authorization": "Bearer " + self.key, "Content-Type": "application/json"})
         d = json.load(urllib.request.urlopen(req, timeout=120))
-        txt = d["choices"][0]["message"]["content"]
-        m = re.search(r"\{.*\}", txt, re.S)
+        m = re.search(r"\{.*\}", d["choices"][0]["message"]["content"], re.S)
         return json.loads(m.group(0)) if m else {}
 
-    def _scene_cuts(self, video_path, thresh=0.35) -> list[float]:
-        r = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(video_path), "-filter:v",
-                            f"select='gt(scene,{thresh})',showinfo", "-an", "-f", "null", "-"],
-                           capture_output=True, text=True)
-        return sorted(float(m) for m in re.findall(r"pts_time:([0-9.]+)", r.stderr))
-
-    def _midframe(self, video_path, t) -> bytes:
+    def _frame_at(self, video_path, t) -> bytes:
         import tempfile, pathlib
         fp = pathlib.Path(tempfile.mktemp(suffix=".jpg"))
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{t:.2f}", "-i", str(video_path),
@@ -97,35 +102,42 @@ class RelayVision:
         return b
 
     def analyze(self, video_path) -> list[dict]:
+        """Cheap-first: local HD/cut/motion gates, then Gemini ONLY on segments that survive.
+        Skips talking-head shots. Samples 2 moments/segment and reports the worst (captions can
+        appear late; a frame is not a measurement)."""
         if not self.ok:
             raise RuntimeError("RelayVision not configured (set GEMINI_RELAY_* in keys.env)")
-        dur = _duration(video_path)
-        cuts = self._scene_cuts(video_path)
-        bounds = [0.0] + cuts + [dur]
-        shots = []
-        for a, b in zip(bounds, bounds[1:]):
-            if b - a < 1.5:
-                continue
-            shots.append((a, min(b, a + config.MAX_CLIP_SECONDS)))   # cap at <=7s
-        if len(shots) < 3:                                            # fallback: fixed windows
-            shots = [(t, min(t + 6, dur)) for t in range(0, int(dur), 6) if dur - t >= 1.5]
+        import media_probe
+        plan = media_probe.segment_video(video_path, max_seconds=config.MAX_CLIP_SECONDS)
+        base_q = "high" if plan["hd"] else "low"
         segs = []
-        for a, b in shots:
-            frame = self._midframe(video_path, (a + b) / 2)
-            if not frame:
+        for sh in plan["segments"]:
+            if not sh["usable"]:                       # frozen/short — never spend vision on it
+                continue
+            a, b = sh["start"], sh["end"]
+            frames = [f for f in (self._frame_at(video_path, a + (b - a) * r) for r in (0.25, 0.65)) if f]
+            if not frames:
                 continue
             try:
-                meta = self._describe(frame)
+                meta = self._describe(frames)
             except Exception:
                 continue
+            if meta.get("talking_head"):               # presenter/anchor — not a real scene
+                continue
+            q = meta.get("quality", base_q)
+            if not plan["hd"] and q == "high":         # a sub-HD source can't be 'high'
+                q = "medium"
             segs.append({"start_ms": int(a * 1000), "end_ms": int(b * 1000),
                          "description": meta.get("description", ""),
+                         "keywords": meta.get("keywords", []),
                          "entities": meta.get("entities", []), "actions": meta.get("actions", []),
                          "environment": meta.get("environment", []),
-                         "quality": meta.get("quality", "medium"),
-                         "clean_status": meta.get("clean_status", "clean"),
+                         "objects": meta.get("objects", []), "places": meta.get("places", []),
+                         "people": meta.get("people", []), "serves": meta.get("serves", []),
+                         "shot": meta.get("shot", ""), "camera": meta.get("camera", ""),
+                         "quality": q, "clean_status": meta.get("clean_status", "clean"),
                          "match_conf": float(meta.get("match_conf", 0.8) or 0.8),
-                         "logo_box": meta.get("logo_box")})
+                         "motion": sh["motion"], "logo_box": meta.get("logo_box")})
         return segs
 
 
