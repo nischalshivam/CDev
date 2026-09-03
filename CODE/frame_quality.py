@@ -223,15 +223,21 @@ def assess_batch(frames: list, start: float, end: float,
         ratio = e / src_edge_median if src_edge_median else 1.0
         if ratio < GHOST_MAX:
             reasons.append(f"dissolve/soft frame (edge ratio {ratio:.2f} of source median)")
+    # SLIDING WINDOW, not whole-window. A broadcast caption that is on screen for only part of a
+    # shot has HIGH variance over the full window, so a whole-window test scores it clean — that is
+    # exactly how a "CLASSIC SPORTS" caption bar passed at 0.42% while plainly visible on screen.
+    # Graphics are static within their own dwell time, so take the WORST sub-window.
     ov_pct = 0.0
     if len(win) >= 4:
-        st = np.stack(win)
-        tvar = st.var(axis=0)
-        edges = np.abs(_laplacian(st.mean(axis=0)))
-        mask = (tvar < 12.0) & (edges > 14.0)
-        ov_pct = float(mask.mean() * 100)
+        sub = max(3, min(4, len(win)))
+        for a in range(0, len(win) - sub + 1):
+            st = np.stack(win[a:a + sub])
+            tvar = st.var(axis=0)
+            edges = np.abs(_laplacian(st.mean(axis=0)))
+            mask = (tvar < 12.0) & (edges > 14.0)
+            ov_pct = max(ov_pct, float(mask.mean() * 100))
         if ov_pct > overlay_max:
-            reasons.append(f"burned-in graphics {ov_pct:.1f}%")
+            reasons.append(f"burned-in graphics {ov_pct:.1f}% (worst sub-window)")
     return {"usable": not reasons, "reasons": reasons, "sharpness": round(sh, 1),
             "overlay_pct": round(ov_pct, 2)}
 
