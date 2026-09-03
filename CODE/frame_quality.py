@@ -174,6 +174,75 @@ def source_quality(video, samples: int = 16) -> dict:
             "duration": round(dur, 1), "measured": True}
 
 
+# ---------------------------------------------------------------- fast batch path
+def decode_frames(video, fps: float = 2.0, width: int = 480, out_dir=None) -> list:
+    """Decode a whole source ONCE into an array of greyscale frames + their timestamps.
+
+    The per-segment path costs ~10 ffmpeg seeks per candidate; on a few hundred segments that is
+    thousands of process launches and the gate becomes the slowest step in the pipeline. Decoding
+    once at a low fps and measuring in memory is ~50x faster for the same numbers.
+
+    Returns [(t_seconds, frame_array), ...]."""
+    d = out_dir or tempfile.mkdtemp()
+    os.makedirs(d, exist_ok=True)
+    subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(video),
+                    "-vf", f"fps={fps},scale={width}:-2", f"{d}/f%06d.png"],
+                   capture_output=True, timeout=3600)
+    out = []
+    for i, f in enumerate(sorted(glob.glob(d + "/f*.png"))):
+        try:
+            out.append((i / fps, np.asarray(Image.open(f).convert("L"), dtype=np.float32)))
+        except Exception:
+            pass
+        os.remove(f)
+    try:
+        os.rmdir(d)
+    except OSError:
+        pass
+    return out
+
+
+def assess_batch(frames: list, start: float, end: float,
+                 sharp_min: float = SHARP_MIN, overlay_max: float = OVERLAY_MAX_PCT,
+                 src_edge_median: float = None) -> dict:
+    """Same verdict as assess(), but reading from pre-decoded frames. No ffmpeg calls."""
+    win = [f for t, f in frames if start <= t <= end]
+    if len(win) < 2:
+        win = [f for t, f in frames if start - 0.6 <= t <= end + 0.6]
+    if not win:
+        return {"usable": False, "reasons": ["no frames in window"]}
+    centre = win[len(win) // 2]
+    sh = sharpness(centre)
+    reasons = []
+    if sh < sharp_min:
+        reasons.append(f"blurred/smeared (sharpness {sh:.0f} < {sharp_min:.0f})")
+    # ghosting relative to the SOURCE's own edge energy, not just neighbours: inside a dissolve
+    # every nearby frame is equally soft, so a local ratio always looks fine.
+    if src_edge_median:
+        e = float(np.abs(_laplacian(centre)).mean())
+        ratio = e / src_edge_median if src_edge_median else 1.0
+        if ratio < GHOST_MAX:
+            reasons.append(f"dissolve/soft frame (edge ratio {ratio:.2f} of source median)")
+    ov_pct = 0.0
+    if len(win) >= 4:
+        st = np.stack(win)
+        tvar = st.var(axis=0)
+        edges = np.abs(_laplacian(st.mean(axis=0)))
+        mask = (tvar < 12.0) & (edges > 14.0)
+        ov_pct = float(mask.mean() * 100)
+        if ov_pct > overlay_max:
+            reasons.append(f"burned-in graphics {ov_pct:.1f}%")
+    return {"usable": not reasons, "reasons": reasons, "sharpness": round(sh, 1),
+            "overlay_pct": round(ov_pct, 2)}
+
+
+def source_edge_median(frames: list) -> float:
+    if not frames:
+        return 0.0
+    vals = [float(np.abs(_laplacian(f)).mean()) for _, f in frames[::max(1, len(frames)//40)]]
+    return float(np.median(vals)) if vals else 0.0
+
+
 if __name__ == "__main__":
     import sys, json
     if len(sys.argv) == 2:
