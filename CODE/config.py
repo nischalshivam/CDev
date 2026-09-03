@@ -82,6 +82,10 @@ GEMINI_RELAY_KEY = os.getenv("GEMINI_RELAY_KEY", "")
 GEMINI_RELAY_MODEL = os.getenv("GEMINI_RELAY_MODEL", "gemini-2.5-flash")
 YT_COOKIES = os.getenv("YT_COOKIES", "")
 
+# ai33.pro TTS (voiceover + word timestamps) — keys in keys.env.
+AI33_KEY = os.getenv("AI33_KEY", "")
+AI33_VOICE = os.getenv("AI33_VOICE", "")
+
 # Free stock providers (generic ambience) — keys in keys.env.
 PEXELS_KEY = os.getenv("PEXELS_KEY", "")
 PIXABAY_KEY = os.getenv("PIXABAY_KEY", "")
