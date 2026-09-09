@@ -46,3 +46,18 @@ _fw/
 **/vo/
 **/ref/
 typo_demo/
+
+# --- libraries never go in git: they are 12GB and are carried on the transfer drive ---
+**/library/
+**/docs/
+# per-niche scratch render dirs
+_spinks/_chk/
+_spinks/_s/
+_spinks/_s2/
+_spinks/ab/
+_spinks/audio_demo/
+_spinks/cards/
+_spinks/gtest/
+_spinks/sample/
+_spinks/typo/
+*.srt
