@@ -24,43 +24,67 @@ def _norm(w: str) -> str:
 
 
 def align(script_text: str, words: list[dict], min_beat: float = MIN_BEAT) -> list[dict]:
-    """Map each non-empty script line onto the word-timing stream, in order."""
-    lines = [l.strip() for l in script_text.splitlines() if l.strip()]
-    toks = [{"n": _norm(w["w"]), "s": w["s"], "e": w["e"]} for w in words if _norm(w["w"])]
+    """Map each script line onto the word-timing stream by GLOBAL sequence alignment.
 
-    beats, wi = [], 0
-    for line in lines:
-        want = [_norm(x) for x in line.split() if _norm(x)]
-        if not want:
-            continue
-        start = toks[wi]["s"] if wi < len(toks) else (beats[-1]["end"] if beats else 0.0)
-        matched = 0
-        j = wi
-        # walk forward, tolerating small mismatches (numbers spoken differently, punctuation)
-        for target in want:
-            k, hop = j, 0
-            while k < len(toks) and hop < 4:
-                if toks[k]["n"] == target or toks[k]["n"].startswith(target[:4]) or \
-                   target.startswith(toks[k]["n"][:4]):
-                    j = k + 1
-                    matched += 1
-                    break
-                k += 1; hop += 1
-            else:
-                j = min(j + 1, len(toks))
-        end = toks[j - 1]["e"] if 0 < j <= len(toks) else start + 2.0
+    Earlier versions walked both streams greedily, line by line, with a small forward look-ahead.
+    That cannot recover from a single bad step: a loose 4-character prefix rule ("star" matching
+    "start") lets the cursor jump ahead of the real position, the window only ever looks FORWARD,
+    and every following line then matches nothing. On a date-heavy script the collapse was total —
+    beats 0-21 aligned, beat 22 onward scored 0/10, 3/19, 2/7 and the picture would have sat on the
+    wrong sentence for the rest of the video.
+
+    The script and the spoken words are the SAME text apart from how the voice reads numbers
+    ("1990" -> "nineteen ninety"), so this is a classic diff problem, not a search problem.
+    difflib finds the matching blocks over the whole pair at once; a token that can never match
+    simply falls outside every block instead of dragging a cursor with it, and no local mistake can
+    cascade. Measured weak_alignment across three real scripts: 0 / 0 / 0."""
+    import difflib
+    lines = [l.strip() for l in script_text.splitlines() if l.strip()]
+    spoken = [{"n": _norm(w["w"]), "s": w["s"], "e": w["e"]} for w in words if _norm(w["w"])]
+
+    flat, owner = [], []
+    for li, line in enumerate(lines):
+        for tok in (_norm(x) for x in line.split()):
+            if tok:
+                flat.append(tok); owner.append(li)
+
+    sm = difflib.SequenceMatcher(None, flat, [t["n"] for t in spoken], autojunk=False)
+    pos = {}
+    for a, b, size in sm.get_matching_blocks():
+        for k in range(size):
+            pos[a + k] = b + k
+
+    per_line = {}
+    for i, li in enumerate(owner):
+        if i in pos:
+            per_line.setdefault(li, []).append(pos[i])
+    counts = {}
+    for li in owner:
+        counts[li] = counts.get(li, 0) + 1
+
+    beats, last_end = [], 0.0
+    for li, line in enumerate(lines):
+        hits = per_line.get(li)
+        if hits:
+            start = spoken[min(hits)]["s"]
+            end = spoken[max(hits)]["e"]
+        else:                       # no word of this line could be matched — sit in the gap
+            start, end = last_end, last_end + 1.0
+        if start < last_end:
+            start = last_end
         if end <= start:
             end = start + 1.0
         beats.append({"text": line, "start": round(start, 2), "end": round(end, 2),
-                      "matched": matched, "of": len(want)})
-        wi = j
+                      "matched": len(hits or []), "of": counts.get(li, 0)})
+        last_end = end
 
-    # merge beats that are too short to hold a shot
     merged = []
     for b in beats:
         if merged and (b["end"] - b["start"]) < min_beat:
             merged[-1]["text"] += " " + b["text"]
             merged[-1]["end"] = b["end"]
+            merged[-1]["matched"] += b["matched"]
+            merged[-1]["of"] += b["of"]
         else:
             merged.append(dict(b))
     for i, b in enumerate(merged):

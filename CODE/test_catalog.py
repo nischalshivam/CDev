@@ -225,3 +225,88 @@ def test_persistence():
 if __name__ == "__main__":
     import sys
     sys.exit(pytest.main([__file__, "-q"]))
+
+
+# 60. roster: a project declares who may appear; anyone else excludes the asset (fail-closed)
+def test_roster_excludes_off_roster_person():
+    c, root = fresh()
+    c.upsert_entity("ENT_TYSON", "person", "Mike Tyson")
+    c.upsert_entity("ENT_GOLOTA", "person", "Andrew Golota")
+    _img(c, root, "TYSON_ONLY", entities=["ENT_TYSON"])
+    _img(c, root, "GOLOTA", entities=["ENT_GOLOTA"])
+    _img(c, root, "CROWD")                                  # no person at all
+    got = sorted(r["asset_id"] for r in c.search(type="image", roster=["ENT_TYSON"]))
+    # the stranger is gone; the crowd shot survives because a roster judges PEOPLE, not everything
+    assert got == ["CROWD", "TYSON_ONLY"]
+
+
+# 61. roster judges people only — a place label must not disqualify an asset
+def test_roster_ignores_non_person_entities():
+    c, root = fresh()
+    c.upsert_entity("ENT_TYSON", "person", "Mike Tyson")
+    c.upsert_entity("PLACE_AC", "place", "Atlantic City")
+    _img(c, root, "TYSON_IN_AC", entities=["ENT_TYSON", "PLACE_AC"])
+    assert [r["asset_id"] for r in c.search(type="image", roster=["ENT_TYSON"])] == ["TYSON_IN_AC"]
+
+
+# 62. an UNLABELLED stranger is the case a blacklist cannot catch — roster must still allow it only
+#     when it carries no person label at all, and reject the moment one is added
+def test_roster_is_failclosed_for_new_entities():
+    c, root = fresh()
+    c.upsert_entity("ENT_TYSON", "person", "Mike Tyson")
+    c.upsert_entity("ENT_NEWCOMER", "person", "Someone Added Later")
+    _img(c, root, "NEW", entities=["ENT_NEWCOMER"])
+    assert c.search(type="image", roster=["ENT_TYSON"]) == []
+    assert [r["asset_id"] for r in c.search(type="image")] == ["NEW"]   # unrestricted still finds it
+
+
+# 63. a card must fit the frame it is composited into, at ANY build resolution
+def test_cards_fit_target_resolution():
+    """The build moved to 1280x720 while typography still drew 1920x1080 and the overlay was
+    applied at 0:0 with no scale, so only the top-left of each card survived: centred text landed
+    in the bottom-right and ran off the edge ("Quadrastee", "37 ft" half gone). This pins the
+    contract — a card is the size it is asked for, and its ink stays inside the frame."""
+    import numpy as np
+    from PIL import Image
+    import typography as T
+    for w, h in ((1280, 720), (1920, 1080)):
+        p = os.path.join(tempfile.mkdtemp(), "c.png")
+        T.stat_card("37 ft", "turning circle", p, style="clean", size_px=(w, h))
+        im = Image.open(p)
+        assert im.size == (w, h), f"card is {im.size}, asked for {(w, h)}"
+        a = np.asarray(im.convert("RGBA"))[:, :, 3]          # alpha = where ink is
+        ys, xs = np.nonzero(a > 8)
+        assert xs.size, "card rendered nothing"
+        m = 4
+        assert xs.min() >= m and xs.max() <= w - m, "ink runs off the horizontal edge"
+        assert ys.min() >= m and ys.max() <= h - m, "ink runs off the vertical edge"
+
+
+# 64. no ACTIVE render path may use zoompan — it shakes, measured
+def test_no_zoompan_in_active_render_paths():
+    """zoompan truncates its crop origin to whole pixels (and in a zoom, the crop height too), so a
+    smooth Ken Burns arrives as uneven steps. Measured on our own stills:
+
+        zoompan       dx sd 0.352 px    <- visible shake
+        perspective   dx sd 0.001 px
+
+    The fix landed in three niche builds and was then found still present in a fourth build and in
+    three unused modules — the same "fixed here, not there" pattern that let a rival channel's
+    watermark ship. A comment cannot stop that from coming back; this test can."""
+    import re, pathlib
+    root = pathlib.Path(__file__).resolve().parent.parent
+    active = [root / "CODE" / "build_core.py",
+              root / "_quadrasteer" / "build.py",
+              root / "_ajax" / "build.py",
+              root / "_alzado" / "build.py",
+              root / "_spinks" / "sample_audio.py",
+              root / "_spinks" / "build.py"]
+    offenders = []
+    for f in active:
+        if not f.exists():
+            continue
+        for i, line in enumerate(f.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+            code = line.split("#", 1)[0]
+            if re.search(r"zoompan\s*=", code):
+                offenders.append(f"{f.name}:{i}")
+    assert not offenders, f"zoompan in an active render path: {offenders}"

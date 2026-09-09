@@ -1,0 +1,124 @@
+{
+ "kept": [
+  {
+   "id": "lN4s_HNoIaQ",
+   "title": "Mike Tyson vs Michael Spinks Full fight",
+   "file": "C:\\Users\\Dell\\Downloads\\CDev\\_spinks\\raw2\\lN4s_HNoIaQ.mp4",
+   "ok": true,
+   "reasons": [],
+   "median_sharpness": 360.8,
+   "overlay_pct": 0.42,
+   "suggest_crop_bottom": 0.0,
+   "duration": 185.8,
+   "measured": true
+  },
+  {
+   "id": "w2AoP01bvFU",
+   "title": "Mike Tyson vs Buster Mathis Jr. 1995 (Remastered, HD 60FPS)",
+   "file": "C:\\Users\\Dell\\Downloads\\CDev\\_spinks\\raw2\\w2AoP01bvFU.mp4",
+   "ok": true,
+   "reasons": [],
+   "median_sharpness": 749.6,
+   "overlay_pct": 0.33,
+   "suggest_crop_bottom": 0.0,
+   "duration": 701.2,
+   "measured": true
+  },
+  {
+   "id": "yf9ukdD_xTE",
+   "title": "Mike Tyson vs Mark Young 1985 (Remastered, HD 50FPS)",
+   "file": "C:\\Users\\Dell\\Downloads\\CDev\\_spinks\\raw2\\yf9ukdD_xTE.mp4",
+   "ok": true,
+   "reasons": [],
+   "median_sharpness": 303.2,
+   "overlay_pct": 0.22,
+   "suggest_crop_bottom": 0.0,
+   "duration": 115.8,
+   "measured": true
+  },
+  {
+   "id": "exLETpxDoRw",
+   "title": "Larry Holmes vs Michael Spinks l (Highlights)",
+   "file": "C:\\Users\\Dell\\Downloads\\CDev\\_spinks\\raw2\\exLETpxDoRw.mp4",
+   "ok": true,
+   "reasons": [],
+   "median_sharpness": 725.0,
+   "overlay_pct": 0.07,
+   "suggest_crop_bottom": 0.0,
+   "duration": 947.9,
+   "measured": true
+  }
+ ],
+ "rejected": [
+  {
+   "id": "aclRR-MaKhM",
+   "title": "Mike Tyson vs Michael Spinks AI Upscaled 1080p",
+   "file": "C:\\Users\\Dell\\Downloads\\CDev\\_spinks\\raw2\\aclRR-MaKhM.mp4",
+   "ok": false,
+   "reasons": [
+    "soft source (median sharpness 156 < 250)"
+   ],
+   "median_sharpness": 156.4,
+   "overlay_pct": 0.28,
+   "suggest_crop_bottom": 0.0,
+   "duration": 754.2,
+   "measured": true
+  },
+  {
+   "id": "RHB80p5W2-w",
+   "title": "Mike Tyson vs. Michael Spinks (1988) Highlights",
+   "file": "C:\\Users\\Dell\\Downloads\\CDev\\_spinks\\raw2\\RHB80p5W2-w.mp4",
+   "ok": false,
+   "reasons": [
+    "soft source (median sharpness 215 < 250)"
+   ],
+   "median_sharpness": 215.1,
+   "overlay_pct": 0.0,
+   "suggest_crop_bottom": 0.0,
+   "duration": 68.8,
+   "measured": true
+  },
+  {
+   "id": "Pzy3eJQ8u2g",
+   "title": "Mike Tyson (USA) vs Michael Spinks (USA) | KNOCKOUT, BOXING fight, HD",
+   "file": "C:\\Users\\Dell\\Downloads\\CDev\\_spinks\\raw2\\Pzy3eJQ8u2g.mp4",
+   "ok": false,
+   "reasons": [
+    "soft source (median sharpness 13 < 250)"
+   ],
+   "median_sharpness": 12.6,
+   "overlay_pct": 0.0,
+   "suggest_crop_bottom": 0.0,
+   "duration": 101.9,
+   "measured": true
+  },
+  {
+   "id": "qKNGyEjxFTY",
+   "title": "Mike Tyson vs Michael Spinks - 27 June 1988 (HD 1080) Full Fight",
+   "file": "C:\\Users\\Dell\\Downloads\\CDev\\_spinks\\raw2\\qKNGyEjxFTY.mp4",
+   "ok": false,
+   "reasons": [
+    "soft source (median sharpness 100 < 250)"
+   ],
+   "median_sharpness": 100.2,
+   "overlay_pct": 0.0,
+   "suggest_crop_bottom": 0.0,
+   "duration": 896.1,
+   "measured": true
+  },
+  {
+   "id": "Pzy3eJQ8u2g",
+   "title": "Mike Tyson (USA) vs Michael Spinks (USA) | KNOCKOUT, BOXING fight, HD",
+   "file": "C:\\Users\\Dell\\Downloads\\CDev\\_spinks\\raw2\\Pzy3eJQ8u2g.mp4",
+   "ok": false,
+   "reasons": [
+    "soft source (median sharpness 13 < 250)"
+   ],
+   "median_sharpness": 12.6,
+   "overlay_pct": 0.0,
+   "suggest_crop_bottom": 0.0,
+   "duration": 101.9,
+   "measured": true
+  }
+ ]
+}

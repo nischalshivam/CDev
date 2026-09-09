@@ -23,3 +23,26 @@ clips/
 shots/
 _ali/
 _tyson/
+
+# --- scratch / experiments / vendored copies (local only) ---
+_adtest/
+_cmp/
+_docs_test/
+_kb/
+_insta_test/
+_reddit_test/
+_rus/
+qc/
+build.log
+*.log
+# extracted third-party reference package (keep the zip, not the extraction)
+_fw/
+# per-niche working media that gitignore's *.mp4 does not cover
+**/docs/pages/
+**/library/proxy/
+**/library/edit/
+**/raw/
+**/sa/
+**/vo/
+**/ref/
+typo_demo/

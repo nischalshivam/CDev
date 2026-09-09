@@ -1,0 +1,722 @@
+[
+ {
+  "text": "In the early 2000s, General Motors figured out how to make a full-size pickup truck turn almost like a compact car.",
+  "start": 0.26,
+  "end": 7.94,
+  "matched": 20,
+  "of": 21,
+  "i": 0,
+  "dur": 7.68
+ },
+ {
+  "text": "And somehow, almost nobody wanted it.",
+  "start": 8.56,
+  "end": 11.18,
+  "matched": 6,
+  "of": 6,
+  "i": 1,
+  "dur": 2.62
+ },
+ {
+  "text": "Imagine taking something the size of a GMC Sierra, turning the steering wheel in a parking lot, and watching the rear wheels turn too.",
+  "start": 11.86,
+  "end": 20.08,
+  "matched": 24,
+  "of": 24,
+  "i": 2,
+  "dur": 8.22
+ },
+ {
+  "text": "At low speeds, they pointed in the opposite direction of the front wheels, physically shortening the truck's turning circle.",
+  "start": 20.96,
+  "end": 27.94,
+  "matched": 19,
+  "of": 19,
+  "i": 3,
+  "dur": 6.98
+ },
+ {
+  "text": "At higher speeds, they could turn with the front wheels to make the truck feel more stable.",
+  "start": 28.72,
+  "end": 33.94,
+  "matched": 17,
+  "of": 17,
+  "i": 4,
+  "dur": 5.22
+ },
+ {
+  "text": "Hook up a trailer, and the system could even change its behavior specifically for towing.",
+  "start": 34.74,
+  "end": 40.18,
+  "matched": 15,
+  "of": 15,
+  "i": 5,
+  "dur": 5.44
+ },
+ {
+  "text": "It was called Quadrasteer. And technically, it worked. Really well.",
+  "start": 40.9,
+  "end": 46.42,
+  "matched": 10,
+  "of": 10,
+  "i": 6,
+  "dur": 5.52
+ },
+ {
+  "text": "A GMC Sierra Denali that normally needed roughly 47 feet to complete a turning circle could do it in about 37 feet with Quadrasteer activated.",
+  "start": 47.0,
+  "end": 56.66,
+  "matched": 23,
+  "of": 25,
+  "i": 7,
+  "dur": 9.66
+ },
+ {
+  "text": "That's an enormous difference on a full-size truck.",
+  "start": 57.3,
+  "end": 59.92,
+  "matched": 8,
+  "of": 8,
+  "i": 8,
+  "dur": 2.62
+ },
+ {
+  "text": "Basically, GM had solved one of the most annoying things about owning a big pickup.",
+  "start": 60.38,
+  "end": 65.44,
+  "matched": 15,
+  "of": 15,
+  "i": 9,
+  "dur": 5.06
+ },
+ {
+  "text": "Then they made the feature so expensive that almost nobody bought it.",
+  "start": 66.04,
+  "end": 70.3,
+  "matched": 12,
+  "of": 12,
+  "i": 10,
+  "dur": 4.26
+ },
+ {
+  "text": "The story starts around 2002. Pickup trucks were getting bigger, more comfortable, and increasingly being used for things beyond just work.",
+  "start": 70.92,
+  "end": 80.52,
+  "matched": 20,
+  "of": 21,
+  "i": 11,
+  "dur": 9.6
+ },
+ {
+  "text": "People were towing boats. Campers. Horse trailers.",
+  "start": 81.28,
+  "end": 85.32,
+  "matched": 7,
+  "of": 7,
+  "i": 12,
+  "dur": 4.04
+ },
+ {
+  "text": "And they were also taking these enormous trucks to grocery stores, parking garages, and suburban driveways that definitely weren't getting any bigger.",
+  "start": 85.98,
+  "end": 95.18,
+  "matched": 22,
+  "of": 22,
+  "i": 13,
+  "dur": 9.2
+ },
+ {
+  "text": "The problem is pretty obvious. A long truck with a long wheelbase does not enjoy tight spaces.",
+  "start": 95.58,
+  "end": 102.02,
+  "matched": 17,
+  "of": 17,
+  "i": 14,
+  "dur": 6.44
+ },
+ {
+  "text": "You pull into a parking lot. Turn. Back up. Turn again. Back up again. Try not to hit the car beside you.",
+  "start": 102.5,
+  "end": 110.94,
+  "matched": 22,
+  "of": 22,
+  "i": 15,
+  "dur": 8.44
+ },
+ {
+  "text": "And eventually perform what is basically a seven-point turn just to leave.",
+  "start": 111.46,
+  "end": 116.22,
+  "matched": 12,
+  "of": 12,
+  "i": 16,
+  "dur": 4.76
+ },
+ {
+  "text": "GM and Delphi looked at that problem and came up with a wonderfully complicated solution. Make the rear wheels steer.",
+  "start": 116.88,
+  "end": 124.08,
+  "matched": 20,
+  "of": 20,
+  "i": 17,
+  "dur": 7.2
+ },
+ {
+  "text": "Quadrasteer used an electronically controlled steering unit on the rear axle.",
+  "start": 124.6,
+  "end": 128.86,
+  "matched": 11,
+  "of": 11,
+  "i": 18,
+  "dur": 4.26
+ },
+ {
+  "text": "At low speeds, when the driver turned left, the rear wheels could turn slightly right.",
+  "start": 129.44,
+  "end": 134.94,
+  "matched": 15,
+  "of": 15,
+  "i": 19,
+  "dur": 5.5
+ },
+ {
+  "text": "This effectively made the vehicle behave like it had a much shorter wheelbase.",
+  "start": 135.66,
+  "end": 139.68,
+  "matched": 13,
+  "of": 13,
+  "i": 20,
+  "dur": 4.02
+ },
+ {
+  "text": "The truck rotated around corners instead of dragging its enormous rear end behind it.",
+  "start": 140.54,
+  "end": 145.72,
+  "matched": 14,
+  "of": 14,
+  "i": 21,
+  "dur": 5.18
+ },
+ {
+  "text": "Then, as speed increased, the system changed strategy. Rather than turning opposite the front tires, the rear tires could begin steering slightly in the same direction.",
+  "start": 146.46,
+  "end": 157.34,
+  "matched": 26,
+  "of": 26,
+  "i": 22,
+  "dur": 10.88
+ },
+ {
+  "text": "That reduced the sudden yaw movement you would normally get during a lane change and could make a large truck, especially one towing a trailer, feel more planted.",
+  "start": 158.06,
+  "end": 167.8,
+  "matched": 28,
+  "of": 28,
+  "i": 23,
+  "dur": 9.74
+ },
+ {
+  "text": "There were different operating modes, including a dedicated tow setting.",
+  "start": 168.46,
+  "end": 172.8,
+  "matched": 10,
+  "of": 10,
+  "i": 24,
+  "dur": 4.34
+ },
+ {
+  "text": "And if the entire idea of your back wheels moving made you uncomfortable, you could switch it back into conventional two-wheel steering.",
+  "start": 173.07,
+  "end": 180.43,
+  "matched": 22,
+  "of": 22,
+  "i": 25,
+  "dur": 7.36
+ },
+ {
+  "text": "This wasn't some concept car trick that looked good at an auto show. It actually worked.",
+  "start": 181.19,
+  "end": 186.59,
+  "matched": 16,
+  "of": 16,
+  "i": 26,
+  "dur": 5.4
+ },
+ {
+  "text": "Car and Driver tested the early Sierra Denali and measured the turning circle dropping from 47.3 feet to 37.4.",
+  "start": 187.27,
+  "end": 195.09,
+  "matched": 17,
+  "of": 19,
+  "i": 27,
+  "dur": 7.82
+ },
+ {
+  "text": "For perspective, they pointed out that was only about a foot more than a Honda Accord.",
+  "start": 197.31,
+  "end": 202.27,
+  "matched": 16,
+  "of": 16,
+  "i": 28,
+  "dur": 4.96
+ },
+ {
+  "text": "Think about that for a second. This massive luxury pickup could essentially turn around in the same space as a family sedan.",
+  "start": 202.75,
+  "end": 210.37,
+  "matched": 22,
+  "of": 22,
+  "i": 29,
+  "dur": 7.62
+ },
+ {
+  "text": "MotorTrend would later describe the system as dramatically improving maneuverability and tracking.",
+  "start": 210.89,
+  "end": 216.49,
+  "matched": 12,
+  "of": 12,
+  "i": 30,
+  "dur": 5.6
+ },
+ {
+  "text": "So, what went wrong? Money. A lot of money.",
+  "start": 217.15,
+  "end": 220.93,
+  "matched": 9,
+  "of": 9,
+  "i": 31,
+  "dur": 3.78
+ },
+ {
+  "text": "When Quadrasteer first arrived, GM didn't exactly make it an impulse purchase.",
+  "start": 221.65,
+  "end": 226.67,
+  "matched": 12,
+  "of": 12,
+  "i": 32,
+  "dur": 5.02
+ },
+ {
+  "text": "Early versions were bundled into packages that could add around seven thousand dollars to the price of the vehicle.",
+  "start": 227.47,
+  "end": 233.61,
+  "matched": 19,
+  "of": 19,
+  "i": 33,
+  "dur": 6.14
+ },
+ {
+  "text": "Seven thousand dollars. In early-2000s money. For steering.",
+  "start": 234.33,
+  "end": 239.11,
+  "matched": 7,
+  "of": 8,
+  "i": 34,
+  "dur": 4.78
+ },
+ {
+  "text": "Now, yes, you were getting other equipment in those packages.",
+  "start": 239.49,
+  "end": 244.05,
+  "matched": 10,
+  "of": 10,
+  "i": 35,
+  "dur": 4.56
+ },
+ {
+  "text": "But from the customer's perspective, the headline feature was still, my rear wheels turn.",
+  "start": 244.11,
+  "end": 249.95,
+  "matched": 14,
+  "of": 14,
+  "i": 36,
+  "dur": 5.84
+ },
+ {
+  "text": "Try explaining why that is worth several thousand dollars to someone who has spent his entire life driving trucks without it.",
+  "start": 250.49,
+  "end": 257.33,
+  "matched": 21,
+  "of": 21,
+  "i": 37,
+  "dur": 6.84
+ },
+ {
+  "text": "GM eventually realized there was a problem. By 2003, Quadrasteer was listed around four thousand four hundred ninety-five dollars on some applications.",
+  "start": 257.94,
+  "end": 268.56,
+  "matched": 22,
+  "of": 22,
+  "i": 38,
+  "dur": 10.62
+ },
+ {
+  "text": "GM even offered significant incentives. Then, in 2004, the price fell again to around one thousand nine hundred ninety-five dollars.",
+  "start": 269.3,
+  "end": 279.62,
+  "matched": 20,
+  "of": 20,
+  "i": 39,
+  "dur": 10.32
+ },
+ {
+  "text": "In other words, GM went from treating Quadrasteer like expensive flagship technology to practically begging customers to try it.",
+  "start": 280.22,
+  "end": 288.68,
+  "matched": 19,
+  "of": 19,
+  "i": 40,
+  "dur": 8.46
+ },
+ {
+  "text": "And the customers still weren't exactly lining up.",
+  "start": 289.34,
+  "end": 292.42,
+  "matched": 8,
+  "of": 8,
+  "i": 41,
+  "dur": 3.08
+ },
+ {
+  "text": "The numbers are kind of brutal. According to period industry reporting, Quadrasteer accounted for less than one percent of sales among available models in 2002.",
+  "start": 293.0,
+  "end": 303.52,
+  "matched": 25,
+  "of": 25,
+  "i": 42,
+  "dur": 10.52
+ },
+ {
+  "text": "In 2003, after GM started working on the pricing problem, that improved to just over two percent.",
+  "start": 303.92,
+  "end": 310.92,
+  "matched": 17,
+  "of": 17,
+  "i": 43,
+  "dur": 7.0
+ },
+ {
+  "text": "Some individual SUVs did considerably better, but across the lineup, the technology never became mainstream.",
+  "start": 311.58,
+  "end": 318.9,
+  "matched": 15,
+  "of": 15,
+  "i": 44,
+  "dur": 7.32
+ },
+ {
+  "text": "And there was another problem. Quadrasteer was incredibly easy to appreciate after you drove it, but surprisingly difficult to sell in an advertisement.",
+  "start": 319.46,
+  "end": 328.48,
+  "matched": 23,
+  "of": 23,
+  "i": 45,
+  "dur": 9.02
+ },
+ {
+  "text": "Horsepower is easy. This truck has more power.",
+  "start": 328.9,
+  "end": 332.06,
+  "matched": 8,
+  "of": 8,
+  "i": 46,
+  "dur": 3.16
+ },
+ {
+  "text": "Towing capacity is easy. This truck pulls more weight.",
+  "start": 332.58,
+  "end": 336.1,
+  "matched": 9,
+  "of": 9,
+  "i": 47,
+  "dur": 3.52
+ },
+ {
+  "text": "Four-wheel drive is easy. This truck goes places a two-wheel-drive truck can't.",
+  "start": 336.62,
+  "end": 342.3,
+  "matched": 11,
+  "of": 12,
+  "i": 48,
+  "dur": 5.68
+ },
+ {
+  "text": "But how do you make someone emotionally excited about a smaller turning circle?",
+  "start": 342.74,
+  "end": 346.9,
+  "matched": 13,
+  "of": 13,
+  "i": 49,
+  "dur": 4.16
+ },
+ {
+  "text": "GM basically had to convince buyers to pay thousands of dollars to solve a problem many of them had simply accepted as part of owning a truck.",
+  "start": 347.72,
+  "end": 355.48,
+  "matched": 27,
+  "of": 27,
+  "i": 50,
+  "dur": 7.76
+ },
+ {
+  "text": "And that's a difficult sales pitch.",
+  "start": 356.19,
+  "end": 357.98,
+  "matched": 6,
+  "of": 6,
+  "i": 51,
+  "dur": 1.79
+ },
+ {
+  "text": "There was also the truck-buyer psychology of the time. More technology doesn't automatically mean more desirable.",
+  "start": 358.33,
+  "end": 365.18,
+  "matched": 15,
+  "of": 16,
+  "i": 52,
+  "dur": 6.85
+ },
+ {
+  "text": "Quadrasteer added electronics. Specialized rear steering hardware. A unique rear axle setup. A wider rear track. More weight.",
+  "start": 365.83,
+  "end": 375.77,
+  "matched": 18,
+  "of": 18,
+  "i": 53,
+  "dur": 9.94
+ },
+ {
+  "text": "And more things that an owner could imagine eventually needing to repair.",
+  "start": 376.26,
+  "end": 380.12,
+  "matched": 12,
+  "of": 12,
+  "i": 54,
+  "dur": 3.86
+ },
+ {
+  "text": "For someone spending serious money on a work truck, simplicity can be a feature.",
+  "start": 380.92,
+  "end": 385.62,
+  "matched": 14,
+  "of": 14,
+  "i": 55,
+  "dur": 4.7
+ },
+ {
+  "text": "The conventional axle had worked forever.",
+  "start": 386.19,
+  "end": 388.33,
+  "matched": 6,
+  "of": 6,
+  "i": 56,
+  "dur": 2.14
+ },
+ {
+  "text": "So even if Quadrasteer made the truck objectively easier to maneuver, a lot of buyers could look underneath, see all that extra hardware and think, no thanks.",
+  "start": 388.92,
+  "end": 398.36,
+  "matched": 27,
+  "of": 27,
+  "i": 57,
+  "dur": 9.44
+ },
+ {
+  "text": "Which is funny. Because two decades later, rear-wheel steering somehow became cool again.",
+  "start": 398.92,
+  "end": 404.6,
+  "matched": 12,
+  "of": 13,
+  "i": 58,
+  "dur": 5.68
+ },
+ {
+  "text": "Modern luxury cars use it. Performance vehicles use it.",
+  "start": 405.26,
+  "end": 408.89,
+  "matched": 9,
+  "of": 9,
+  "i": 59,
+  "dur": 3.63
+ },
+ {
+  "text": "And when GMC launched the Hummer EV, one of its headline features was four-wheel steering.",
+  "start": 409.36,
+  "end": 415.08,
+  "matched": 15,
+  "of": 15,
+  "i": 60,
+  "dur": 5.72
+ },
+ {
+  "text": "GMC even gave it a dramatic name. CrabWalk.",
+  "start": 415.83,
+  "end": 419.27,
+  "matched": 8,
+  "of": 8,
+  "i": 61,
+  "dur": 3.44
+ },
+ {
+  "text": "The Hummer could turn its rear wheels in the same direction as the fronts at low speed and move diagonally to maneuver around obstacles.",
+  "start": 419.75,
+  "end": 428.19,
+  "matched": 24,
+  "of": 24,
+  "i": 62,
+  "dur": 8.44
+ },
+ {
+  "text": "Suddenly, watching the rear wheels of a giant truck move wasn't weird. It was something people filmed with their phones.",
+  "start": 428.92,
+  "end": 437.07,
+  "matched": 20,
+  "of": 20,
+  "i": 63,
+  "dur": 8.15
+ },
+ {
+  "text": "And that's what makes Quadrasteer such a strange failure. It wasn't like GM invented something useless.",
+  "start": 437.12,
+  "end": 443.98,
+  "matched": 16,
+  "of": 16,
+  "i": 64,
+  "dur": 6.86
+ },
+ {
+  "text": "The system addressed a real problem. Reviewers liked it.",
+  "start": 444.06,
+  "end": 447.8,
+  "matched": 9,
+  "of": 9,
+  "i": 65,
+  "dur": 3.74
+ },
+ {
+  "text": "People who tow with Quadrasteer trucks still tend to appreciate what the system can do.",
+  "start": 448.37,
+  "end": 453.59,
+  "matched": 15,
+  "of": 15,
+  "i": 66,
+  "dur": 5.22
+ },
+ {
+  "text": "The basic engineering idea survived. What failed was the timing.",
+  "start": 454.37,
+  "end": 458.89,
+  "matched": 10,
+  "of": 10,
+  "i": 67,
+  "dur": 4.52
+ },
+ {
+  "text": "GM introduced expensive technology to customers who weren't convinced they needed it, bundled it in ways that made the price difficult to swallow, then spent the next few years cutting that price after the reputation had already been established.",
+  "start": 459.69,
+  "end": 474.49,
+  "matched": 39,
+  "of": 39,
+  "i": 68,
+  "dur": 14.8
+ },
+ {
+  "text": "By 2005, Quadrasteer was finished. The feature disappeared from GM's trucks.",
+  "start": 475.09,
+  "end": 480.91,
+  "matched": 10,
+  "of": 11,
+  "i": 69,
+  "dur": 5.82
+ },
+ {
+  "text": "Not because rear-wheel steering didn't work. But because GM couldn't convince enough people to pay for it.",
+  "start": 481.57,
+  "end": 487.57,
+  "matched": 16,
+  "of": 17,
+  "i": 70,
+  "dur": 6.0
+ },
+ {
+  "text": "And today, that makes surviving Quadrasteer trucks some of the most interesting vehicles of the entire GMT800 era.",
+  "start": 488.19,
+  "end": 496.27,
+  "matched": 17,
+  "of": 18,
+  "i": 71,
+  "dur": 8.08
+ },
+ {
+  "text": "From the outside, one might look like an ordinary early-2000s Silverado, Sierra, Suburban, or Yukon XL.",
+  "start": 496.83,
+  "end": 505.43,
+  "matched": 15,
+  "of": 16,
+  "i": 72,
+  "dur": 8.6
+ },
+ {
+  "text": "Then you turn the steering wheel, and the back tires move.",
+  "start": 506.03,
+  "end": 509.35,
+  "matched": 11,
+  "of": 11,
+  "i": 73,
+  "dur": 3.32
+ },
+ {
+  "text": "It's the sort of feature that feels more appropriate on a brand-new six-figure electric truck than something General Motors was selling more than twenty years ago.",
+  "start": 509.81,
+  "end": 519.79,
+  "matched": 25,
+  "of": 26,
+  "i": 74,
+  "dur": 9.98
+ },
+ {
+  "text": "Which might be the best way to describe Quadrasteer.",
+  "start": 519.85,
+  "end": 522.81,
+  "matched": 9,
+  "of": 9,
+  "i": 75,
+  "dur": 2.96
+ },
+ {
+  "text": "It wasn't a bad idea. It may not even have been a bad product.",
+  "start": 523.41,
+  "end": 527.41,
+  "matched": 14,
+  "of": 14,
+  "i": 76,
+  "dur": 4.0
+ },
+ {
+  "text": "GM simply invented a feature that made much more sense after people had already stopped buying it.",
+  "start": 528.21,
+  "end": 534.15,
+  "matched": 17,
+  "of": 17,
+  "i": 77,
+  "dur": 5.94
+ },
+ {
+  "text": "And in an era full of strange General Motors experiments, the composite Pro-Tec bed, the Avalanche Midgate, early hybrid pickups, and Quadrasteer, this might have been one of the few times GM wasn't thinking too strangely.",
+  "start": 534.44,
+  "end": 549.96,
+  "matched": 36,
+  "of": 36,
+  "i": 78,
+  "dur": 15.52
+ },
+ {
+  "text": "It was just thinking too far ahead.",
+  "start": 550.6,
+  "end": 552.5,
+  "matched": 7,
+  "of": 7,
+  "i": 79,
+  "dur": 1.9
+ }
+]

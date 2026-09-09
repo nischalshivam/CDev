@@ -1,0 +1,131 @@
+[
+  {
+    "language_code": "eng",
+    "language_probability": 0.9954885244369507,
+    "text": "91 seconds. That was all Mike Tyson needed",
+    "words": [
+      {
+        "text": "91",
+        "start": 0.379,
+        "end": 1.019,
+        "type": "word",
+        "speaker_id": "speaker_0",
+        "logprob": -0.26233312487329385
+      },
+      {
+        "text": " ",
+        "start": 1.019,
+        "end": 1.159,
+        "type": "spacing",
+        "speaker_id": "speaker_0",
+        "logprob": -0.000041126360883936286
+      },
+      {
+        "text": "seconds.",
+        "start": 1.159,
+        "end": 1.659,
+        "type": "word",
+        "speaker_id": "speaker_0",
+        "logprob": -0.000058439598433324136
+      },
+      {
+        "text": " ",
+        "start": 1.659,
+        "end": 2.099,
+        "type": "spacing",
+        "speaker_id": "speaker_0",
+        "logprob": -0.0000010728830375228426
+      },
+      {
+        "text": "That",
+        "start": 2.099,
+        "end": 2.279,
+        "type": "word",
+        "speaker_id": "speaker_0",
+        "logprob": -0.0000010728830375228426
+      },
+      {
+        "text": " ",
+        "start": 2.279,
+        "end": 2.319,
+        "type": "spacing",
+        "speaker_id": "speaker_0",
+        "logprob": 0
+      },
+      {
+        "text": "was",
+        "start": 2.319,
+        "end": 2.519,
+        "type": "word",
+        "speaker_id": "speaker_0",
+        "logprob": 0
+      },
+      {
+        "text": " ",
+        "start": 2.519,
+        "end": 2.599,
+        "type": "spacing",
+        "speaker_id": "speaker_0",
+        "logprob": 0
+      },
+      {
+        "text": "all",
+        "start": 2.599,
+        "end": 2.839,
+        "type": "word",
+        "speaker_id": "speaker_0",
+        "logprob": 0
+      },
+      {
+        "text": " ",
+        "start": 2.839,
+        "end": 2.859,
+        "type": "spacing",
+        "speaker_id": "speaker_0",
+        "logprob": -0.0000027418097943154862
+      },
+      {
+        "text": "Mike",
+        "start": 2.859,
+        "end": 3.079,
+        "type": "word",
+        "speaker_id": "speaker_0",
+        "logprob": -0.0000027418097943154862
+      },
+      {
+        "text": " ",
+        "start": 3.079,
+        "end": 3.119,
+        "type": "spacing",
+        "speaker_id": "speaker_0",
+        "logprob": -2.3841855067985307e-7
+      },
+      {
+        "text": "Tyson",
+        "start": 3.119,
+        "end": 3.539,
+        "type": "word",
+        "speaker_id": "speaker_0",
+        "logprob": -2.3841855067985307e-7
+      },
+      {
+        "text": " ",
+        "start": 3.539,
+        "end": 3.559,
+        "type": "spacing",
+        "speaker_id": "speaker_0",
+        "logprob": -2.3841855067985307e-7
+      },
+      {
+        "text": "needed",
+        "start": 3.559,
+        "end": 3.899,
+        "type": "word",
+        "speaker_id": "speaker_0",
+        "logprob": -2.3841855067985307e-7
+      }
+    ],
+    "transcription_id": "sLVMuUtHo2YXgKEPpJOW",
+    "audio_duration_secs": 4.310204
+  }
+]

@@ -1,3 +1,10 @@
+"""DEAD MODULE — not imported by any build (only its own test).
+
+Left in place for reference, but it still contains `zoompan` motion, which was measured to
+shake: zoompan truncates its crop origin to whole pixels so a smooth push arrives as uneven
+steps (0.352px per-frame vs 0.001px for the subpixel `perspective` path). If this module is
+ever revived, take its Ken Burns from build_core.ken_burns() instead.
+"""
 #!/usr/bin/env python3
 """
 Renderer Module for ProClip Engine

@@ -1,0 +1,29 @@
+STOCK_V = [
+    "tracked armoured fighting vehicle driving",
+    "military tank tracks mud close up",
+    "army armoured vehicle convoy field exercise",
+    "armoured vehicle factory assembly line welding",
+    "military vehicle turret cannon barrel",
+    "defence exhibition trade show military hardware",
+    "soldiers crew inside armoured vehicle hatch",
+    "tank driving training range dust",
+    "military vehicle transporter loading",
+    "engineer inspecting military vehicle hull",
+    "military tracked armoured vehicle driving",
+    "army tank convoy dirt road",
+    "tank tracks close up mud",
+    "soldiers camouflage netting field exercise",
+    "armoured personnel carrier military exercise",
+    "military vehicle maintenance workshop mechanic",
+    "old military tank museum display",
+    "army radio antenna soldier turret hatch",
+]
+
+STOCK_I = [
+    "armoured vehicle military",
+    "british army soldiers",
+    "tank tracks close up",
+    "military factory manufacturing",
+    "parliament westminster london",
+    "military radio headset",
+]

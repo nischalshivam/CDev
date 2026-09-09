@@ -1,0 +1,546 @@
+{
+ "youtube": [
+  {
+   "id": "hYqJF6D5cp0",
+   "title": "Introduction of Chevy Silverado Quadrasteer System",
+   "duration_s": 75,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "oMyeAyBqzzk",
+   "title": "2003 Chevrolet Silverado 1500 Quadrasteer TVC",
+   "duration_s": 31,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "7FAcEH3-Gio",
+   "title": "2003 GMC Sierra Denali Quadrasteer TVC",
+   "duration_s": 31,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "rzW12bC294w",
+   "title": "2002 Chevrolet Silverado Quadrasteer Commercial",
+   "duration_s": 31,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "Q0pbf4uNp3I",
+   "title": "2003 GMC Sierra Quadrasteer Commercial",
+   "duration_s": 31,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "OGuukdd-sMw",
+   "title": "MotorWeek Retro Review | 2002 GMC Sierra Denali Quadrasteer",
+   "duration_s": 354,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "7g8xAIGNrz8",
+   "title": "Motorweek 2002 GMC Sierra Denali Road Test",
+   "duration_s": 350,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "OEVUTmaPpWg",
+   "title": "Sierra Denali Quadrasteer w/GoPro (4-Wheel Steering)",
+   "duration_s": 269,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "TASVJhT7FGU",
+   "title": "2004 GMC Sierra 2500 6.0 4x4 SLT Crew Quadrasteer Wheel Kinetics",
+   "duration_s": 537,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "C97eYCbCTKA",
+   "title": "2002 GMC Sierra SLT Quadrasteer Walkaround",
+   "duration_s": 907,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "Xc7ZWnlvfgg",
+   "title": "Insanely Rare! Full Walkaround of a Quadrasteer GMC Yukon XL",
+   "duration_s": 751,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "moQPkLc2UdQ",
+   "title": "Quadristeer 2002 Yukon Rear Wheel Steering Parallel Parking",
+   "duration_s": 27,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "m2wYyfpAvK0",
+   "title": "QUADRASTEER on my Sierra Denali...",
+   "duration_s": 24,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "UMTw_pS_3Kw",
+   "title": "2003 GMC Sierra 1500 Quadrasteer",
+   "duration_s": 35,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "gwXIadxhQKE",
+   "title": "GM Delphi Quadrasteer independent control",
+   "duration_s": 115,
+   "need": "quadrasteer-demo"
+  },
+  {
+   "id": "-AzJvRF-sK8",
+   "title": "2003 Yukon 4x4 QUADRASTEER",
+   "duration_s": 30,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "peJI3KLnXgI",
+   "title": "2002 GMC Sierra Denali 4WS Sport Truck Connection Archive road tests",
+   "duration_s": 284,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "9R62pZlLXnM",
+   "title": "2003 Chevy Silverado 4WS Sport Truck Connection Archive road tests",
+   "duration_s": 262,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "m2xpC6x8T6w",
+   "title": "2004 Chevy Suburban 4WS Sport Truck Connection Archive road tests",
+   "duration_s": 183,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "uGRECYDummw",
+   "title": "2002 GMC Sierra Denali Quadrasteer (C3) - MotorWeek Retro",
+   "duration_s": 350,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "kD5GSXiTe40",
+   "title": "Motorweek 2003 Chevrolet Silverado Road Test",
+   "duration_s": 350,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "Y-inij_Coio",
+   "title": "MW 2001 First Drive The GM Pickups HD Lineup | Retro Review",
+   "duration_s": 169,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "QsVS_5-97hg",
+   "title": "2002 Chevy Silverado 3500 Sport Truck Connection Archive road tests",
+   "duration_s": 169,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "-yDOg7wUJ5k",
+   "title": "2002 Chevy Silverado HD \"Giants\" Commercial",
+   "duration_s": 29,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "tC0XnS7kAo8",
+   "title": "2003 GMC Yukon XL Quadrasteer 4 wheel steering doing figure eights! Turns on a dime, 8 cen",
+   "duration_s": 70,
+   "need": "gm-trucks-2000s"
+  },
+  {
+   "id": "7gJ4nZ0CZAc",
+   "title": "2001 Chevrolet Silverado Features - Dealer Training",
+   "duration_s": 1753,
+   "need": "maneuver-tight"
+  },
+  {
+   "id": "WfNRa2Cilpk",
+   "title": "Introduction to the 03 1500hd Quadrasteer",
+   "duration_s": 661,
+   "need": "maneuver-tight"
+  },
+  {
+   "id": "1yRypIGgX5c",
+   "title": "Quadrasteer In Action 2005 Gmc Sierra / 4 Wheel Steering",
+   "duration_s": 118,
+   "need": "maneuver-tight"
+  },
+  {
+   "id": "KRDM2ViARI0",
+   "title": "2004 GMC Sierra Denali C3 Quadrasteer, Test the steering!!!",
+   "duration_s": 97,
+   "need": "maneuver-tight"
+  },
+  {
+   "id": "tVnLJj3LO_w",
+   "title": "Silverado with Quad Steering.",
+   "duration_s": 55,
+   "need": "maneuver-tight"
+  },
+  {
+   "id": "diWb0Mlb98Q",
+   "title": "TOWING A JOHN DEERE WITH THE QUADRASTEER YUKON",
+   "duration_s": 648,
+   "need": "maneuver-tight"
+  },
+  {
+   "id": "yTNeQYFlY_U",
+   "title": "QuadraSteer GMC Sierra 2500 Crew Cab 1-Owner Unit 4-Sale 4 Wheel Steering",
+   "duration_s": 366,
+   "need": "maneuver-tight"
+  },
+  {
+   "id": "sVCRg_wNqDQ",
+   "title": "TOWING WITH A QUADRASTEER YUKON",
+   "duration_s": 993,
+   "need": "towing"
+  },
+  {
+   "id": "mCDfsRtXSQc",
+   "title": "Chevrolet Silverado, GMC, with Quad-Steering.",
+   "duration_s": 253,
+   "need": "towing"
+  },
+  {
+   "id": "Qcc5mD_yWME",
+   "title": "Chevrolet (US) - 1994 Chevrolet CK vs Dodge Ram Pickup - Product Training (1993)",
+   "duration_s": 1617,
+   "need": "towing"
+  },
+  {
+   "id": "88ar6y0nvzc",
+   "title": "2002 Heavy Duty Diesel Silverado Pickup Towing Test (Episode 6)",
+   "duration_s": 213,
+   "need": "towing"
+  },
+  {
+   "id": "j7dFEfpveQ0",
+   "title": "2002 Silverado Dually Pulling My Gooseneck Trailer \"Darth Dually\"",
+   "duration_s": 284,
+   "need": "towing"
+  },
+  {
+   "id": "wVa1BZgrgt4",
+   "title": "DRIVING A QUADRASTEER 2500 YUKON",
+   "duration_s": 1109,
+   "need": "towing"
+  },
+  {
+   "id": "x7k2dMSvJoU",
+   "title": "How to Back in a 5th Wheel",
+   "duration_s": 850,
+   "need": "towing"
+  },
+  {
+   "id": "9F8Fk26Ekxg",
+   "title": "Back a Boat Trailer Like a Pro | BoatUS",
+   "duration_s": 138,
+   "need": "towing"
+  },
+  {
+   "id": "187CSq5yTZE",
+   "title": "Hooking up a Travel Trailer - How To RV: Camping World",
+   "duration_s": 256,
+   "need": "towing"
+  },
+  {
+   "id": "7aOx6R15w-s",
+   "title": "Hooking Up a Gooseneck Horse Trailer",
+   "duration_s": 236,
+   "need": "towing"
+  },
+  {
+   "id": "Tu7OK50Rxdc",
+   "title": "2003 Chevy Silverado SS Sport Truck Connection Archive road tests",
+   "duration_s": 194,
+   "need": "interior-controls"
+  },
+  {
+   "id": "LzvM8fu6wYE",
+   "title": "Interior view 2003 Chevy Silverado, Walk-Around Review",
+   "duration_s": 776,
+   "need": "interior-controls"
+  },
+  {
+   "id": "eeiGj9ezLK8",
+   "title": "Quadrasteer POV And Maneuverability! Turns On A Dime!!!",
+   "duration_s": 522,
+   "need": "interior-controls"
+  },
+  {
+   "id": "GqaLKwwCbWY",
+   "title": "I Got a Quadrasteer! + Short Demonstration",
+   "duration_s": 772,
+   "need": "interior-controls"
+  },
+  {
+   "id": "P1P2wGzwK_U",
+   "title": "Test Drive 2002 Chevrolet Silverado 2500 HD Duramax (Start Up, Exhaust, In Depth Tour)",
+   "duration_s": 603,
+   "need": "interior-controls"
+  },
+  {
+   "id": "jnJT_ZQkrPA",
+   "title": "GMC Quadrasteer (4 wheel steer) Repair",
+   "duration_s": 1012,
+   "need": "wheels-chassis"
+  },
+  {
+   "id": "CF2xyYop6JQ",
+   "title": "Restoring GMC quadrasteer",
+   "duration_s": 2614,
+   "need": "wheels-chassis"
+  },
+  {
+   "id": "7G0owSzYVAA",
+   "title": "Quadrasteer Rear Wheel Position Sensor 26091590 replacement",
+   "duration_s": 750,
+   "need": "wheels-chassis"
+  },
+  {
+   "id": "ZMdZpiXdJW0",
+   "title": "Quadrasteer Suburban Gets A New Rear Axle!",
+   "duration_s": 687,
+   "need": "wheels-chassis"
+  },
+  {
+   "id": "kI1d8yVV4XY",
+   "title": "Rear Axle Removal!  1999-2005 Silverado, Sierra, Tahoe, Suburban, Avalanche, & Yukon",
+   "duration_s": 238,
+   "need": "wheels-chassis"
+  },
+  {
+   "id": "hPRcbnvNkUQ",
+   "title": "'03 Sierra K1500 Quadrasteer Rear End 3.73 Working! Our Stock # 191045 435",
+   "duration_s": 69,
+   "need": "wheels-chassis"
+  },
+  {
+   "id": "juqHNHQ3iHg",
+   "title": "Quadrasteer control module - inner workings - cut open",
+   "duration_s": 64,
+   "need": "wheels-chassis"
+  },
+  {
+   "id": "jUrymSwuIYM",
+   "title": "A Quadrasteer GMC Sierra at the Junk Yard?!",
+   "duration_s": 249,
+   "need": "wheels-chassis"
+  },
+  {
+   "id": "3lmV10IBalw",
+   "title": "2004 GMC Sierra Denali Extended Cab AWD QuadraSteer | The Ultimate Pickup | Full In Depth",
+   "duration_s": 1235,
+   "need": "wheels-chassis"
+  },
+  {
+   "id": "KK19pn5vcUI",
+   "title": "Chevrolet (US) - 2002 Chevrolet Suburban - Product Training (2001)",
+   "duration_s": 1558,
+   "need": "dealer-price"
+  },
+  {
+   "id": "-6BNNYgSsDY",
+   "title": "2004 Chevrolet Colorado launch video",
+   "duration_s": 2376,
+   "need": "dealer-price"
+  },
+  {
+   "id": "aPp3CT4DxeQ",
+   "title": "Bennett Chev Olds Carlton Place Commercial 2003",
+   "duration_s": 30,
+   "need": "dealer-price"
+  },
+  {
+   "id": "HPfJVTUC2k4",
+   "title": "2000s Ford & Dodge Brochures",
+   "duration_s": 1604,
+   "need": "dealer-price"
+  },
+  {
+   "id": "rRL0Lp27llk",
+   "title": "GM Accessories for 2005",
+   "duration_s": 775,
+   "need": "dealer-price"
+  },
+  {
+   "id": "8RMJSqkJAdA",
+   "title": "1990s Cars in Showroom, Dealerships, Aerial of Car Lot",
+   "duration_s": 16,
+   "need": "dealer-price"
+  },
+  {
+   "id": "g_xJzDZ9zb0",
+   "title": "2002 Chevy Silverado LS Extra Cab Short Bed. California truck. One owner and it's for sale",
+   "duration_s": 295,
+   "need": "dealer-price"
+  },
+  {
+   "id": "GlyCG-L5yUE",
+   "title": "Chevrolet (US) - 2003 Chevrolet Corvette - Product Training (2002)",
+   "duration_s": 2022,
+   "need": "dealer-price"
+  },
+  {
+   "id": "DX_kK1zHPlg",
+   "title": "2001 Chevrolet Cavalier Features - Dealer Training",
+   "duration_s": 731,
+   "need": "dealer-price"
+  },
+  {
+   "id": "eUUci5mHrbs",
+   "title": "1993 Tulsa Turnpike Ford Subaru Car Dealership Commercial",
+   "duration_s": 30,
+   "need": "dealer-price"
+  },
+  {
+   "id": "a2dSciK7IEk",
+   "title": "2004 Chevy Silverado Quadrasteer Test - 4x4TV Test Review Videos",
+   "duration_s": 250,
+   "need": "suburbia-highway"
+  },
+  {
+   "id": "ENx496lB35c",
+   "title": "2004 GMC 2500 CrewCab 4x4 Test - 4x4TV Test Videos",
+   "duration_s": 339,
+   "need": "suburbia-highway"
+  },
+  {
+   "id": "tk7ZWAdV6YY",
+   "title": "2002 GMC  Professional Grade",
+   "duration_s": 602,
+   "need": "suburbia-highway"
+  },
+  {
+   "id": "eOiyPOI1zXg",
+   "title": "2002 - Sam Elliott for Chevy Trucks",
+   "duration_s": 31,
+   "need": "suburbia-highway"
+  },
+  {
+   "id": "O3VOR1dXacA",
+   "title": "Chevrolet Silverado (2003) Television Commercial - Power Packs - Chevy",
+   "duration_s": 30,
+   "need": "suburbia-highway"
+  }
+ ],
+ "stock": [
+  "pickup truck rear wheel close up turning",
+  "truck towing trailer tight turn parking lot",
+  "full size pickup truck reversing with trailer",
+  "close up tire steering knuckle suspension",
+  "pickup truck maneuvering narrow street aerial",
+  "boat trailer backing down ramp truck",
+  "car dealership lot pickup trucks rows",
+  "automotive assembly line truck axle factory",
+  "truck driving highway rear three quarter tracking shot",
+  "steering wheel hands driver interior close up",
+  "pickup truck driving highway",
+  "pickup truck towing trailer road",
+  "truck rear wheel close up turning",
+  "hands on steering wheel driving truck",
+  "truck tires asphalt tight turn",
+  "pickup truck parking lot maneuvering aerial",
+  "american highway desert truck driving",
+  "car dealership lot pickup trucks",
+  "truck bed loading cargo worker",
+  "automotive factory assembly line chassis",
+  "pickup truck parking lot maneuvering",
+  "truck reversing parking space",
+  "pickup truck traffic cones course",
+  "parking garage truck driving ramp",
+  "pickup truck making u-turn road",
+  "large truck tight turn city street",
+  "truck backing up trailer",
+  "empty parking lot aerial truck",
+  "car park driving slow overhead",
+  "pickup truck wheels turning close up",
+  "pickup truck towing trailer on highway",
+  "boat trailer launching at ramp",
+  "RV travel trailer road trip aerial",
+  "trailer hitch coupler close up",
+  "fifth wheel camper towed by truck",
+  "horse trailer loading horses",
+  "camper trailer arriving at campsite",
+  "truck reversing trailer parking lot",
+  "car towing caravan country road",
+  "loading boat onto trailer at lake",
+  "hands on steering wheel driving close up",
+  "truck dashboard point of view driving",
+  "car instrument cluster gauges close up",
+  "driver turning steering wheel interior shot",
+  "pickup truck interior driving daytime",
+  "dashboard buttons switches close up car",
+  "speedometer needle moving driving",
+  "hand on gear shifter center console",
+  "over the shoulder driver windshield road",
+  "car interior dashboard lights night drive",
+  "pickup truck wheel close up",
+  "truck tire rotating on road",
+  "rear axle differential mechanic",
+  "car suspension coil spring close up",
+  "vehicle undercarriage on lift",
+  "mechanic working under truck chassis",
+  "alloy wheel spinning slow motion",
+  "pickup truck towing trailer highway",
+  "truck driving dusty road low angle",
+  "steel chassis frame automotive",
+  "car dealership lot rows of cars",
+  "car showroom interior new vehicles",
+  "salesman handing car keys to customer",
+  "pickup truck for sale dealership",
+  "customer signing car purchase paperwork",
+  "aerial view parking lot new cars",
+  "price tag sticker on car window",
+  "handshake car salesman deal",
+  "brochure pages flipping close up",
+  "used car lot flags banners",
+  "pickup truck driving suburban street",
+  "pickup truck parked in driveway house",
+  "grocery store parking lot cars aerial",
+  "highway traffic pickup trucks lane change",
+  "aerial suburban neighborhood houses street",
+  "construction site pickup truck workers",
+  "truck towing trailer on highway",
+  "shopping center parking lot drone",
+  "american small town main street traffic",
+  "truck rear wheels turning close up"
+ ],
+ "needs": [
+  {
+   "need": "quadrasteer-demo",
+   "kept": 15
+  },
+  {
+   "need": "gm-trucks-2000s",
+   "kept": 15
+  },
+  {
+   "need": "maneuver-tight",
+   "kept": 15
+  },
+  {
+   "need": "towing",
+   "kept": 15
+  },
+  {
+   "need": "interior-controls",
+   "kept": 15
+  },
+  {
+   "need": "wheels-chassis",
+   "kept": 15
+  },
+  {
+   "need": "dealer-price",
+   "kept": 13
+  },
+  {
+   "need": "suburbia-highway",
+   "kept": 14
+  }
+ ]
+}

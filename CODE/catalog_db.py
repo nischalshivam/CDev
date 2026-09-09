@@ -174,6 +174,7 @@ class Catalog:
         self.cx.execute("PRAGMA foreign_keys=ON;")
         self.cx.executescript(_SCHEMA)
         self._migrate()
+        self._person_cache = {}
 
     def close(self):
         self.cx.close()
@@ -351,11 +352,27 @@ class Catalog:
                             "VALUES(?,?,?,?)", (asset_id, channel, video_id, time.time()))
 
     # ------------------------------------------------------------------ RETRIEVAL
+    def _person_entities(self, entity_ids: set) -> set:
+        """Of these entity ids, the ones that are PEOPLE.
+
+        The roster gate must only judge people. Places, events and objects are labelled in the same
+        table, and testing every entity against the roster would reject a shot of Atlantic City for
+        not being a boxer."""
+        if not entity_ids:
+            return set()
+        key = tuple(sorted(entity_ids))
+        if key not in self._person_cache:
+            qs = ",".join("?" * len(key))
+            self._person_cache[key] = {r["entity_id"] for r in self.cx.execute(
+                f"SELECT entity_id FROM entities WHERE kind='person' AND entity_id IN ({qs})", key)}
+        return self._person_cache[key]
+
     def search(self, *, query_text: str = None, type: str = None, required_all: list = None,
                required_any: list = None, forbidden: list = None, min_quality: str = "low",
                era: tuple = None, allow_unknown_era: bool = False, min_match_conf: float = 0.0,
                scope_collections: list = None, cooldown_channel: str = None,
-               exclude_last_n: int = None, max_channel_uses: int = None, top_k: int = 10) -> list[dict]:
+               exclude_last_n: int = None, max_channel_uses: int = None, roster: list = None,
+               top_k: int = 10) -> list[dict]:
         """Fail-closed retrieval. An asset surfaces only if it is approved, clean/fixable, its file
         exists, and it passes type/entity/era/quality gates. query_text adds FTS relevance ranking."""
         qrank = {"low": 0, "medium": 1, "high": 2}
@@ -409,6 +426,16 @@ class Catalog:
             ents = {x["entity_id"] for x in self.cx.execute(
                 "SELECT entity_id FROM asset_entities WHERE asset_id=?", (r["asset_id"],))}
             if ents & forbidden:
+                continue
+            if roster is not None and (self._person_entities(ents) - set(roster)):
+                # ROSTER: a project declares who may appear in it, and a clip showing anyone else is
+                # rejected outright. `forbidden` cannot do this job — it is a blacklist, so it only
+                # blocks people someone thought to name, and everything unlisted sails through.
+                # A shared library holds several films' footage: a Tyson-Spinks cut was pulling
+                # Andrew Golota, Vitali Klitschko and Evander Holyfield clips purely on text
+                # relevance, because nothing said they did not belong. A roster is fail-closed, so
+                # footage of a fighter added to the library tomorrow is excluded until someone
+                # decides otherwise. Assets with no person at all (crowd, arena, canvas) always pass.
                 continue
             if required_all and not set(required_all).issubset(ents):
                 continue

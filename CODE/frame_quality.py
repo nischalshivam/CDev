@@ -175,31 +175,104 @@ def source_quality(video, samples: int = 16) -> dict:
 
 
 # ---------------------------------------------------------------- fast batch path
-def decode_frames(video, fps: float = 2.0, width: int = 480, out_dir=None) -> list:
-    """Decode a whole source ONCE into an array of greyscale frames + their timestamps.
+_FRAME_CACHE = {}
+_DIMS = {}
 
-    The per-segment path costs ~10 ffmpeg seeks per candidate; on a few hundred segments that is
-    thousands of process launches and the gate becomes the slowest step in the pipeline. Decoding
-    once at a low fps and measuring in memory is ~50x faster for the same numbers.
 
-    Returns [(t_seconds, frame_array), ...]."""
-    d = out_dir or tempfile.mkdtemp()
-    os.makedirs(d, exist_ok=True)
-    subprocess.run(["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(video),
-                    "-vf", f"fps={fps},scale={width}:-2", f"{d}/f%06d.png"],
-                   capture_output=True, timeout=3600)
-    out = []
-    for i, f in enumerate(sorted(glob.glob(d + "/f*.png"))):
+def _dims(video):
+    """Cached source dimensions. Every decode call used to spawn its own ffprobe; at two
+    process launches per gate check across hundreds of candidates that is pure overhead."""
+    k = str(video)
+    if k not in _DIMS:
+        o = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0",
+                            "-show_entries", "stream=width,height", "-of", "csv=p=0", k],
+                           capture_output=True, text=True).stdout.strip().split(",")
         try:
-            out.append((i / fps, np.asarray(Image.open(f).convert("L"), dtype=np.float32)))
+            _DIMS[k] = (int(o[0]), int(o[1]))
         except Exception:
-            pass
-        os.remove(f)
-    try:
-        os.rmdir(d)
-    except OSError:
-        pass
+            _DIMS[k] = (1280, 720)
+    return _DIMS[k]
+
+
+def decode_frames(video, fps: float = 2.0, width: int = 480, out_dir=None) -> list:
+    """Decode a whole source ONCE into greyscale frames + timestamps, via a RAW PIPE.
+
+    This used to write one PNG per frame to a temp directory and read them back with PIL. Measured
+    on a 117-second source that cost 113 seconds — essentially real-time — because every frame paid
+    a PNG encode, a disk write, a disk read and a PNG decode. Across a 66-source library that was
+    ~109 minutes of pure decoding before a single shot could be rendered, and it was the single
+    largest reason a three-minute video took hours to build.
+
+    Piping raw 8-bit grey straight out of ffmpeg removes all four costs: no image codec, no
+    filesystem, one process. Same numbers out, a fraction of the time.
+
+    Results are memoised per (video, fps, width) because the gate, the branding detector and the
+    exposure measurement all want the same frames and used to decode the file separately."""
+    key = (str(video), round(float(fps), 4), int(width))
+    if key in _FRAME_CACHE:
+        return _FRAME_CACHE[key]
+
+    sw, sh = _dims(video)
+    w = int(width) // 2 * 2
+    h = max(2, int(round(w * sh / max(1, sw))) // 2 * 2)
+
+    p = subprocess.run(["ffmpeg", "-v", "error", "-i", str(video),
+                        "-vf", f"fps={fps},scale={w}:{h}", "-f", "rawvideo",
+                        "-pix_fmt", "gray", "-"],
+                       capture_output=True, timeout=3600)
+    buf, fsz = p.stdout, w * h
+    n = len(buf) // fsz if fsz else 0
+    arr = np.frombuffer(buf[:n * fsz], dtype=np.uint8).reshape(n, h, w).astype(np.float32)
+    out = [(i / fps, arr[i]) for i in range(n)]
+    if len(_FRAME_CACHE) > 24:                 # bound memory on long multi-source builds
+        _FRAME_CACHE.clear()
+    _FRAME_CACHE[key] = out
     return out
+
+
+def decode_window(video, start: float, dur: float, fps: float = 4.0, width: int = 480) -> list:
+    """Decode ONLY the seconds a candidate segment needs, using a fast pre-input seek.
+
+    This replaces decoding the whole source for every gate check. Measured: a 117-second source cost
+    ~42s to decode in full, and a build touches ~30 sources — so the gate alone was tens of minutes
+    before a single frame was rendered. But a shot is at most a few seconds long and a build uses
+    only one or two segments from most sources, so nearly all of that decoding was thrown away.
+
+    `-ss` placed BEFORE `-i` seeks by keyframe without decoding the skipped part, so the cost
+    becomes proportional to the SHOT, not to the source."""
+    sw, sh = _dims(video)
+    w = int(width) // 2 * 2
+    h = max(2, int(round(w * sh / max(1, sw))) // 2 * 2)
+    p = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{max(0.0, start):.2f}",
+                        "-t", f"{max(0.4, dur):.2f}", "-i", str(video),
+                        "-vf", f"fps={fps},scale={w}:{h}", "-f", "rawvideo",
+                        "-pix_fmt", "gray", "-"], capture_output=True, timeout=300)
+    fsz = w * h
+    n = len(p.stdout) // fsz if fsz else 0
+    if n == 0:
+        return []
+    arr = np.frombuffer(p.stdout[:n * fsz], dtype=np.uint8).reshape(n, h, w).astype(np.float32)
+    return [(start + i / fps, arr[i]) for i in range(n)]
+
+
+def decode_keyframes(video, width: int = 768, max_frames: int = 60) -> list:
+    """Keyframe-only decode: a cheap sample spread across a WHOLE source.
+
+    Used by the branding detector, which needs frames from everywhere in the file but only about
+    thirty of them. Asking for fps=0.25 still made ffmpeg decode every frame and throw most away
+    (~45s on a two-minute source); -skip_frame nokey decodes just the I-frames."""
+    sw, sh = _dims(video)
+    w = int(width) // 2 * 2
+    h = max(2, int(round(w * sh / max(1, sw))) // 2 * 2)
+    p = subprocess.run(["ffmpeg", "-v", "error", "-skip_frame", "nokey", "-i", str(video),
+                        "-vsync", "0", "-vf", f"scale={w}:{h}", "-f", "rawvideo",
+                        "-pix_fmt", "gray", "-"], capture_output=True, timeout=900)
+    fsz = w * h
+    n = min(len(p.stdout) // fsz if fsz else 0, max_frames)
+    if n == 0:
+        return []
+    arr = np.frombuffer(p.stdout[:n * fsz], dtype=np.uint8).reshape(n, h, w).astype(np.float32)
+    return [(float(i), arr[i]) for i in range(n)]
 
 
 def assess_batch(frames: list, start: float, end: float,
@@ -240,6 +313,73 @@ def assess_batch(frames: list, start: float, end: float,
             reasons.append(f"burned-in graphics {ov_pct:.1f}% (worst sub-window)")
     return {"usable": not reasons, "reasons": reasons, "sharpness": round(sh, 1),
             "overlay_pct": round(ov_pct, 2)}
+
+
+def branding_box(frames: list, ratio: float = 4.0, edge_zone: float = 0.35,
+                 max_trim: float = 0.34) -> dict:
+    """Locate another channel's burned-in captions and return the fraction to trim off each edge.
+
+    Why this is needed even though a per-shot overlay detector already exists: that detector fires
+    above ~1.2% frame coverage, and a compilation channel's lower-third ("Mike Tyson Knockouts —
+    September 5, 1985") plus its corner ranking badge cover about 1% together. Under the threshold,
+    so all of them passed, and a cut went out with a rival channel's furniture on ten shots.
+
+    The first attempt at THIS function also failed, and the reason is worth keeping: it looked for
+    pixels that never change across the source, on the assumption branding is permanent. But a
+    countdown compilation re-writes its caption for every entry — different name, different date,
+    different rank — so the text is not static at all and the measured coverage came back 0.0-0.4%
+    on sources visibly covered in captions.
+
+    What IS invariant is not the pixels but the LAYOUT: rendered text is a dense band of hard
+    horizontal gradients, and a channel always puts it in the same rows. Profiling how often each
+    ROW carries text-like gradient, over the whole source, made the band unmistakable — 12.9x and
+    44.9x the frame's own baseline on the two offending sources, against no band at all on the
+    four clean ones. Measuring the layout rather than the content is what separated them.
+
+    Only the outer `edge_zone` of the frame is considered: captions live at the edges, while a
+    band across the middle is usually real content (ring ropes, a crowd barrier).
+
+    Returns {'top','bottom','left','right'} as fractions to cut, plus the band strength."""
+    if len(frames) < 10:
+        return {"top": 0.0, "bottom": 0.0, "left": 0.0, "right": 0.0, "strength": 0.0}
+    sel = frames[::max(1, len(frames) // 80)][:80]
+    st = np.stack([f for _, f in sel])
+    h, w = st.shape[1], st.shape[2]
+
+    def bands(axis_profile, n):
+        """(start, end, strength) for stretches whose text-likeness far exceeds the frame's own
+        baseline. Normalising against the source's own baseline is what lets one threshold work
+        across a clean broadcast master and a noisy upload alike."""
+        base = max(float(np.median(axis_profile)), 1e-6)
+        hot = [i for i, v in enumerate(axis_profile) if v > base * ratio]
+        out, cur = [], None
+        for i in hot:
+            if cur and i - cur[1] <= 3:
+                cur[1] = i
+            else:
+                if cur and cur[1] - cur[0] >= 2:
+                    out.append(cur)
+                cur = [i, i]
+        if cur and cur[1] - cur[0] >= 2:
+            out.append(cur)
+        return [(a, b, float(max(axis_profile[a:b + 1]) / base)) for a, b in out]
+
+    # hard horizontal gradient = the signature of rendered type against any background
+    flag = (np.abs(np.diff(st, axis=2)) > 26).mean(axis=0)
+    res = {"top": 0.0, "bottom": 0.0, "left": 0.0, "right": 0.0, "strength": 0.0}
+    # ROWS ONLY. Broadcast and channel furniture is laid out in horizontal bands; a vertical scan
+    # instead flagged ring ropes and the ring's own posts as "branding" on two clean sources and
+    # would have thrown away 9% of the picture on each side for nothing.
+    for key_lo, key_hi, prof, n in (("top", "bottom", flag.mean(axis=1), h),):
+        for a, b, s in bands(prof, n):
+            if b < n * edge_zone:                       # band hugs the leading edge
+                res[key_lo] = max(res[key_lo], min(max_trim, (b + 3) / n))
+                res["strength"] = max(res["strength"], s)
+            elif a > n * (1 - edge_zone):               # band hugs the trailing edge
+                res[key_hi] = max(res[key_hi], min(max_trim, (n - a + 3) / n))
+                res["strength"] = max(res["strength"], s)
+    res["strength"] = round(res["strength"], 1)
+    return res
 
 
 def source_edge_median(frames: list) -> float:

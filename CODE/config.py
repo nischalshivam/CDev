@@ -81,6 +81,12 @@ GEMINI_RELAY_BASE = os.getenv("GEMINI_RELAY_BASE", "")
 GEMINI_RELAY_KEY = os.getenv("GEMINI_RELAY_KEY", "")
 GEMINI_RELAY_MODEL = os.getenv("GEMINI_RELAY_MODEL", "gemini-2.5-flash")
 YT_COOKIES = os.getenv("YT_COOKIES", "")
+# Reddit and Instagram both refuse anonymous access now (measured: Reddit 403/HTML-wall on five
+# routes, Instagram 429 on the first request). Neither needs a password here — an exported
+# cookies.txt from a logged-in browser is enough. `--cookies-from-browser` is NOT an option on this
+# machine: Chrome's cookie DB cannot be copied, Edge fails DPAPI decryption, Firefox is absent.
+REDDIT_COOKIES = os.getenv("REDDIT_COOKIES", "")
+INSTA_COOKIES = os.getenv("INSTA_COOKIES", "")
 
 # ai33.pro TTS (voiceover + word timestamps) — keys in keys.env.
 AI33_KEY = os.getenv("AI33_KEY", "")

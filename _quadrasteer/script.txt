@@ -1,0 +1,159 @@
+In the early 2000s, General Motors figured out how to make a full-size pickup truck turn almost like a compact car.
+
+And somehow, almost nobody wanted it.
+
+Imagine taking something the size of a GMC Sierra, turning the steering wheel in a parking lot, and watching the rear wheels turn too.
+
+At low speeds, they pointed in the opposite direction of the front wheels, physically shortening the truck's turning circle.
+
+At higher speeds, they could turn with the front wheels to make the truck feel more stable.
+
+Hook up a trailer, and the system could even change its behavior specifically for towing.
+
+It was called Quadrasteer. And technically, it worked. Really well.
+
+A GMC Sierra Denali that normally needed roughly 47 feet to complete a turning circle could do it in about 37 feet with Quadrasteer activated.
+
+That's an enormous difference on a full-size truck.
+
+Basically, GM had solved one of the most annoying things about owning a big pickup.
+
+Then they made the feature so expensive that almost nobody bought it.
+
+The story starts around 2002. Pickup trucks were getting bigger, more comfortable, and increasingly being used for things beyond just work.
+
+People were towing boats. Campers. Horse trailers.
+
+And they were also taking these enormous trucks to grocery stores, parking garages, and suburban driveways that definitely weren't getting any bigger.
+
+The problem is pretty obvious. A long truck with a long wheelbase does not enjoy tight spaces.
+
+You pull into a parking lot. Turn. Back up. Turn again. Back up again. Try not to hit the car beside you.
+
+And eventually perform what is basically a seven-point turn just to leave.
+
+GM and Delphi looked at that problem and came up with a wonderfully complicated solution. Make the rear wheels steer.
+
+Quadrasteer used an electronically controlled steering unit on the rear axle.
+
+At low speeds, when the driver turned left, the rear wheels could turn slightly right.
+
+This effectively made the vehicle behave like it had a much shorter wheelbase.
+
+The truck rotated around corners instead of dragging its enormous rear end behind it.
+
+Then, as speed increased, the system changed strategy. Rather than turning opposite the front tires, the rear tires could begin steering slightly in the same direction.
+
+That reduced the sudden yaw movement you would normally get during a lane change and could make a large truck, especially one towing a trailer, feel more planted.
+
+There were different operating modes, including a dedicated tow setting.
+
+And if the entire idea of your back wheels moving made you uncomfortable, you could switch it back into conventional two-wheel steering.
+
+This wasn't some concept car trick that looked good at an auto show. It actually worked.
+
+Car and Driver tested the early Sierra Denali and measured the turning circle dropping from 47.3 feet to 37.4.
+
+For perspective, they pointed out that was only about a foot more than a Honda Accord.
+
+Think about that for a second. This massive luxury pickup could essentially turn around in the same space as a family sedan.
+
+MotorTrend would later describe the system as dramatically improving maneuverability and tracking.
+
+So, what went wrong? Money. A lot of money.
+
+When Quadrasteer first arrived, GM didn't exactly make it an impulse purchase.
+
+Early versions were bundled into packages that could add around seven thousand dollars to the price of the vehicle.
+
+Seven thousand dollars. In early-2000s money. For steering.
+
+Now, yes, you were getting other equipment in those packages.
+
+But from the customer's perspective, the headline feature was still, my rear wheels turn.
+
+Try explaining why that is worth several thousand dollars to someone who has spent his entire life driving trucks without it.
+
+GM eventually realized there was a problem. By 2003, Quadrasteer was listed around four thousand four hundred ninety-five dollars on some applications.
+
+GM even offered significant incentives. Then, in 2004, the price fell again to around one thousand nine hundred ninety-five dollars.
+
+In other words, GM went from treating Quadrasteer like expensive flagship technology to practically begging customers to try it.
+
+And the customers still weren't exactly lining up.
+
+The numbers are kind of brutal. According to period industry reporting, Quadrasteer accounted for less than one percent of sales among available models in 2002.
+
+In 2003, after GM started working on the pricing problem, that improved to just over two percent.
+
+Some individual SUVs did considerably better, but across the lineup, the technology never became mainstream.
+
+And there was another problem. Quadrasteer was incredibly easy to appreciate after you drove it, but surprisingly difficult to sell in an advertisement.
+
+Horsepower is easy. This truck has more power.
+
+Towing capacity is easy. This truck pulls more weight.
+
+Four-wheel drive is easy. This truck goes places a two-wheel-drive truck can't.
+
+But how do you make someone emotionally excited about a smaller turning circle?
+
+GM basically had to convince buyers to pay thousands of dollars to solve a problem many of them had simply accepted as part of owning a truck.
+
+And that's a difficult sales pitch.
+
+There was also the truck-buyer psychology of the time. More technology doesn't automatically mean more desirable.
+
+Quadrasteer added electronics. Specialized rear steering hardware. A unique rear axle setup. A wider rear track. More weight.
+
+And more things that an owner could imagine eventually needing to repair.
+
+For someone spending serious money on a work truck, simplicity can be a feature.
+
+The conventional axle had worked forever.
+
+So even if Quadrasteer made the truck objectively easier to maneuver, a lot of buyers could look underneath, see all that extra hardware and think, no thanks.
+
+Which is funny. Because two decades later, rear-wheel steering somehow became cool again.
+
+Modern luxury cars use it. Performance vehicles use it.
+
+And when GMC launched the Hummer EV, one of its headline features was four-wheel steering.
+
+GMC even gave it a dramatic name. CrabWalk.
+
+The Hummer could turn its rear wheels in the same direction as the fronts at low speed and move diagonally to maneuver around obstacles.
+
+Suddenly, watching the rear wheels of a giant truck move wasn't weird. It was something people filmed with their phones.
+
+And that's what makes Quadrasteer such a strange failure. It wasn't like GM invented something useless.
+
+The system addressed a real problem. Reviewers liked it.
+
+People who tow with Quadrasteer trucks still tend to appreciate what the system can do.
+
+The basic engineering idea survived. What failed was the timing.
+
+GM introduced expensive technology to customers who weren't convinced they needed it, bundled it in ways that made the price difficult to swallow, then spent the next few years cutting that price after the reputation had already been established.
+
+By 2005, Quadrasteer was finished. The feature disappeared from GM's trucks.
+
+Not because rear-wheel steering didn't work. But because GM couldn't convince enough people to pay for it.
+
+And today, that makes surviving Quadrasteer trucks some of the most interesting vehicles of the entire GMT800 era.
+
+From the outside, one might look like an ordinary early-2000s Silverado, Sierra, Suburban, or Yukon XL.
+
+Then you turn the steering wheel, and the back tires move.
+
+It's the sort of feature that feels more appropriate on a brand-new six-figure electric truck than something General Motors was selling more than twenty years ago.
+
+Which might be the best way to describe Quadrasteer.
+
+It wasn't a bad idea. It may not even have been a bad product.
+
+GM simply invented a feature that made much more sense after people had already stopped buying it.
+
+And in an era full of strange General Motors experiments, the composite Pro-Tec bed, the Avalanche Midgate, early hybrid pickups, and Quadrasteer, this might have been one of the few times GM wasn't thinking too strangely.
+
+It was just thinking too far ahead.

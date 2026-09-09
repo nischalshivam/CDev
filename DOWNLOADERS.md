@@ -33,18 +33,39 @@ Everything below was installed + verified on this PC (Windows, Python 3.14). Scr
 
 ```bash
 python -m pip install --upgrade bdfr instaloader
-python -m pip install "praw>=7.7,<8"     # bdfr needs praw 7.x; praw 8.x breaks it (BaseTokenManager)
+python -m pip install "praw==7.7.1"       # 7.8.x removed BaseTokenManager -> bdfr will not import
 ```
 
-`praw` note: a fresh install pulls praw 8.x which bdfr cannot use — pin to 7.x as above. Verified:
-`instaloader 4.15.3`, `bdfr download` runs, `praw 7.8.2`.
+`praw` note: bdfr 2.6.2 (last release 2023) needs `praw.reddit.BaseTokenManager`, which was REMOVED
+in praw 7.8. The old note here said `praw>=7.7,<8` and claimed 7.8.2 was verified — that is wrong,
+and 7.8.2 fails on import:
+
+```
+AttributeError: module 'praw.reddit' has no attribute 'BaseTokenManager'
+```
+
+Pin exactly:
+
+```bash
+python -m pip install --upgrade bdfr instaloader
+python -m pip install "praw==7.7.1"      # 7.8.x breaks bdfr
+```
+
+Verified on this PC after the pin: `bdfr --help` runs, `instaloader 4.15.3`.
 
 ---
 
 ## Usage — one working command each
 
 ### Reddit (bdfr)
-Needs a free Reddit "script" app (client_id + secret) in `bdfr` config the first time.
+Needs a free Reddit "script" app (client_id + secret) the first time — **there is no way around
+it**. Measured 2026-09-04: Reddit's unauthenticated JSON endpoint is now blocked outright, with a
+browser User-Agent and on both hosts:
+
+```
+https://www.reddit.com/r/<sub>/top.json   ->  HTTP 403 Blocked
+https://old.reddit.com/r/<sub>/top.json   ->  HTTP 404
+```
 ```bash
 # a subreddit's top posts of the year -> a folder
 python -m bdfr download "D:/source/reddit" --subreddit Watches --sort top --time year --limit 100
@@ -53,7 +74,22 @@ python -m bdfr download "D:/source/reddit" --user someuser --limit 50
 ```
 
 ### Instagram (instaloader)
-Works anonymously for public content (rate-limited); `--login <user>` (you type the password) for more.
+**Anonymous no longer works.** Measured 2026-09-04, very first request, no prior traffic:
+
+```
+JSON Query to api/v1/users/web_profile_info/: 429 Too Many Requests
+```
+
+A session is required. Create it ONCE, yourself — instaloader prompts for the password directly and
+no tool here ever sees it:
+
+```bash
+python -m instaloader --login YOUR_USERNAME
+set INSTA_SESSION_USER=YOUR_USERNAME
+```
+
+Wired into the pipeline at `CODE/insta_source.py`; each niche's `hunt.py` has an INSTAGRAM STILLS
+phase that skips itself cleanly when no session exists.
 ```bash
 # a profile's posts (images + videos)
 python -m instaloader profile <account>            # e.g. a watch brand

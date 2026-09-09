@@ -1,0 +1,1019 @@
+[
+ {
+  "text": "In November 2025, the British Army finally announced that its new Ajax armored fighting vehicle was ready for service.",
+  "start": 0.26,
+  "end": 8.6,
+  "matched": 18,
+  "of": 19,
+  "i": 0,
+  "dur": 8.34
+ },
+ {
+  "text": "This was supposed to be a major victory.",
+  "start": 9.36,
+  "end": 11.54,
+  "matched": 8,
+  "of": 8,
+  "i": 1,
+  "dur": 2.18
+ },
+ {
+  "text": "The program had been running for more than a decade.",
+  "start": 12.22,
+  "end": 14.86,
+  "matched": 10,
+  "of": 10,
+  "i": 2,
+  "dur": 2.64
+ },
+ {
+  "text": "It had cost billions of pounds.",
+  "start": 15.42,
+  "end": 17.44,
+  "matched": 6,
+  "of": 6,
+  "i": 3,
+  "dur": 2.02
+ },
+ {
+  "text": "It had survived years of delays, investigations, safety concerns and political embarrassment.",
+  "start": 18.3,
+  "end": 25.02,
+  "matched": 12,
+  "of": 12,
+  "i": 4,
+  "dur": 6.72
+ },
+ {
+  "text": "And now, finally, the Army said Ajax had reached Initial Operating Capability.",
+  "start": 25.6,
+  "end": 31.8,
+  "matched": 12,
+  "of": 12,
+  "i": 5,
+  "dur": 6.2
+ },
+ {
+  "text": "Then, just a few weeks later, 35 soldiers operating 23 Ajax vehicles reported symptoms linked to noise and vibration during a training exercise.",
+  "start": 32.36,
+  "end": 44.22,
+  "matched": 21,
+  "of": 23,
+  "i": 6,
+  "dur": 11.86
+ },
+ {
+  "text": "The exercise was stopped.",
+  "start": 44.68,
+  "end": 46.22,
+  "matched": 4,
+  "of": 4,
+  "i": 7,
+  "dur": 1.54
+ },
+ {
+  "text": "Ajax training was paused. Again.",
+  "start": 46.86,
+  "end": 50.14,
+  "matched": 5,
+  "of": 5,
+  "i": 8,
+  "dur": 3.28
+ },
+ {
+  "text": "Which raises a pretty uncomfortable question.",
+  "start": 50.2,
+  "end": 52.52,
+  "matched": 6,
+  "of": 6,
+  "i": 9,
+  "dur": 2.32
+ },
+ {
+  "text": "How did one of the British Army's most important new armored vehicles become so controversial that soldiers were reporting problems simply from riding inside it?",
+  "start": 53.2,
+  "end": 63.44,
+  "matched": 25,
+  "of": 25,
+  "i": 10,
+  "dur": 10.24
+ },
+ {
+  "text": "And maybe more importantly, after spending more than five billion pounds, does Britain finally have a working fighting vehicle? Or an extremely expensive problem?",
+  "start": 64.0,
+  "end": 74.28,
+  "matched": 24,
+  "of": 24,
+  "i": 11,
+  "dur": 10.28
+ },
+ {
+  "text": "The story actually begins all the way back in 2010.",
+  "start": 75.34,
+  "end": 77.88,
+  "matched": 9,
+  "of": 10,
+  "i": 12,
+  "dur": 2.54
+ },
+ {
+  "text": "The British Army needed to replace its aging Combat Vehicle Reconnaissance Tracked fleet.",
+  "start": 79.5,
+  "end": 84.36,
+  "matched": 13,
+  "of": 13,
+  "i": 13,
+  "dur": 4.86
+ },
+ {
+  "text": "Some of those vehicles traced their basic design back decades.",
+  "start": 85.1,
+  "end": 89.3,
+  "matched": 10,
+  "of": 10,
+  "i": 14,
+  "dur": 4.2
+ },
+ {
+  "text": "The Army wanted something completely different for the modern battlefield.",
+  "start": 89.34,
+  "end": 93.42,
+  "matched": 10,
+  "of": 10,
+  "i": 15,
+  "dur": 4.08
+ },
+ {
+  "text": "Better armor. Better sensors. Better communications. More firepower.",
+  "start": 93.5,
+  "end": 99.2,
+  "matched": 8,
+  "of": 8,
+  "i": 16,
+  "dur": 5.7
+ },
+ {
+  "text": "And most importantly, a vehicle capable of collecting and sharing enormous amounts of battlefield information.",
+  "start": 99.28,
+  "end": 105.86,
+  "matched": 15,
+  "of": 15,
+  "i": 17,
+  "dur": 6.58
+ },
+ {
+  "text": "Ajax wasn't really supposed to be just another armored vehicle.",
+  "start": 106.34,
+  "end": 109.96,
+  "matched": 10,
+  "of": 10,
+  "i": 18,
+  "dur": 3.62
+ },
+ {
+  "text": "It was supposed to become the eyes and ears of the British Army.",
+  "start": 110.64,
+  "end": 114.02,
+  "matched": 13,
+  "of": 13,
+  "i": 19,
+  "dur": 3.38
+ },
+ {
+  "text": "The primary Ajax reconnaissance variant would carry an advanced sensor suite and a 40-millimeter cannon.",
+  "start": 114.74,
+  "end": 121.38,
+  "matched": 14,
+  "of": 15,
+  "i": 20,
+  "dur": 6.64
+ },
+ {
+  "text": "Other versions would handle troop carrying, command and control, engineering reconnaissance, recovery and repair.",
+  "start": 121.94,
+  "end": 129.5,
+  "matched": 14,
+  "of": 14,
+  "i": 21,
+  "dur": 7.56
+ },
+ {
+  "text": "Six variants in total. 589 vehicles.",
+  "start": 130.14,
+  "end": 133.98,
+  "matched": 5,
+  "of": 6,
+  "i": 22,
+  "dur": 3.84
+ },
+ {
+  "text": "General Dynamics Land Systems UK would build them.",
+  "start": 134.66,
+  "end": 137.76,
+  "matched": 8,
+  "of": 8,
+  "i": 23,
+  "dur": 3.1
+ },
+ {
+  "text": "And eventually, the contract for design, manufacture and initial support reached approximately five point five billion pounds.",
+  "start": 138.34,
+  "end": 147.72,
+  "matched": 17,
+  "of": 17,
+  "i": 24,
+  "dur": 9.38
+ },
+ {
+  "text": "This was one of the biggest British armored vehicle orders in decades.",
+  "start": 148.36,
+  "end": 152.42,
+  "matched": 12,
+  "of": 12,
+  "i": 25,
+  "dur": 4.06
+ },
+ {
+  "text": "And early on, the government sounded extremely confident.",
+  "start": 153.04,
+  "end": 156.62,
+  "matched": 8,
+  "of": 8,
+  "i": 26,
+  "dur": 3.58
+ },
+ {
+  "text": "In 2016, after an Ajax completed an early firing test, officials described the program as transformational.",
+  "start": 157.26,
+  "end": 165.02,
+  "matched": 15,
+  "of": 16,
+  "i": 27,
+  "dur": 7.76
+ },
+ {
+  "text": "Deliveries were expected to begin in 2017.",
+  "start": 165.68,
+  "end": 167.6,
+  "matched": 6,
+  "of": 7,
+  "i": 28,
+  "dur": 1.92
+ },
+ {
+  "text": "Initial operating capability was eventually planned around 2020.",
+  "start": 169.38,
+  "end": 172.44,
+  "matched": 7,
+  "of": 8,
+  "i": 29,
+  "dur": 3.06
+ },
+ {
+  "text": "Full capability was supposed to follow several years later. That didn't happen.",
+  "start": 173.96,
+  "end": 179.0,
+  "matched": 12,
+  "of": 12,
+  "i": 30,
+  "dur": 5.04
+ },
+ {
+  "text": "Because while Ajax looked impressive on paper, something much less impressive was happening inside the vehicles.",
+  "start": 179.06,
+  "end": 185.74,
+  "matched": 16,
+  "of": 16,
+  "i": 31,
+  "dur": 6.68
+ },
+ {
+  "text": "They were shaking. And they were loud. Really loud.",
+  "start": 186.38,
+  "end": 190.22,
+  "matched": 9,
+  "of": 9,
+  "i": 32,
+  "dur": 3.84
+ },
+ {
+  "text": "Concerns about vibration had actually appeared years before the controversy became public.",
+  "start": 190.78,
+  "end": 196.7,
+  "matched": 12,
+  "of": 12,
+  "i": 33,
+  "dur": 5.92
+ },
+ {
+  "text": "A formal safety notice was issued in December 2018 after personnel experienced motion sickness during trials.",
+  "start": 196.74,
+  "end": 203.92,
+  "matched": 15,
+  "of": 16,
+  "i": 34,
+  "dur": 7.18
+ },
+ {
+  "text": "The notice warned about high vibration levels and the risks associated with long-term exposure. Another notice followed in 2019. Yet testing continued.",
+  "start": 204.36,
+  "end": 214.93,
+  "matched": 21,
+  "of": 22,
+  "i": 35,
+  "dur": 10.57
+ },
+ {
+  "text": "And by 2021, the problem had become impossible to ignore.",
+  "start": 215.53,
+  "end": 219.97,
+  "matched": 10,
+  "of": 10,
+  "i": 36,
+  "dur": 4.44
+ },
+ {
+  "text": "Personnel operating Ajax began reporting symptoms associated with excessive noise.",
+  "start": 220.85,
+  "end": 226.21,
+  "matched": 10,
+  "of": 10,
+  "i": 37,
+  "dur": 5.36
+ },
+ {
+  "text": "Some were sent for specialist medical assessment.",
+  "start": 226.87,
+  "end": 229.39,
+  "matched": 7,
+  "of": 7,
+  "i": 38,
+  "dur": 2.52
+ },
+ {
+  "text": "Trials were restricted. Then they were stopped.",
+  "start": 230.06,
+  "end": 233.57,
+  "matched": 7,
+  "of": 7,
+  "i": 39,
+  "dur": 3.51
+ },
+ {
+  "text": "By December 2021, the Ministry of Defence said 310 people had been exposed to noise and vibration while working with Ajax.",
+  "start": 234.16,
+  "end": 243.4,
+  "matched": 20,
+  "of": 21,
+  "i": 40,
+  "dur": 9.24
+ },
+ {
+  "text": "Most returned to duty without a health impact.",
+  "start": 244.21,
+  "end": 246.65,
+  "matched": 8,
+  "of": 8,
+  "i": 41,
+  "dur": 2.44
+ },
+ {
+  "text": "But several personnel required continued specialist care.",
+  "start": 247.29,
+  "end": 250.53,
+  "matched": 7,
+  "of": 7,
+  "i": 42,
+  "dur": 3.24
+ },
+ {
+  "text": "Four people who had not previously had hearing problems developed hearing issues while working on Ajax.",
+  "start": 251.17,
+  "end": 257.65,
+  "matched": 16,
+  "of": 16,
+  "i": 43,
+  "dur": 6.48
+ },
+ {
+  "text": "The Ministry of Defence stopped short of saying Ajax definitely caused those problems.",
+  "start": 258.45,
+  "end": 264.51,
+  "matched": 13,
+  "of": 13,
+  "i": 44,
+  "dur": 6.06
+ },
+ {
+  "text": "But its own review concluded that it was possible the vehicle had contributed to hearing loss in a small number of people.",
+  "start": 264.59,
+  "end": 272.06,
+  "matched": 22,
+  "of": 22,
+  "i": 45,
+  "dur": 7.47
+ },
+ {
+  "text": "And the review found something else that was arguably even more disturbing than the technical problem.",
+  "start": 272.57,
+  "end": 278.47,
+  "matched": 16,
+  "of": 16,
+  "i": 46,
+  "dur": 5.9
+ },
+ {
+  "text": "The system around the vehicle had failed too.",
+  "start": 279.25,
+  "end": 281.75,
+  "matched": 8,
+  "of": 8,
+  "i": 47,
+  "dur": 2.5
+ },
+ {
+  "text": "The government review described a culture where safety had not always been treated with the same importance as cost and schedule.",
+  "start": 282.43,
+  "end": 290.23,
+  "matched": 21,
+  "of": 21,
+  "i": 48,
+  "dur": 7.8
+ },
+ {
+  "text": "Concerns raised by soldiers and technical experts hadn't always resulted in the response they should have.",
+  "start": 290.77,
+  "end": 297.67,
+  "matched": 16,
+  "of": 16,
+  "i": 49,
+  "dur": 6.9
+ },
+ {
+  "text": "At one point, the Defence Procurement Minister told Parliament that the vehicles used during trials had produced noise and vibration above statutory limits.",
+  "start": 297.75,
+  "end": 308.35,
+  "matched": 22,
+  "of": 23,
+  "i": 50,
+  "dur": 10.6
+ },
+ {
+  "text": "That's not exactly what you want to hear about the Army vehicle you've already spent billions developing.",
+  "start": 308.75,
+  "end": 313.82,
+  "matched": 15,
+  "of": 17,
+  "i": 51,
+  "dur": 5.07
+ },
+ {
+  "text": "And by the end of 2021, the numbers looked terrible.",
+  "start": 314.26,
+  "end": 317.93,
+  "matched": 9,
+  "of": 10,
+  "i": 52,
+  "dur": 3.67
+ },
+ {
+  "text": "The Ministry of Defence had paid General Dynamics roughly three point two billion pounds.",
+  "start": 318.43,
+  "end": 323.49,
+  "matched": 14,
+  "of": 14,
+  "i": 53,
+  "dur": 5.06
+ },
+ {
+  "text": "More than 300 vehicle hulls had been built.",
+  "start": 324.11,
+  "end": 326.56,
+  "matched": 7,
+  "of": 8,
+  "i": 54,
+  "dur": 2.45
+ },
+ {
+  "text": "But the Army had received only 26 Ajax-family vehicles.",
+  "start": 327.35,
+  "end": 331.32,
+  "matched": 7,
+  "of": 9,
+  "i": 55,
+  "dur": 3.97
+ },
+ {
+  "text": "And the government couldn't even confidently say when the thing would actually enter service.",
+  "start": 331.82,
+  "end": 336.7,
+  "matched": 14,
+  "of": 14,
+  "i": 56,
+  "dur": 4.88
+ },
+ {
+  "text": "At this point, Ajax looked like a textbook defence procurement disaster.",
+  "start": 337.2,
+  "end": 341.9,
+  "matched": 10,
+  "of": 11,
+  "i": 57,
+  "dur": 4.7
+ },
+ {
+  "text": "But this is where the story gets more complicated.",
+  "start": 342.35,
+  "end": 344.87,
+  "matched": 9,
+  "of": 9,
+  "i": 58,
+  "dur": 2.52
+ },
+ {
+  "text": "Because Britain didn't cancel it.",
+  "start": 345.35,
+  "end": 347.11,
+  "matched": 5,
+  "of": 5,
+  "i": 59,
+  "dur": 1.76
+ },
+ {
+  "text": "Instead, the program effectively went through a reset.",
+  "start": 347.69,
+  "end": 351.23,
+  "matched": 8,
+  "of": 8,
+  "i": 60,
+  "dur": 3.54
+ },
+ {
+  "text": "Engineers worked on the causes of the excessive noise and vibration.",
+  "start": 351.71,
+  "end": 355.61,
+  "matched": 11,
+  "of": 11,
+  "i": 61,
+  "dur": 3.9
+ },
+ {
+  "text": "Build quality was improved. Tolerances around crew interfaces were reviewed.",
+  "start": 356.11,
+  "end": 360.94,
+  "matched": 10,
+  "of": 10,
+  "i": 62,
+  "dur": 4.83
+ },
+ {
+  "text": "Seat structures were changed to reduce vibration reaching the occupants.",
+  "start": 361.55,
+  "end": 365.82,
+  "matched": 10,
+  "of": 10,
+  "i": 63,
+  "dur": 4.27
+ },
+ {
+  "text": "Track tension procedures were improved.",
+  "start": 366.38,
+  "end": 368.49,
+  "matched": 5,
+  "of": 5,
+  "i": 64,
+  "dur": 2.11
+ },
+ {
+  "text": "New hearing protection and communications equipment was introduced.",
+  "start": 369.17,
+  "end": 372.61,
+  "matched": 8,
+  "of": 8,
+  "i": 65,
+  "dur": 3.44
+ },
+ {
+  "text": "And eventually, Ajax started moving again. Trials resumed in 2023.",
+  "start": 373.37,
+  "end": 377.99,
+  "matched": 9,
+  "of": 10,
+  "i": 66,
+  "dur": 4.62
+ },
+ {
+  "text": "Vehicles accumulated thousands of kilometers of testing.",
+  "start": 379.7,
+  "end": 382.88,
+  "matched": 7,
+  "of": 7,
+  "i": 67,
+  "dur": 3.18
+ },
+ {
+  "text": "The Army continued receiving them.",
+  "start": 383.46,
+  "end": 385.29,
+  "matched": 5,
+  "of": 5,
+  "i": 68,
+  "dur": 1.83
+ },
+ {
+  "text": "And after years of embarrassment, the government finally reached the milestone it had been waiting for.",
+  "start": 385.82,
+  "end": 391.37,
+  "matched": 16,
+  "of": 16,
+  "i": 69,
+  "dur": 5.55
+ },
+ {
+  "text": "On November 6th, 2025, the Ministry of Defence announced that Ajax had officially entered service.",
+  "start": 392.19,
+  "end": 399.32,
+  "matched": 13,
+  "of": 15,
+  "i": 70,
+  "dur": 7.13
+ },
+ {
+  "text": "Initial Operating Capability meant the Army could deploy a squadron of the vehicles on operations.",
+  "start": 400.19,
+  "end": 406.29,
+  "matched": 15,
+  "of": 15,
+  "i": 71,
+  "dur": 6.1
+ },
+ {
+  "text": "More than fifteen years after the program began, Ajax was finally ready.",
+  "start": 406.86,
+  "end": 411.75,
+  "matched": 12,
+  "of": 12,
+  "i": 72,
+  "dur": 4.89
+ },
+ {
+  "text": "Or at least that's what everyone thought.",
+  "start": 412.15,
+  "end": 413.86,
+  "matched": 7,
+  "of": 7,
+  "i": 73,
+  "dur": 1.71
+ },
+ {
+  "text": "Because only sixteen days later, during Exercise Titan Storm, 35 service personnel operating across 23 Ajax vehicles reported symptoms resembling those associated with noise and vibration.",
+  "start": 414.44,
+  "end": 428.57,
+  "matched": 24,
+  "of": 26,
+  "i": 74,
+  "dur": 14.13
+ },
+ {
+  "text": "And suddenly, the controversy was back.",
+  "start": 429.12,
+  "end": 431.86,
+  "matched": 6,
+  "of": 6,
+  "i": 75,
+  "dur": 2.74
+ },
+ {
+  "text": "Training was stopped. The vehicles were investigated.",
+  "start": 432.45,
+  "end": 435.75,
+  "matched": 7,
+  "of": 7,
+  "i": 76,
+  "dur": 3.3
+ },
+ {
+  "text": "By December, Ajax trials and testing were paused again.",
+  "start": 436.5,
+  "end": 440.5,
+  "matched": 9,
+  "of": 9,
+  "i": 77,
+  "dur": 4.0
+ },
+ {
+  "text": "Just weeks after Britain had publicly celebrated putting the vehicle into service.",
+  "start": 441.25,
+  "end": 445.83,
+  "matched": 12,
+  "of": 12,
+  "i": 78,
+  "dur": 4.58
+ },
+ {
+  "text": "You almost couldn't write a worse sequence of headlines.",
+  "start": 446.56,
+  "end": 449.38,
+  "matched": 9,
+  "of": 9,
+  "i": 79,
+  "dur": 2.82
+ },
+ {
+  "text": "But here's where the difference between a dramatic headline and the actual engineering investigation becomes important.",
+  "start": 450.01,
+  "end": 456.71,
+  "matched": 16,
+  "of": 16,
+  "i": 80,
+  "dur": 6.7
+ },
+ {
+  "text": "The investigation released in 2026 didn't simply conclude that Ajax is dangerously loud.",
+  "start": 457.42,
+  "end": 464.15,
+  "matched": 12,
+  "of": 13,
+  "i": 81,
+  "dur": 6.73
+ },
+ {
+  "text": "In fact, investigators found that during the Titan Storm incident, measured noise and vibration were below legal exposure limits.",
+  "start": 464.81,
+  "end": 473.65,
+  "matched": 19,
+  "of": 19,
+  "i": 82,
+  "dur": 8.84
+ },
+ {
+  "text": "Instead, they pointed to a combination of factors.",
+  "start": 474.38,
+  "end": 477.6,
+  "matched": 8,
+  "of": 8,
+  "i": 83,
+  "dur": 3.22
+ },
+ {
+  "text": "Some of the vehicles had incorrect track tension.",
+  "start": 478.36,
+  "end": 481.1,
+  "matched": 8,
+  "of": 8,
+  "i": 84,
+  "dur": 2.74
+ },
+ {
+  "text": "There were loose or missing engine deck bolts.",
+  "start": 481.69,
+  "end": 484.25,
+  "matched": 8,
+  "of": 8,
+  "i": 85,
+  "dur": 2.56
+ },
+ {
+  "text": "Cold weather may have contributed.",
+  "start": 484.88,
+  "end": 486.6,
+  "matched": 5,
+  "of": 5,
+  "i": 86,
+  "dur": 1.72
+ },
+ {
+  "text": "Air quality inside the vehicles became a concern.",
+  "start": 487.15,
+  "end": 490.07,
+  "matched": 8,
+  "of": 8,
+  "i": 87,
+  "dur": 2.92
+ },
+ {
+  "text": "Training and crew experience varied.",
+  "start": 490.65,
+  "end": 492.69,
+  "matched": 5,
+  "of": 5,
+  "i": 88,
+  "dur": 2.04
+ },
+ {
+  "text": "In other words, investigators didn't find one giant design failure.",
+  "start": 493.28,
+  "end": 497.6,
+  "matched": 10,
+  "of": 10,
+  "i": 89,
+  "dur": 4.32
+ },
+ {
+  "text": "They found a complicated interaction between vehicle condition, maintenance, environment and human factors.",
+  "start": 497.96,
+  "end": 505.48,
+  "matched": 13,
+  "of": 13,
+  "i": 90,
+  "dur": 7.52
+ },
+ {
+  "text": "An independent panel of 51 specialists later reached a broadly similar conclusion.",
+  "start": 505.96,
+  "end": 511.42,
+  "matched": 11,
+  "of": 12,
+  "i": 91,
+  "dur": 5.46
+ },
+ {
+  "text": "It said Ajax was safe when operated and maintained within the correct parameters.",
+  "start": 512.03,
+  "end": 517.19,
+  "matched": 13,
+  "of": 13,
+  "i": 92,
+  "dur": 5.16
+ },
+ {
+  "text": "But it also made 41 recommendations for improving the program and the experience of the soldiers using it.",
+  "start": 517.73,
+  "end": 524.53,
+  "matched": 17,
+  "of": 18,
+  "i": 93,
+  "dur": 6.8
+ },
+ {
+  "text": "And by July 2026, Britain had started moving forward again.",
+  "start": 524.97,
+  "end": 529.51,
+  "matched": 9,
+  "of": 10,
+  "i": 94,
+  "dur": 4.54
+ },
+ {
+  "text": "Acceptance of new Ajax vehicles resumed. Trials restarted.",
+  "start": 529.99,
+  "end": 534.65,
+  "matched": 8,
+  "of": 8,
+  "i": 95,
+  "dur": 4.66
+ },
+ {
+  "text": "Army training was preparing to resume.",
+  "start": 535.15,
+  "end": 537.35,
+  "matched": 6,
+  "of": 6,
+  "i": 96,
+  "dur": 2.2
+ },
+ {
+  "text": "So, was Ajax unfairly attacked? Not exactly.",
+  "start": 538.07,
+  "end": 542.39,
+  "matched": 7,
+  "of": 7,
+  "i": 97,
+  "dur": 4.32
+ },
+ {
+  "text": "It's difficult to look at a vehicle that was originally expected years earlier, required a major program reset, had trials suspended over health concerns, finally entered service in 2025 and then almost immediately faced another pause, and call that a smooth procurement.",
+  "start": 543.01,
+  "end": 561.27,
+  "matched": 41,
+  "of": 42,
+  "i": 98,
+  "dur": 18.26
+ },
+ {
+  "text": "The criticism didn't appear out of nowhere.",
+  "start": 561.87,
+  "end": 564.19,
+  "matched": 7,
+  "of": 7,
+  "i": 99,
+  "dur": 2.32
+ },
+ {
+  "text": "Real soldiers reported real symptoms. Real technical problems existed.",
+  "start": 564.85,
+  "end": 570.19,
+  "matched": 9,
+  "of": 9,
+  "i": 100,
+  "dur": 5.34
+ },
+ {
+  "text": "And official government investigations found serious failures in how earlier safety concerns had been handled.",
+  "start": 570.27,
+  "end": 576.75,
+  "matched": 15,
+  "of": 15,
+  "i": 101,
+  "dur": 6.48
+ },
+ {
+  "text": "But calling Ajax simply a five point five billion pound useless armored vehicle isn't completely accurate either.",
+  "start": 577.25,
+  "end": 584.83,
+  "matched": 17,
+  "of": 17,
+  "i": 102,
+  "dur": 7.58
+ },
+ {
+  "text": "Because underneath the procurement disaster is a vehicle the British Army still believes it desperately needs.",
+  "start": 585.55,
+  "end": 592.33,
+  "matched": 16,
+  "of": 16,
+  "i": 103,
+  "dur": 6.78
+ },
+ {
+  "text": "Ajax carries powerful reconnaissance sensors. A 40-millimeter cannon. Modern digital communications. Modular protection.",
+  "start": 593.03,
+  "end": 602.65,
+  "matched": 12,
+  "of": 13,
+  "i": 104,
+  "dur": 9.62
+ },
+ {
+  "text": "And the ability to detect, track and distribute battlefield information in a way the much older vehicles it replaces simply can't.",
+  "start": 603.27,
+  "end": 613.23,
+  "matched": 21,
+  "of": 21,
+  "i": 105,
+  "dur": 9.96
+ },
+ {
+  "text": "Which leaves Britain in a very strange position.",
+  "start": 613.31,
+  "end": 616.13,
+  "matched": 8,
+  "of": 8,
+  "i": 106,
+  "dur": 2.82
+ },
+ {
+  "text": "It may have spent more than fifteen years developing a genuinely important battlefield capability, while simultaneously providing one of the clearest examples of how not to introduce it.",
+  "start": 616.51,
+  "end": 627.72,
+  "matched": 28,
+  "of": 28,
+  "i": 107,
+  "dur": 11.21
+ },
+ {
+  "text": "And maybe that's the real Ajax controversy.",
+  "start": 628.25,
+  "end": 630.79,
+  "matched": 6,
+  "of": 7,
+  "i": 108,
+  "dur": 2.54
+ },
+ {
+  "text": "Not that Britain spent billions building a vehicle that could never work.",
+  "start": 631.35,
+  "end": 634.97,
+  "matched": 12,
+  "of": 12,
+  "i": 109,
+  "dur": 3.62
+ },
+ {
+  "text": "But that it took billions of pounds, years of delays, multiple investigations, a major program reset, and more than one safety pause, to reach the point where it finally might.",
+  "start": 635.45,
+  "end": 647.73,
+  "matched": 30,
+  "of": 30,
+  "i": 110,
+  "dur": 12.28
+ },
+ {
+  "text": "Ajax was supposed to give the British Army better eyes on the battlefield.",
+  "start": 648.29,
+  "end": 652.13,
+  "matched": 13,
+  "of": 13,
+  "i": 111,
+  "dur": 3.84
+ },
+ {
+  "text": "Instead, for more than a decade, the entire defence industry had its eyes on Ajax.",
+  "start": 652.67,
+  "end": 658.46,
+  "matched": 14,
+  "of": 15,
+  "i": 112,
+  "dur": 5.79
+ }
+]
