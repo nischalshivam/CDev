@@ -1,0 +1,24 @@
+# CDev — core runtime. See SETUP_NEW_PC.md for system tools (git, python, ffmpeg).
+numpy
+pillow
+requests
+scipy
+imagehash
+pyyaml
+defusedxml
+pytest
+
+# sources
+yt-dlp
+instaloader
+
+# Reddit. The pin is REQUIRED: bdfr 2.6.2 needs praw.reddit.BaseTokenManager, which praw 7.8
+# removed, and bdfr then fails on import.
+bdfr
+praw==7.7.1
+
+# optional, only for subsystems not on the main path:
+# faster-whisper
+# edge-tts
+# pandas
+# opencv-python
