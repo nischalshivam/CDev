@@ -1,6 +1,6 @@
 # CDEV — MASTER BRAIN (give this file to any new niche chat)
 
-> **SYSTEM VERSION: 2026.09.12-2** — if a chat's understanding predates this, run the sync command
+> **SYSTEM VERSION: 2026.09.12-3** — if a chat's understanding predates this, run the sync command
 > in §16. The version + what changed is logged in §16.
 
 > **Claude, if you are a fresh session: read this file top to bottom before doing anything.**
@@ -187,16 +187,21 @@ Cheap-first order (never pay before the free gates run): HD/resolution → shot-
 Current mix is **80–95% YouTube**. That single dependency is the project's biggest risk; broaden it.
 
 ```
-                anonymous?     route that works
-YouTube         yes            yt-dlp (+ cookies.txt for age/rate) — HD filter BEFORE download
-Pexels/Pixabay  yes (keys)     stock_source.py  (COMMON-tier ambience)
-Reddit          BLOCKED        cookies.txt (REDDIT_COOKIES)  — 5 anon routes all fail
-Instagram       BLOCKED        cookies.txt (INSTA_COOKIES) or instaloader session
-Wikimedia       yes            docs_source.py — weak, returns little, needs work
-Google Images   yes (SERPER_KEY) serper.dev — open-web stills, returns width/height for HD-before-download; KEY VERIFIED 2026-09-12, but a serper_source.py module is NOT WIRED yet
-archive.org     yes            NOT WIRED yet (10k+ PD films) — opportunity
-Documents       —             docs_source.py — brochure/spec-sheet stills (proven on cars only)
+                state (2026-09-12)   route / module
+YouTube         WORKING (cookies)    yt_source.py — HD-filter BEFORE download; YT_COOKIES verified
+Reddit          WORKING (cookies)    reddit_source.py — REDDIT_COOKIES verified (clears the login wall)
+Pexels/Pixabay  WORKING (keys)       stock_source.py — COMMON-tier ambience
+Google Images   WORKING (SERPER_KEY) serper_source.py — open-web stills, size-gated before download, VERIFIED
+Wikimedia       working (weak)       docs_source.py — returns little, needs work
+Documents       working (cars only)  docs_source.py — brochure/spec-sheet stills
+Instagram       BLOCKED              insta_source.py — needs INSTA_COOKIES or an instaloader session
+archive.org     not wired            opportunity — 10k+ public-domain films
 ```
+So 6 sources work now (YouTube, Reddit, Pexels, Pixabay, Google Images, Wikimedia + documents);
+Instagram needs cookies; archive.org/TikTok are not wired. `serper_source.fetch(query, n, out_dir,
+kind="image")` returns the same dict shape as `stock_source` (add `import serper_source` in a hunt
+flow to use it). Note: `reddit_source`/`insta_source` read their cookie path from `os.getenv`, so
+`config` must be imported first (it loads keys.env) — every real build does this.
 
 - **Never ask the owner for a password.** Cookies come from an exported `cookies.txt` (a browser
   extension), and `--cookies-from-browser` does NOT work on this machine.
@@ -266,9 +271,10 @@ style pack, roster/era, and the competitor analysis.
 - `keys.env` is present and git-ignored (ai33, Gemini relay, Pexels, Pixabay, **SERPER_KEY**). Serper
   is **verified** (Google Images returns dimensioned results). The rest are **not live-tested** —
   every one is a paid/rate-limited call; ASK the owner before the first real call.
-- **Cookies are missing**: the `YT_COOKIES` path in keys.env does not exist, and there are no
-  Reddit/Instagram cookies/session. Sourcing new footage is degraded until the owner exports
-  `cookies.txt` himself.
+- **Cookies (2026-09-12):** `YT_COOKIES` = `D:/Youtube Cookies.txt` and `REDDIT_COOKIES` =
+  `D:/reddit cookies.txt` are set and **both verified working** (YouTube search + Reddit listing both
+  return real results past the bot/login wall). Instagram still has no cookies/session. Cookie files
+  are live logins — never printed, never committed (keys.env is gitignored).
 
 ---
 
@@ -382,6 +388,9 @@ not N chats.** A new finding, a new source, or a whole new subsystem propagates 
 before doing niche work.
 
 ### System changelog (newest first)
+- **2026.09.12-3** — `serper_source.py` written + verified (Google Images: search → size-gate →
+  download, same dict shape as stock_source); `config.SERPER_KEY` added. YouTube + Reddit cookies
+  installed and verified working. Sources table + machine notes updated. `pytest` still 64 passed.
 - **2026.09.12-2** — Fresh shared library initialised at `D:/CDev/library` (empty catalog + COMMON
   seeded), old test libraries kept for reference only (§1). Added Serper/Google Images as a data
   source — key saved + verified, source module still to be written (§7).

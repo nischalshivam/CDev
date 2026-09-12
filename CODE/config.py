@@ -95,3 +95,6 @@ AI33_VOICE = os.getenv("AI33_VOICE", "")
 # Free stock providers (generic ambience) — keys in keys.env.
 PEXELS_KEY = os.getenv("PEXELS_KEY", "")
 PIXABAY_KEY = os.getenv("PIXABAY_KEY", "")
+
+# Serper.dev — Google Images / open-web search (stills; returns w/h for HD-before-download).
+SERPER_KEY = os.getenv("SERPER_KEY", "")
