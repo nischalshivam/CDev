@@ -1,6 +1,6 @@
 # CDEV — MASTER BRAIN (give this file to any new niche chat)
 
-> **SYSTEM VERSION: 2026.09.12-1** — if a chat's understanding predates this, run the sync command
+> **SYSTEM VERSION: 2026.09.12-2** — if a chat's understanding predates this, run the sync command
 > in §16. The version + what changed is logged in §16.
 
 > **Claude, if you are a fresh session: read this file top to bottom before doing anything.**
@@ -61,13 +61,17 @@ Two fail-closed guards make sharing safe (both in `catalog_db.search`):
 - **`era`** — if a project needs a time window, clips outside it (or of unknown era, unless allowed)
   are rejected.
 
-### The migration gap you must know about
-The **test-phase** libraries (`_quadrasteer`, `_ajax`, `_alzado`, `_tyson`) are still **separate**
-`catalog.sqlite` files, and their `collections` / `asset_entities` tables are **empty** — each test
-just used its own whole library. The production model above (one shared DB + populated COMMON /
-DOMAIN / ENTITY / roster) is **coded but not yet wired**. Unifying the test libraries into one
-shared library with layers is an open task — do not assume it is done; check `stats()` and the
-`collections` count first.
+### Where the shared library lives (decided 2026-09-12: FRESH start)
+The production shared library is **fresh**, at the repo-default root **`D:/CDev/library`**
+(`config.library_root()` default; `**/library/` is gitignored so media never enters git). It is
+initialised with an empty `catalog.sqlite` (full schema) + `objects/` + a seeded **`COMMON`**
+collection. Collection-id convention: `COMMON`, `DOMAIN:<niche>`, `ENTITY:<kind>:<slug>`,
+`PROJECT:<niche>:<video>`. The old **test-phase** libraries (`_quadrasteer`, `_ajax`, `_alzado`,
+`_tyson`) are **kept for reference only** — they are NOT migrated in (owner's call: start clean). A
+new niche populates the shared library at onboarding (hunt tags each asset into COMMON + its own
+DOMAIN/ENTITY/PROJECT collections). Populating COMMON and the first niche needs a real `hunt` run
+(paid + cookies) — ASK first. Verify current state any time with `python CODE/catalog_db.py` /
+`stats()`.
 
 ### Concurrency — deliberately deferred (operator's call)
 Running 10+ chats writing one SQLite library at once needs a concurrency-safe design (a shared
@@ -189,6 +193,7 @@ Pexels/Pixabay  yes (keys)     stock_source.py  (COMMON-tier ambience)
 Reddit          BLOCKED        cookies.txt (REDDIT_COOKIES)  — 5 anon routes all fail
 Instagram       BLOCKED        cookies.txt (INSTA_COOKIES) or instaloader session
 Wikimedia       yes            docs_source.py — weak, returns little, needs work
+Google Images   yes (SERPER_KEY) serper.dev — open-web stills, returns width/height for HD-before-download; KEY VERIFIED 2026-09-12, but a serper_source.py module is NOT WIRED yet
 archive.org     yes            NOT WIRED yet (10k+ PD films) — opportunity
 Documents       —             docs_source.py — brochure/spec-sheet stills (proven on cars only)
 ```
@@ -258,8 +263,9 @@ style pack, roster/era, and the competitor analysis.
   ProStudio) and lacks CDev's packages. Use `D:\CDev\.venv\Scripts\python.exe`, or activate the venv.
   `hunt.py` calls `yt-dlp` through PATH and **crashes unless the venv is activated**.
 - `pytest -q` → **64 passed**. ffmpeg 9.0.1 full build (has `perspective`, `--enable-gpl`).
-- `keys.env` is present and git-ignored (ai33, Gemini relay, Pexels, Pixabay load). **Not live-tested
-  — every one is a paid/rate-limited call; ASK the owner before the first real call.**
+- `keys.env` is present and git-ignored (ai33, Gemini relay, Pexels, Pixabay, **SERPER_KEY**). Serper
+  is **verified** (Google Images returns dimensioned results). The rest are **not live-tested** —
+  every one is a paid/rate-limited call; ASK the owner before the first real call.
 - **Cookies are missing**: the `YT_COOKIES` path in keys.env does not exist, and there are no
   Reddit/Instagram cookies/session. Sourcing new footage is degraded until the owner exports
   `cookies.txt` himself.
@@ -376,6 +382,9 @@ not N chats.** A new finding, a new source, or a whole new subsystem propagates 
 before doing niche work.
 
 ### System changelog (newest first)
+- **2026.09.12-2** — Fresh shared library initialised at `D:/CDev/library` (empty catalog + COMMON
+  seeded), old test libraries kept for reference only (§1). Added Serper/Google Images as a data
+  source — key saved + verified, source module still to be written (§7).
 - **2026.09.12-1** — First `CDEV_MASTER.md`: unified doctrine grounded in live code; declared the
   shared-library + COMMON hybrid as the target; documented the update/propagation protocol (this
   section); listed current data sources (§7). Supersedes `PROCESS.md` / `NEW_CHANNEL_KIT.md` paths.
