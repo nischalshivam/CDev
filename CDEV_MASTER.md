@@ -1,6 +1,6 @@
 # CDEV — MASTER BRAIN (give this file to any new niche chat)
 
-> **SYSTEM VERSION: 2026.09.12-3** — if a chat's understanding predates this, run the sync command
+> **SYSTEM VERSION: 2026.09.15-1** — if a chat's understanding predates this, run the sync command
 > in §16. The version + what changed is logged in §16.
 
 > **Claude, if you are a fresh session: read this file top to bottom before doing anything.**
@@ -180,6 +180,17 @@ every USED clip is capped at **≤7s** (`config.MAX_CLIP_SECONDS`) and credited 
 Cheap-first order (never pay before the free gates run): HD/resolution → shot-cut → motion/frozen →
 (only survivors) → Gemini vision.
 
+**Vision cataloguing is now FREE (2026-09-15).** CDev's `vision.RelayVision` is OpenAI-compatible
+(`base + /chat/completions`, image data-URIs), so it points at a local **agy shim** instead of the
+paid openlux relay — a pure `keys.env` swap, no code change. The shim (in `D:/Lib/agy_rotation/`,
+started by its `start.bat`) drives Google's Antigravity CLI on Google AI Pro subscriptions and
+**rotates across many Google accounts**, so vision is free and effectively unlimited in volume.
+Proven: CDev's own RelayVision against the live shim returned a correct, fully-parsed catalog dict
+(`gemini-3.6-flash-low`, ~18s/call). Trade-off: ~15-20s/call vs ~3-5s paid — free but slower, so keep
+**need-based indexing** (only what a script uses). Budget ≈ ~1,200 calls per account per 5h window,
+shared with the ProStudio tool that uses the same shim. keys.env keeps the openlux lines as a
+commented fallback. This machine's keys.env already points at `http://127.0.0.1:8788/v1`.
+
 ---
 
 ## 7. Sourcing — measured reality (2026-09), the biggest structural risk
@@ -202,6 +213,10 @@ Instagram needs cookies; archive.org/TikTok are not wired. `serper_source.fetch(
 kind="image")` returns the same dict shape as `stock_source` (add `import serper_source` in a hunt
 flow to use it). Note: `reddit_source`/`insta_source` read their cookie path from `os.getenv`, so
 `config` must be imported first (it loads keys.env) — every real build does this.
+Optional free SERP fallback (not wired): **OpenSERP** (github.com/karust/openserp) — a self-hosted Go
+scraper for Google/Bing image + web search (`/mega/image`, localhost:7000, no API key, Docker,
+proxy-aware). It can replace Serper's paid tier, but headless Google scraping risks CAPTCHA/blocking
+and needs its own running service — keep **Serper** (already wired + verified) as the reliable primary.
 
 - **Never ask the owner for a password.** Cookies come from an exported `cookies.txt` (a browser
   extension), and `--cookies-from-browser` does NOT work on this machine.
@@ -275,6 +290,10 @@ style pack, roster/era, and the competitor analysis.
   `D:/reddit cookies.txt` are set and **both verified working** (YouTube search + Reddit listing both
   return real results past the bot/login wall). Instagram still has no cookies/session. Cookie files
   are live logins — never printed, never committed (keys.env is gitignored).
+- **Vision backend (2026-09-15):** keys.env `GEMINI_RELAY_BASE` now points at the free local agy shim
+  `http://127.0.0.1:8788/v1` (model `gemini-3.6-flash-low`), openlux kept as a commented fallback. The
+  shim must be running (`D:/Lib/agy_rotation/start.bat`) with at least one non-cooling account, else
+  cataloguing gets a 503 — check `http://127.0.0.1:8788/v1/status`.
 
 ---
 
@@ -388,6 +407,10 @@ not N chats.** A new finding, a new source, or a whole new subsystem propagates 
 before doing niche work.
 
 ### System changelog (newest first)
+- **2026.09.15-1** — Vision cataloguing switched to the FREE auto-rotating agy shim (Antigravity,
+  many Google accounts) — openlux paid relay replaced by a keys.env swap; proven with CDev's own
+  RelayVision (~18s/call, correct output). Noted OpenSERP as an optional free Google-Images fallback
+  (Serper stays primary). See §6, §7, §11.
 - **2026.09.12-3** — `serper_source.py` written + verified (Google Images: search → size-gate →
   download, same dict shape as stock_source); `config.SERPER_KEY` added. YouTube + Reddit cookies
   installed and verified working. Sources table + machine notes updated. `pytest` still 64 passed.
