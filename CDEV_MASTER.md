@@ -1,6 +1,6 @@
 # CDEV — MASTER BRAIN (give this file to any new niche chat)
 
-> **SYSTEM VERSION: 2026.09.15-1** — if a chat's understanding predates this, run the sync command
+> **SYSTEM VERSION: 2026.09.18-1** — if a chat's understanding predates this, run the sync command
 > in §16. The version + what changed is logged in §16.
 
 > **Claude, if you are a fresh session: read this file top to bottom before doing anything.**
@@ -180,16 +180,29 @@ every USED clip is capped at **≤7s** (`config.MAX_CLIP_SECONDS`) and credited 
 Cheap-first order (never pay before the free gates run): HD/resolution → shot-cut → motion/frozen →
 (only survivors) → Gemini vision.
 
-**Vision cataloguing is now FREE (2026-09-15).** CDev's `vision.RelayVision` is OpenAI-compatible
-(`base + /chat/completions`, image data-URIs), so it points at a local **agy shim** instead of the
-paid openlux relay — a pure `keys.env` swap, no code change. The shim (in `D:/Lib/agy_rotation/`,
-started by its `start.bat`) drives Google's Antigravity CLI on Google AI Pro subscriptions and
-**rotates across many Google accounts**, so vision is free and effectively unlimited in volume.
-Proven: CDev's own RelayVision against the live shim returned a correct, fully-parsed catalog dict
-(`gemini-3.6-flash-low`, ~18s/call). Trade-off: ~15-20s/call vs ~3-5s paid — free but slower, so keep
-**need-based indexing** (only what a script uses). Budget ≈ ~1,200 calls per account per 5h window,
-shared with the ProStudio tool that uses the same shim. keys.env keeps the openlux lines as a
-commented fallback. This machine's keys.env already points at `http://127.0.0.1:8788/v1`.
+**Vision cataloguing is FREE (updated 2026-09-18).** CDev's `vision.RelayVision` is
+OpenAI-compatible (`base + /chat/completions`, image data-URIs, `Authorization: Bearer <key>`), so it
+points at a **local free Gemini endpoint** instead of the paid openlux relay — a pure `keys.env` swap,
+no code change. There are two such endpoints on this machine; **prefer the proxy**:
+- **CLIProxyAPI proxy — `http://127.0.0.1:8317/v1` (USE THIS).** Holds ~24 Google AI Pro logins as
+  files and serves them round-robin **concurrently** (true parallel), raw-API ~2-7s/call, no agent
+  overhead. Needs its api-key (`~/.model-router-proxy-key.txt`). Model: `gemini-3.6-flash-high`
+  (accuracy pick). Auto-starts at logon (keepalive). Verified: `GET :8317/v1/models` lists Gemini,
+  and CDev's own RelayVision returned a correct full catalog dict against it.
+- **agy shim — `http://127.0.0.1:8788/v1` (SUPERSEDED, fallback).** Sticky rotation, ONE account at a
+  time, ~15-20s/call. Works but the proxy is strictly better for many calls.
+
+Both run on Google AI Pro subscriptions (verified accounts = no overage/billing) and live under the
+ProStudio project (`~/cli-proxy-api/` for the proxy; `D:/Lib/agy_rotation/` for the shim), shared with
+that tool. keeps the openlux lines as a commented fallback. This machine's keys.env points at the
+proxy `http://127.0.0.1:8317/v1`. Trade-off vs paid: free; single-call latency higher, but concurrency
+wins on a real hunt. Keep **need-based indexing** regardless.
+
+**Voiceover — a free local option exists too (OmniVoice).** CDev's TTS is ai33.pro (paid) and its
+value is the WORD-LEVEL timestamps that `align_beats` needs. The ProStudio machine also runs
+**OmniVoice** (local, GPU, voice-cloned, zero-shot multilingual) at `http://127.0.0.1:8001` — free.
+It is NOT a drop-in for CDev yet: it returns a wav, not word timings, so using it would need a
+word-timestamp step (e.g. whisper alignment) added before `align_beats`. Noted as an option, not wired.
 
 ---
 
@@ -290,10 +303,10 @@ style pack, roster/era, and the competitor analysis.
   `D:/reddit cookies.txt` are set and **both verified working** (YouTube search + Reddit listing both
   return real results past the bot/login wall). Instagram still has no cookies/session. Cookie files
   are live logins — never printed, never committed (keys.env is gitignored).
-- **Vision backend (2026-09-15):** keys.env `GEMINI_RELAY_BASE` now points at the free local agy shim
-  `http://127.0.0.1:8788/v1` (model `gemini-3.6-flash-low`), openlux kept as a commented fallback. The
-  shim must be running (`D:/Lib/agy_rotation/start.bat`) with at least one non-cooling account, else
-  cataloguing gets a 503 — check `http://127.0.0.1:8788/v1/status`.
+- **Vision backend (2026-09-18):** keys.env `GEMINI_RELAY_BASE` points at the free **CLIProxyAPI
+  proxy** `http://127.0.0.1:8317/v1` (model `gemini-3.6-flash-high`, key from
+  `~/.model-router-proxy-key.txt`); the agy shim (8788) and openlux are kept as commented fallbacks.
+  The proxy auto-starts at logon — if cataloguing errors, check `GET http://127.0.0.1:8317/v1/models`.
 
 ---
 
@@ -407,6 +420,10 @@ not N chats.** A new finding, a new source, or a whole new subsystem propagates 
 before doing niche work.
 
 ### System changelog (newest first)
+- **2026.09.18-1** — Vision backend moved from the agy shim (8788, sticky-serial) to the CLIProxyAPI
+  **proxy (8317, concurrent, ~24 accounts, ~2-7s/call)** — strictly better for many calls; proven with
+  CDev's RelayVision at `gemini-3.6-flash-high`. Noted OmniVoice as a free local TTS option (needs a
+  word-timestamp step before it can replace ai33). See §6, §11.
 - **2026.09.15-1** — Vision cataloguing switched to the FREE auto-rotating agy shim (Antigravity,
   many Google accounts) — openlux paid relay replaced by a keys.env swap; proven with CDev's own
   RelayVision (~18s/call, correct output). Noted OpenSERP as an optional free Google-Images fallback
