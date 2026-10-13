@@ -46,7 +46,8 @@ opacity 0 before their reveal.
 
 ## Open (to do in the defence chat)
 1. Style pack `PACKS/style/defence.yaml` from the above.
-2. Wire the HyperFrames devices (date box, maps, spec card, requirement list, size bars) as reusable code, driven
-   by the EDL — not hand-built per video.
+2. DONE 2026-10-13 in the main chat: `CODE/hf_kit.py` (date_box, map_scene, size_bars, bullet_list, title,
+   year/chapter cards) + `sfx_cc0.py` + `separate.py` (SAM 2 cut-outs) — see CDEV_MASTER §8. Build defence
+   videos on these; add new devices there, not in a niche folder.
 3. Add DVIDS as a source (free API, mostly public domain).
 4. Own voice (TTS) -> exact word timings (the test used YouTube auto-subs, ±0.5 s).

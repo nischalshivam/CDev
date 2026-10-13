@@ -1,6 +1,6 @@
 # CDEV — MASTER BRAIN (give this file to any new niche chat)
 
-> **SYSTEM VERSION: 2026.09.18-1** — if a chat's understanding predates this, run the sync command
+> **SYSTEM VERSION: 2026.10.13-1** — if a chat's understanding predates this, run the sync command
 > in §16. The version + what changed is logged in §16.
 
 > **Claude, if you are a fresh session: read this file top to bottom before doing anything.**
@@ -256,6 +256,22 @@ encode. Output is **1280×720 / 30fps** (all three competitors ship 720p, not 10
 - `static_ratio` — limit 25% (reference is ~18% static, so stills-led cuts are meant to be partly still).
 - `repeat_shots` — perceptual hash on the finished file; flat frames excluded (see the known limit in §12).
 
+### Motion-graphics + effects kit (2026.10.13) — use these, do not hand-roll
+- **`CODE/hf_kit.py`** — HyperFrames devices, EDL-driven, any niche: `footage`, `title` (SplitText per char),
+  `date_box` (navy box + white caption), `year_card`, `chapter_card`, `bullet_list` (items land on their
+  words), `size_bars` (comparison bars counting up), `map_scene` (two-tone map: camera keyframes, country
+  highlight, pins + ripple, route drawn with DrawSVG + a vessel riding it with MotionPath, ScrambleText
+  chips, sonar rings). `setup_project()` → `page()` → `check()` → `render()`. GSAP plugins, OFL fonts and
+  the world map are vendored in `CODE/hf_assets/` (a CDN fetch failed mid-render once — never use a CDN).
+  Lint rules it already obeys are listed in its header (letterSpacing, pre-hidden scenes, video ids …).
+- **`CODE/sfx_cc0.py`** — 103 CC0 sounds (`hf_assets/sfx_cc0`, source + licence per file): `sfx_stem(events)`
+  with cue types (movement, appear, reveal, build_up, scene_cut, decode …), takes varied, risers end on the
+  hit; `measure(mp4)` = LUFS + true peak, stereo and mono, on the EXPORTED file; `credits()`.
+- **`CODE/separate.py`** — SAM 2 subject cut-out on the GPU (~0.7 s/frame on the RTX 5070) in its own venv
+  (`SAM2_PYTHON`): `separate(clip, points)` → masks, `text_behind(...)`. Heavy: only for hero shots.
+- Claude skills installed globally (`~/.claude/skills`): gsap-core/timeline/plugins/performance/utils,
+  motion-design (LottieFiles), object-separation, sound-effects. Read them before writing new motion.
+
 ---
 
 ## 9. Onboarding a new niche (this is what "training the chat" means)
@@ -420,6 +436,10 @@ not N chats.** A new finding, a new source, or a whole new subsystem propagates 
 before doing niche work.
 
 ### System changelog (newest first)
+- **2026.10.13-1** — Motion-graphics kit: `hf_kit.py` (HyperFrames devices incl. animated maps), `sfx_cc0.py`
+  (CC0 sound kit + exported-file loudness check), `separate.py` + `sam2_worker.py` (SAM 2 cut-outs),
+  vendored assets in `CODE/hf_assets/`, `SAM2_PYTHON` in config. From testing 4 GitHub skill repos (GSAP
+  official, LottieFiles motion-design, Barty-Bart object-separation + sound-effects); see §8.
 - **2026.09.18-1** — Vision backend moved from the agy shim (8788, sticky-serial) to the CLIProxyAPI
   **proxy (8317, concurrent, ~24 accounts, ~2-7s/call)** — strictly better for many calls; proven with
   CDev's RelayVision at `gemini-3.6-flash-high`. Noted OmniVoice as a free local TTS option (needs a

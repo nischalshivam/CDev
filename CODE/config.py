@@ -98,3 +98,5 @@ PIXABAY_KEY = os.getenv("PIXABAY_KEY", "")
 
 # Serper.dev — Google Images / open-web search (stills; returns w/h for HD-before-download).
 SERPER_KEY = os.getenv("SERPER_KEY", "")
+# SAM 2 runs in its own torch+CUDA venv (see separate.py)
+SAM2_PYTHON = os.getenv("SAM2_PYTHON", "D:/CDev/_skills_eval/.object-separation/Scripts/python.exe")
